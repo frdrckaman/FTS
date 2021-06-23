@@ -1,5 +1,7 @@
 <?php
+require_once '../../vendor/autoload.php';
 session_start();
+
 
 $GLOBALS['config'] = array(
   'mysql' => array(
