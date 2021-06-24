@@ -11,7 +11,7 @@ $study_crf=null;$data_limit=10000;
 $d2=strtotime('7/5/2019');
 $r = $d2-$d1;
 print_r($r/86400);*/
-
+if($_GET['id'] == 11){$col1=0;$col2=12;}else{$col1=2;$col2=10;}
 if($user->isLoggedIn()) {
     if (Input::exists('post')) {
         if (Input::get('edit_client')) {
@@ -411,10 +411,12 @@ if($user->isLoggedIn()) {
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
-            <?php require 'sideBar.php'?>
-        </div>
-        <div class="col-md-offset-0 col-md-10">
+        <?php if($_GET['id'] !=11){?>
+            <div class="col-md-<?=$col1?>">
+                <?php require 'sideBar.php'?>
+            </div>
+        <?php }?>
+        <div class="col-md-offset-0 col-md-<?=$col2?>">
             <div>
                 <?php if($errorMessage){?>
                     <div class="block">
@@ -755,7 +757,7 @@ if($user->isLoggedIn()) {
                                             <a href="#edit_client<?=$y?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
                                             <a href="#reasons<?=$y?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
                                             <a href="#delete_client<?=$y?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
-                                            <a href="info.php?id=11" class="widget-icon" title="list schedule"><span class="icon-list"></span></a>
+                                            <a href="info.php?id=11&pid=<?=$client['id']?>" class="widget-icon" title="list schedule"><span class="icon-list"></span></a>
                                         </td>
                                     </tr>
                                     <div class="modal" id="edit_client<?=$y?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1496,45 +1498,33 @@ if($user->isLoggedIn()) {
                     </div>
                 </div>
             <?php }elseif ($_GET['id'] == 11){?>
-                <div class="block">
-                    <div class="header">
-                        <h2>ALL PATIENT VISITS</h2>
-                    </div>
-                    <div class="content">
+                <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th width="3%">Study ID</th>
+                        <?php $x=1;foreach ($override->getDataOrderByA('visit','client_id',$_GET['pid'],'visit_date') as $data){?>
+                            <th width="3%"><?=$data['visit_date']?></th>
+                            <?php $x++;}?>
+                    </tr>
 
-                        <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
-                            <thead>
-                            <tr>
-                                <th width="20%">STUDY ID</th>
-                                <th width="20%">VISIT DATE</th>
-                                <th width="50%">STATUS</th>
-                                <th width="5%"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php $x=1;foreach ($override->getDataOrderByAs('visit','visit_date') as $data){
-                                $cl=$override->get('clients','id',$data['client_id']);
-                                if($cl[0]['status'] == 1){
-//                                    if($data['visit_date'] < date('Y-m-d')){
-                                        $lastVisit=$override->getlastRow('visit','client_id',$data['client_id'],'id');
-                                        $client=$override->get('clients','id',$data['client_id']);
-                                        $mcDays=(strtotime(date('Y-m-d'))-strtotime($data['visit_date']))?>
-                                        <tr>
-                                            <td><?=$client[0]['study_id'].' ( '?><?=$client[0]['phone_number'].' ) '?></td>
-                                            <td><?=$lastVisit[0]['visit_date']?></td>
-                                            <td>
-                                                <div class="btn-group btn-group-xs"><?php if($client[0]['status']==2){?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo$client[0]['reason'].' { '.$client[0]['details'].' } ';}else{?><button class="btn btn-success">Active</button><?php }echo' '?></div>
-                                            </td>
-                                            <td>
-                                                <a href="#reason<?=$x?>" data-toggle="modal" class="widget-icon" title="Edit Information"><span class="glyphicon-log-out"></span></a>
-                                            </td>
-                                        </tr>
-                                        <?php $x++;}}?>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="font-weight: bold"><?=$override->get('clients','id',$_GET['pid'])[0]['study_id']?></td>
+                        <?php $x=1;foreach ($override->getDataOrderByA('visit','client_id',$_GET['pid'],'visit_date') as $data){?>
+                            <td>
+                                <div class="btn-group btn-group-xs"><?php if($data['status']==1){?>&nbsp;
+                                        <button class="btn btn-success"><span class="icon-ok-sign"></span> Done</button>
+                                    <?php }elseif($data['status']==2){?>
+                                        <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed</span></button>
+                                    <?php }elseif ($data['status']==0){?>
+                                        <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled</button>
+                                    <?php }?>
+                            </td>
+                            <?php $x++;}?>
+                    </tr>
+                    </tbody>
+                </table>
             <?php }?>
         </div>
     </div>
