@@ -15,44 +15,15 @@ if($user->isLoggedIn()) {
             'study_id' => array(
                 'required' => true,
             ),
-            'last_visit' => array(
+            'visit_date' => array(
                 'required' => true,
             ),
 
         ));
         if ($validate->passed()) {
-            $user->generateSchedule(Input::get('study_id'), date('Y-m-d'));
             try {
-//                $clientStatus=$override->get('clients','id',Input::get('study_id'));
-//                if($clientStatus[0]['status'] == 2){
-//                    $errorMessage='Client '.$clientStatus[0]['reason'];
-//                }else{
-//                    $date=date('Y-m-d',strtotime(Input::get('last_visit')));
-//                    $user->createRecord('visit', array(
-//                        'visit_code' => Input::get('visit_code'),
-//                        'visit_date' => $date,
-//                        'client_id' => Input::get('study_id'),
-//                        'staff_id'=>$user->data()->id
-//                    ));
-//                    $date=null;
-//                    $checkClient=$override->get('schedule','client_id',Input::get('study_id'));
-//                    $date=date('Y-m-d',strtotime(Input::get('nxt_visit')));
-//                    if($checkClient){
-//                        $user->updateRecord('schedule',array('visit_date'=>$date,'client_id'=>Input::get('study_id')),$checkClient[0]['id']);
-//                    }else{
-//                        $user->createRecord('schedule', array(
-//                            'visit_date' => $date,
-//                            'client_id' => Input::get('study_id'),
-//                        ));
-//                    }
-//                    $date=null;
-//                    $getVisit=$override->get('clients','id',Input::get('study_id'));
-//                    $visitCode = $getVisit[0]['visit_code'] + 1;
-//                    if($visitCode){
-//                        $user->updateRecord('clients',array('visit_code'=>Input::get('visit_code')),Input::get('study_id'));
-//                    }
-//                    $successMessage = 'Visit Added Successful' ;
-//                }
+                $user->generateSchedule(Input::get('study_id'), $date=date('Y-m-d',strtotime(Input::get('visit_date'))));
+                $successMessage = 'Schedules Added Successful';
             } catch (Exception $e) {
                 die($e->getMessage());
             }
@@ -172,19 +143,11 @@ if($user->isLoggedIn()) {
                                         <div class="col-md-10">
                                             <div class="input-group">
                                                 <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
-                                                <input type="text" name="last_visit" class="datepicker form-control" value=""/>
+                                                <input type="text" name="visit_date" class="datepicker form-control" value="" required/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="col-md-2">NEXT VISIT:</div>
-                                        <div class="col-md-10">
-                                            <div class="input-group">
-                                                <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
-                                                <input type="text" name="nxt_visit" class="datepicker form-control" value=""/>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="modal-footer">

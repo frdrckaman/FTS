@@ -263,6 +263,28 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('search_schedule')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'from_date' => array(
+                    'required' => true,
+                ),
+                'to_date' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $link='info.php?id=12&from='.$date=date('Y-m-d',strtotime(Input::get('from_date'))).'&to='.$date=date('Y-m-d',strtotime(Input::get('to_date')));
+                    Redirect::to($link);
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
     }
 }else{
     Redirect::to('index.php');
@@ -289,6 +311,9 @@ if($user->isLoggedIn()) {
             <li class="">
                 <!--<a href="#add_visit" data-toggle="modal" data-backdrop="static" data-keyboard="false" ><span class="icon-bookmark"></span> Add Visit</a>-->
                 <a href="add.php" ><span class="icon-bookmark"></span> Add Visit</a>
+            </li>
+            <li class="">
+                <a href="#searchSchedule" data-toggle="modal"><span class="icon-search"></span> Search Schedule</a>
             </li>
             <li class="">
                 <a href="profile.php">
@@ -636,6 +661,44 @@ if($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="add_site" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="searchSchedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">SEARCH SCHEDULE</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">From:</div>
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                <input type="text" name="from_date" class="datepicker form-control" value="" required/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">To:</div>
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                <input type="text" name="to_date" class="datepicker form-control" value="" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="search_schedule" value="Search" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>

@@ -21,21 +21,19 @@ if($user->isLoggedIn()) {
             $getVisit=$override->get('clients','id',Input::get('client_id'));
             $getV = $override->getNews('visit','id',Input::get('id'),'visit_date',date('Y-m-d'));
             if ($validate->passed()) {
-                if($getV){
-                    try {
-                        $user->updateRecord('visit', array(
-                            'status' => 1,
-                            'staff_id'=>$user->data()->id
-                        ),$getV[0]['id']);
-                        $date=null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if($visitCode){
-                            $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('client_id'));
-                        }
-                        $successMessage = 'Visit Added Successful' ;
-                    } catch (Exception $e) {
-                        die($e->getMessage());
+                try {
+                    $user->updateRecord('visit', array(
+                        'status' => Input::get('visit_status'),
+                        'staff_id'=>$user->data()->id
+                    ),Input::get('v_id'));
+                    $date=null;
+                    $visitCode = $getVisit[0]['visit_code'] + 1;
+                    if($visitCode){
+                        $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('client_id'));
                     }
+                    $successMessage = 'Visit Added Successful' ;
+                } catch (Exception $e) {
+                    die($e->getMessage());
                 }
             } else {
                 $pageError = $validate->errors();
@@ -163,14 +161,14 @@ if($user->isLoggedIn()) {
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $x=1;foreach ($override->get('schedule','visit_date',date('Y-m-d')) as $data){
+                        <?php $x=1;foreach ($override->get('visit','visit_date',date('Y-m-d')) as $data){
                             $client=$override->get('clients','id',$data['client_id']);
                             $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date')?>
                             <tr>
                                 <td><?=$client[0]['study_id']?></td>
                                 <td><?=$client[0]['visit_code']?></td>
                                 <td>
-                                    <div class="btn-group btn-group-xs"><?php if($lastVisit[0]['status']==0){?>&nbsp;<button class="btn btn-warning">Pending</button> <?php }else{?><button class="btn btn-success">Completed</button><?php }?></div>
+                                    <div class="btn-group btn-group-xs"><?php if($data['status']==0){?>&nbsp;<button class="btn btn-warning">Pending</button> <?php }elseif($data['status']==1){?><button class="btn btn-success">Completed</button><?php }?></div>
                                 </td>
                                 <td><?=$client[0]['phone_number']?></td>
                                 <td>
@@ -205,7 +203,7 @@ if($user->isLoggedIn()) {
                                                         <div class="form-row" id="st">
                                                             <div class="col-md-2">Status</div>
                                                             <div class="col-md-10">
-                                                                <select class="form-control" id="site" name="visit_status" required="">
+                                                                <select class="form-control" id="site" name="visit_status" required>
                                                                     <option value="">Select Status</option>
                                                                     <option value="1">Complete</option>
                                                                     <option value="2">Missing</option>
@@ -217,6 +215,7 @@ if($user->isLoggedIn()) {
                                                 <div class="modal-footer">
                                                     <div class="pull-right col-md-3">
                                                         <input type="hidden" name="id" value="<?=$lastVisit[0]['id']?>">
+                                                        <input type="hidden" name="v_id" value="<?=$data['id']?>">
                                                         <input type="hidden" name="client_id" value="<?=$client[0]['id']?>">
                                                         <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
                                                     </div>

@@ -1525,6 +1525,46 @@ if($user->isLoggedIn()) {
                     </tr>
                     </tbody>
                 </table>
+            <?php }elseif ($_GET['id'] == 12){
+                $override->dateRange('visit','visit_date',$_GET['from'],$_GET['to']);$y=0;$list= array();
+                while($y<=$user->dateDiff($_GET['to'],$_GET['from'])){$list[$y]=date('Y-m-d', strtotime($_GET['from']. ' + '.$y.' days'));$y++;}?>
+                <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th width="3%">Study ID</th>
+                        <?php $x=1;foreach ($list as $data){?>
+                            <th width="3%"><?=$data?></th>
+                            <?php $x++;}?>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+                    <?php foreach ($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']) as $dt){
+                        $client=$override->get('clients', 'id', $dt['client_id'])[0];?>
+                        <tr>
+                            <td><?=$client['study_id']?></td>
+                            <?php $x=1;foreach ($list as $data){
+                                $d=$override->getNews('visit','client_id',$dt['client_id'],'visit_date',$data)[0];
+//                                echo ' => ';print_r($dt['client_id']);print_r($d['status']);echo ' : ';print_r($d['visit_date']);echo ' , '
+//                                print_r($data['client_id']);echo ' : ';print_r($data['visit_date']);echo ' , '?>
+                                <td>
+                                    <div class="btn-group btn-group-xs"><?php if($d){if($d['status']==1){?>&nbsp;
+                                            <button class="btn btn-success"><span class="icon-ok-sign"></span> Done</button>
+                                        <?php }elseif($d['status']==2){?>
+                                            <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed</span></button>
+                                        <?php }elseif ($d['status']==0){?>
+                                            <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?=$d['visit_date']?></button>
+                                        <?php }}else{?>
+                                            -
+                                        <?php }?>
+                                    </div>
+                                </td>
+                                <?php $x++;}?>
+                        </tr>
+
+                    <?php }?>
+                    </tbody>
+                </table>
             <?php }?>
         </div>
     </div>

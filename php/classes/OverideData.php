@@ -122,6 +122,16 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    public function dateRangeW($table,$id,$idv,$value,$start,$end){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $id = '$idv' AND $value BETWEEN '$start' AND '$end'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public function dateRangeD($table,$vl,$value,$start,$end){
+        $query = $this->_pdo->query("SELECT DISTINCT $vl FROM $table WHERE $value BETWEEN '$start' AND '$end'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     public function dateRangeNoR($table,$param,$value,$start,$end){
         $query = $this->_pdo->query("SELECT DISTINCT $param FROM $table WHERE $value BETWEEN '$start' AND '$end'");
         $num = $query->rowCount();
