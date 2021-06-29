@@ -1549,11 +1549,11 @@ if($user->isLoggedIn()) {
 //                                print_r($data['client_id']);echo ' : ';print_r($data['visit_date']);echo ' , '?>
                                 <td>
                                     <div class="btn-group btn-group-xs"><?php if($d){if($d['status']==1){?>&nbsp;
-                                            <button class="btn btn-success"><span class="icon-ok-sign"></span> Done</button>
+                                            <button class="btn btn-success"><span class="icon-ok-sign"></span> Done <?=$d['visit_code'].' '.$d['visit_type']?></button>
                                         <?php }elseif($d['status']==2){?>
-                                            <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed</span></button>
+                                            <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed <?=$d['visit_code'].' '.$d['visit_type']?></span></button>
                                         <?php }elseif ($d['status']==0){?>
-                                            <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?=$d['visit_date']?></button>
+                                            <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?=$d['visit_code'].' '.$d['visit_type']?></button>
                                         <?php }}else{?>
                                             -
                                         <?php }?>
