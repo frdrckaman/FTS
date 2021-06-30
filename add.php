@@ -22,8 +22,10 @@ if($user->isLoggedIn()) {
         ));
         if ($validate->passed()) {
             try {
-                $user->generateSchedule(Input::get('study_id'), $date=date('Y-m-d',strtotime(Input::get('visit_date'))));
-                $successMessage = 'Schedules Added Successful';
+                if(!$override->get('visit','client_id',Input::get('study_id'))){
+                    $user->generateSchedule(Input::get('study_id'), $date=date('Y-m-d',strtotime(Input::get('visit_date'))));
+                    $successMessage = 'Schedules Added Successful';
+                }else{$errorMessage = 'Patient Schedules already exist';}
             } catch (Exception $e) {
                 die($e->getMessage());
             }

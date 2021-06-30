@@ -253,30 +253,10 @@ class User {
         foreach ($clients as $client){
             $schedule = $this->_override->get('schedule','client_id',$client['id'])[0];
             $visit = $this->_override->getNews('visit','client_id',$client['id'],'visit_date',date('Y-m-d'))[0];
-            $dd = $this->dateDiff(date('Y-m-d'), $client['screening_date']);
             if($visit){
 
             }else{
-                $this->createRecord('visit', array(
-                    'visit_date'=>date('Y-m-d'),
-                    'visit_code'=>($visit['visit_code']+1),
-                    'status'=>0,
-                    'staff_id'=>$this->data()->id,
-                    'client_id'=>$client['id']));
-            }
-            if($dd <= 7){
-                $nxt_visit = date('Y-m-d', strtotime($client['screening_date']. ' + 1 days'));
-                if($schedule){
-                    $this->updateRecord('schedule',array('visit_date'=>$nxt_visit),$schedule['id']);
-                }else{
-                    $this->createRecord('schedule',array('visit_date'=>$nxt_visit, 'client_id'=>$client['id']));
-                }
-            }elseif ($dd > 7 and $dd <= 14){
-                $nxt_visit = date('Y-m-d', strtotime($client['screening_date']. ' + 1 days'));
-                $this->updateRecord('schedule',array('visit_date'=>$nxt_visit),$schedule['id']);
-            }elseif ($dd > 14 and $dd <= 28){
-                $nxt_visit = date('Y-m-d', strtotime($client['screening_date']. ' + 1 days'));
-                $this->updateRecord('schedule',array('visit_date'=>$nxt_visit),$schedule['id']);
+
             }
         }
     }

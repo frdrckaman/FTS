@@ -529,7 +529,9 @@ if($user->isLoggedIn()) {
                             <div class="col-md-10">
                                 <select class="form-control" id="site" name="site_id" required="">
                                     <option value="">Select Site</option>
-
+                                    <?php foreach ($override->getData('site') as $site){?>
+                                        <option value="<?=$site['id']?>"><?=$site['name']?></option>
+                                    <?php }?>
                                 </select>
                             </div>
                         </div>
