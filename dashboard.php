@@ -163,7 +163,8 @@ if($user->isLoggedIn()) {
                         <tbody>
                         <?php $x=1;foreach ($override->get('visit','visit_date',date('Y-m-d')) as $data){
                             $client=$override->get('clients','id',$data['client_id']);
-                            $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date')?>
+                            $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
+                            if($client[0]['status'] == 1){?>
                             <tr>
                                 <td><?=$client[0]['study_id']?></td>
                                 <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
@@ -228,7 +229,7 @@ if($user->isLoggedIn()) {
                                     </div>
                                 </div>
                             </tr>
-                        <?php $x++;}?>
+                        <?php }$x++;}?>
                         </tbody>
                     </table>
                 </div>

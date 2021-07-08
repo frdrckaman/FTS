@@ -53,7 +53,17 @@ if($user->isLoggedIn()) {
             try {
                 $user->updateRecord('clients', array(
                     'status' => 0,
+                    'reason'=> Input::get('reason'),
                 ),Input::get('id'));
+                $successMessage = 'Patient End Study Successful';
+
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+        elseif (Input::get('delete_client_schedule')){
+            try {
+                $user->deleteRecord('visit','client_id',Input::get('id'));
                 $successMessage = 'Patient Deleted Successful';
 
             } catch (Exception $e) {
@@ -358,6 +368,10 @@ if($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
+        }
+        elseif (Input::get('download')){
+            $user->exportData($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']), 'patients');
+            $successMessage = 'Record Deleted Successful';
         }
     }
 }else{
@@ -718,7 +732,17 @@ if($user->isLoggedIn()) {
                             foreach($data as $value){$client=$override->get('clients','id',$value['client_id']); ?>
                                 <tr>
                                     <td><?=$x?></td>
-                                    <td><?=$client[0]['study_id']?></td>
+                                    <td><?=$client[0]['study_id']?>
+                                        <?php if($client[0]['status'] == 0){?>
+                                            <div class="btn-group btn-group-xs">
+                                                <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
+                                            </div>
+                                        <?php }else {?>
+                                            <div class="btn-group btn-group-xs">
+                                                <button class="btn btn-success"><span class="icon-ok-sign"></span> Active </button>
+                                            </div>
+                                        <?php }?>
+                                    </td>
                                     <td><?=$client[0]['visit_code']?></td>
                                     <td><?=$client[0]['phone_number']?></td>
                                     <td><div class="btn-group btn-group-xs"><a href="info.php?id=6&cid=<?=$value['client_id']?>" class="btn btn-info btn-clean"><span class="icon-eye-open"></span> View All Visits</a></div></td>
@@ -758,6 +782,7 @@ if($user->isLoggedIn()) {
                                             <a href="#reasons<?=$y?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
                                             <a href="#delete_client<?=$y?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
                                             <a href="info.php?id=11&pid=<?=$client['id']?>" class="widget-icon" title="list schedule"><span class="icon-list"></span></a>
+                                            <a href="#delete_client_schedule<?=$y?>" data-toggle="modal" class="widget-icon" title="Delete Patient Schedules"><span class="icon-remove"></span></a>
                                         </td>
                                     </tr>
                                     <div class="modal" id="edit_client<?=$y?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -866,12 +891,40 @@ if($user->isLoggedIn()) {
                                                 <form method="post">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">YOU SURE YOU WANT TO DELETE THIS PATIENT ?</h4>
+                                                        <h4 class="modal-title">YOU SURE YOU WANT TO END STUDY FOR THIS PATIENT ?</h4>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="col-md-2">Reason:</div>
+                                                        <div class="col-md-10">
+                                                            <textarea rows="4" name="reason" class="form-control" value="<?=$client['study_id']?>" required=""></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <div class="col-md-2 pull-right">
+                                                            <input type="hidden" name="id" value="<?=$client['id']?>">
+                                                            <input type="submit" name="delete_client" value="END" class="btn btn-default btn-clean">
+                                                        </div>
+                                                        <div class="col-md-2 pull-right">
+                                                            <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal modal-danger" id="delete_client_schedule<?=$y?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="post">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title">YOU SURE YOU WANT TO DELETE THIS PATIENT SCHEDULES?</h4>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <div class="col-md-2 pull-right">
                                                             <input type="hidden" name="id" value="<?=$client['id']?>">
-                                                            <input type="submit" name="delete_client" value="DELETE" class="btn btn-default btn-clean">
+                                                            <input type="submit" name="delete_client_schedule" value="DELETE" class="btn btn-default btn-clean">
                                                         </div>
                                                         <div class="col-md-2 pull-right">
                                                             <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
@@ -1480,7 +1533,7 @@ if($user->isLoggedIn()) {
                             </tr>
                             </thead>
                             <tbody>
-                            <?php $x=1;foreach ($override->getDataOrderByA('clients','status',2,'study_id') as $data){
+                            <?php $x=1;foreach ($override->getDataOrderByA('clients','status',0,'study_id') as $data){
                                 $lastVisit=$override->getlastRow('visit','client_id',$data['id'],'id');
                                 if($lastVisit){$lVisit = $lastVisit[0]['visit_date'];}else{$lVisit='';}?>
                                 <tr>
@@ -1488,7 +1541,7 @@ if($user->isLoggedIn()) {
                                     <td><?=$data['study_id'].' ( '?><?=$data['phone_number'].' ) '?></td>
                                     <td><?=$lVisit?></td>
                                     <td><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div></td>
-                                    <td><?=$data['reason'].' { '.$data['details'].' } '?></td>
+                                    <td><?=$data['reason']?></td>
                                 </tr>
 
                                 <?php $x++;}?>
@@ -1528,6 +1581,9 @@ if($user->isLoggedIn()) {
             <?php }elseif ($_GET['id'] == 12){
                 $override->dateRange('visit','visit_date',$_GET['from'],$_GET['to']);$y=0;$list= array();
                 while($y<=$user->dateDiff($_GET['to'],$_GET['from'])){$list[$y]=date('Y-m-d', strtotime($_GET['from']. ' + '.$y.' days'));$y++;}?>
+<!--                <form method="post">-->
+<!--                    <input type="submit" name="download" value="Download Data" class="btn btn-info">-->
+<!--                </form>-->
                 <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -1542,7 +1598,13 @@ if($user->isLoggedIn()) {
                     <?php foreach ($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']) as $dt){
                         $client=$override->get('clients', 'id', $dt['client_id'])[0];?>
                         <tr>
-                            <td><?=$client['study_id']?></td>
+                            <td><?=$client['study_id']?>
+                                <?php if($client['status'] == 0){?>
+                                    <div class="btn-group btn-group-xs">
+                                        <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
+                                    </div>
+                                <?php }?>
+                            </td>
                             <?php $x=1;foreach ($list as $data){
                                 $d=$override->getNews('visit','client_id',$dt['client_id'],'visit_date',$data)[0];
 //                                echo ' => ';print_r($dt['client_id']);print_r($d['status']);echo ' : ';print_r($d['visit_date']);echo ' , '
