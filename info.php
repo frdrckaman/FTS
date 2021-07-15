@@ -2,6 +2,8 @@
 require_once'php/core/init.php';
 $user = new User();
 $override = new OverideData();
+$email = new Email();
+$random = new Random();
 $pageError = null;$successMessage = null;$errorM = false;$errorMessage = null;
 $t_crf=0;$p_crf=0;$w_crf=0;$s_name=null;$c_name=null;$site=null;$country=null;
 $study_crf=null;$data_limit=10000;
@@ -279,7 +281,9 @@ if($user->isLoggedIn()) {
                     'password' => Hash::make($password, $salt),
                     'salt' => $salt,
                 ),Input::get('id'));
-                $successMessage = 'Password Reset to Default Successful';
+                if($email->resetPassword(Input::get('email'),Input::get('lastname'),'Password Reset')){
+                    $successMessage = 'Password Reset to Default Successful';
+                }
             }
             catch (PDOException $e){
                 $e->getMessage();
@@ -1550,7 +1554,8 @@ if($user->isLoggedIn()) {
 
                     </div>
                 </div>
-            <?php }elseif ($_GET['id'] == 11){?>
+            <?php }
+            elseif ($_GET['id'] == 11){?>
                 <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -1578,7 +1583,8 @@ if($user->isLoggedIn()) {
                     </tr>
                     </tbody>
                 </table>
-            <?php }elseif ($_GET['id'] == 12){
+            <?php }
+            elseif ($_GET['id'] == 12){
                 $override->dateRange('visit','visit_date',$_GET['from'],$_GET['to']);$y=0;$list= array();
                 while($y<=$user->dateDiff($_GET['to'],$_GET['from'])){$list[$y]=date('Y-m-d', strtotime($_GET['from']. ' + '.$y.' days'));$y++;}?>
 <!--                <form method="post">-->
@@ -1631,6 +1637,11 @@ if($user->isLoggedIn()) {
         </div>
     </div>
 </div>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
 
 </body>
 

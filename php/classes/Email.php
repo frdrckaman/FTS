@@ -1,6 +1,28 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 class Email {
+    private $_smtpEmail,
+            $_smtpPassword,
+            $_smtpUsername,
+            $_smtpHost,
+            $_smtpaddCC,
+            $_website,
+            $_info,
+            $_project;
+
+
+    function __construct(){
+        $this->_smtpEmail = 'bagamoyoihi@gmail.com';
+        $this->_smtpHost = 'smtp.gmail.com';
+        $this->_smtpUsername = 'bagamoyoihi@gmail.com';
+        $this->_smtpPassword = 'Data@2020';
+        $this->_smtpaddCC = 'manquiz92@gmail.com';
+        $this->_website = 'www.ihi.or.tz';
+        $this->_info = 'info@ihi.or.tz';
+        $this->_project = 'VAT082';
+
+    }
+
     function sendEmail($email,$lastname,$username,$password,$subject){
         $mail = new PHPMailer();
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -211,7 +233,7 @@ class Email {
                                         <!-- column 1 -->
                                         <table align="" style="padding: 20px">
                                             <tr>
-                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">EXIT-TB DATA MANAGEMENT SYSTEM</h3></td>
+                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">'.$this->_project.' DATA MANAGEMENT SYSTEM</h3></td>
                                             </tr>
                                         </table>
                                         <!-- /column 1 -->
@@ -226,12 +248,12 @@ class Email {
                                     <tr>
                                         <td>
                                             <h3>Dear '.$lastname.'</h3>
-                                            <p class="lead">Your new Account on EXIT-TB Data Management System (EXIT-TB DMS) have been created by your supervisor.</p>
+                                            <p class="lead">Your new Account on '.$this->_project.' Data Management System ('.$this->_project.' DMS) have been created by your supervisor.</p>
                                             <p class="lead">Username: '.$username.'</p>
                                             <p class="lead">Password: '.$password.'</p>
                                             <!-- Callout Panel -->
                                             <p class="callout">
-                                                Your advice to login and change your password as soon as possible <a href="https://system.exit-tb.org/">&nbsp;Login Now &raquo;</a>
+                                                Your advice to login and change your password as soon as possible </a>
                                             </p><!-- /Callout Panel -->
                 
                                             <!-- contact Info -->
@@ -242,7 +264,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Visit our website at : <a href="https://exit-tb.org/">www.exit-tb.org</a></p>
+                                                                    <p style="font-weight: bolder">Visit our website at : <a href="'.$this->_website.'">'.$this->_website.'</a></p>
                                                                     <p> </p>
                                                                 </td>
                                                             </tr>
@@ -253,7 +275,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="info@exit-tb.org">info@exit-tb.org</a></strong></p>
+                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="'.$this->_info.'">'.$this->_info.'</a></strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table><!-- /column 2 -->
@@ -298,18 +320,18 @@ class Email {
 
             </body>
         </html>';
-        $mail->Host = "smtp.zoho.com";
+        $mail = new PHPMailer();
+        $mail->Host = $this->_smtpHost;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
-        $mail->Username = "info@exit-tb.org";
-        $mail->Password = "Server@admin1";
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
         $mail->SMTPSecure = "tls"; //TLS
         $mail->Port = 587; //587
         $mail->addAddress($email);
-        $mail->setFrom('info@exit-tb.org','EXIT-TB DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo('info@exit-tb.org');
-        $mail->addCC('admin@exit-tb.org');
-        $mail->addBCC('admin@exit-tb.org');
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+        $mail->addCC($this->_smtpaddCC);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body = $body;
@@ -321,7 +343,7 @@ class Email {
             return 'not sent';
         }
     }
-    function  resetPassword($email,$lastname,$subject,$link){
+    function  resetPassword($email,$lastname,$subject,$link=null){
         $mail = new PHPMailer();
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" >
@@ -531,7 +553,7 @@ class Email {
                                         <!-- column 1 -->
                                         <table align="" style="padding: 20px">
                                             <tr>
-                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">EXIT-TB DATA MANAGEMENT SYSTEM</h3></td>
+                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">'.$this->_project.' DATA MANAGEMENT SYSTEM</h3></td>
                                             </tr>
                                         </table>
                                         <!-- /column 1 -->
@@ -546,11 +568,14 @@ class Email {
                                     <tr>
                                         <td>
                                             <h3>Dear '.$lastname.'</h3>
-                                            <p class="lead">Your password have been deleted by your supervisor, due to the fact that you either forget it or you have request it</p>
+                                            <p class="lead">Your password have been reset by the system admin, due to the fact that you either forget it or you have request it </p>
+                                            
+                                          
+                                            <p class="lead">Password: 123456</p>
                                             
                                             <!-- Callout Panel -->
-                                            <p class="callout">
-                                                Click the link to reset password <a href="'.$link.'">&nbsp;Click here to Reset Password &raquo;</a>
+                                            <p class="callout" style="font-weight: bold;color: coral">
+                                                Note: Your advice to change this password to a more secured password after login to your account.
                                             </p><!-- /Callout Panel -->
                 
                                             <!-- contact Info -->
@@ -561,7 +586,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Visit our website at : <a href="https://exit-tb.org">www.exit-tb.org</a></p>
+                                                                    <p style="font-weight: bolder">Visit our website at : <a href="'.$this->_website.'">'.$this->_website.'</a></p>
                                                                     <p> </p>
                                                                 </td>
                                                             </tr>
@@ -572,7 +597,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="info@exit-tb.org">info@exit-tb.org</a></strong></p>
+                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="'.$this->_info.'">'.$this->_info.'</a></strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table><!-- /column 2 -->
@@ -617,18 +642,18 @@ class Email {
 
             </body>
         </html>';
-        $mail->Host = "smtp.zoho.com";
+        $mail = new PHPMailer();
+        $mail->Host = $this->_smtpHost;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
-        $mail->Username = "info@exit-tb.org";
-        $mail->Password = "Server@admin1";
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
         $mail->SMTPSecure = "tls"; //TLS
         $mail->Port = 587; //587
         $mail->addAddress($email);
-        $mail->setFrom('info@exit-tb.org','EXIT-TB DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo('info@exit-tb.org');
-        $mail->addCC('admin@exit-tb.org');
-        $mail->addBCC('admin@exit-tb.org');
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+        $mail->addCC($this->_smtpaddCC);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body = $body;
@@ -850,7 +875,7 @@ class Email {
                                         <!-- column 1 -->
                                         <table align="" style="padding: 20px">
                                             <tr>
-                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">EXIT-TB DATA MANAGEMENT SYSTEM</h3></td>
+                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">'.$this->_project.' DATA MANAGEMENT SYSTEM</h3></td>
                                             </tr>
                                         </table>
                                         <!-- /column 1 -->
@@ -869,7 +894,7 @@ class Email {
                                             
                                             <!-- Callout Panel -->
                                             <p class="callout">
-                                                Please contact your coordinator for account reactivation
+                                                Please contact system administrator for account reactivation
                                             </p><!-- /Callout Panel -->
                 
                                             <!-- contact Info -->
@@ -880,7 +905,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Visit our website at : <a href="https://exit-tb.org/">www.exit-tb.org</a></p>
+                                                                    <p style="font-weight: bolder">Visit our website at : <a href="'.$this->_website.'">'.$this->_website.'</a></p>
                                                                     <p> </p>
                                                                 </td>
                                                             </tr>
@@ -891,7 +916,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="info@exit-tb.org">info@exit-tb.org</a></strong></p>
+                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="'.$this->_info.'">'.$this->_info.'</a></strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table><!-- /column 2 -->
@@ -936,18 +961,18 @@ class Email {
 
             </body>
         </html>';
-        $mail->Host = "smtp.zoho.com";
+        $mail = new PHPMailer();
+        $mail->Host = $this->_smtpHost;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
-        $mail->Username = "info@exit-tb.org";
-        $mail->Password = "Server@admin1";
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
         $mail->SMTPSecure = "tls"; //TLS
         $mail->Port = 587; //587
         $mail->addAddress($email);
-        $mail->setFrom('info@exit-tb.org','EXIT-TB DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo('info@exit-tb.org');
-        $mail->addCC('admin@exit-tb.org');
-        $mail->addBCC('admin@exit-tb.org');
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+        $mail->addCC($this->_smtpaddCC);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body = $body;
@@ -961,18 +986,17 @@ class Email {
     }
     function emailSend($email,$subject,$body){
         $mail = new PHPMailer();
-        $mail->Host = "smtp.zoho.com";
+        $mail->Host = $this->_smtpHost;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
-        $mail->Username = "info@exit-tb.org";
-        $mail->Password = "Server@admin1";
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
         $mail->SMTPSecure = "tls"; //TLS
         $mail->Port = 587; //587
         $mail->addAddress($email);
-        $mail->setFrom('info@exit-tb.org','EXIT-TB DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo('info@exit-tb.org');
-        $mail->addCC('admin@exit-tb.org');
-        $mail->addBCC('admin@exit-tb.org');
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+        $mail->addCC($this->_smtpaddCC);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body = $body;
@@ -1194,7 +1218,7 @@ class Email {
                                         <!-- column 1 -->
                                         <table align="" style="padding: 20px">
                                             <tr>
-                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">EXIT-TB DATA MANAGEMENT SYSTEM</h3></td>
+                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">'.$this->_project.' DATA MANAGEMENT SYSTEM</h3></td>
                                             </tr>
                                         </table>
                                         <!-- /column 1 -->
@@ -1209,7 +1233,7 @@ class Email {
                                     <tr>
                                         <td>
                                             <h3>Dear '.$all.'</h3>
-                                            <p class="lead">In our best efforts to provide an excellent service to all users of EXIT-TB DMS, we are scheduling performing system update tommorow 21th of June at 1600hrs and expected to be completed at 23th of June at 2300hrs. During the update, some of functionality may not be available or not working properly.</p>
+                                            <p class="lead">In our best efforts to provide an excellent service to all users of '.$this->_project.' DMS, we are scheduling performing system update from '.date("Y-m-d").' at 1600hrs and expected to be completed on '.date("Y-m-d", strtotime(date("Y-m-d"). ' + 7 days')).' at 2300hrs. During the update, some of functionality may not be available or not working properly.</p>
                                            
                                             <!-- Callout Panel -->
                                             <p class="callout" style="color: orange;font-weight: bold">
@@ -1218,8 +1242,8 @@ class Email {
                                             <p class="lead"> </p>
                                             <p class="lead">&nbsp;</p>
                                             <p class="lead">Kind regards,</p>
-                                            <p class="">Fredrick Amani,</p>
-                                            <p class="">Database Developer</p>
+                                            <p class="">Winstone Makwesheni,</p>
+                                            <p class="">System Developer</p>
                                             <!-- contact Info -->
                                             <table class="social" width="100%">
                                                 <tr>
@@ -1228,7 +1252,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Visit our website at : <a href="https://exit-tb.org/">www.exit-tb.org</a></p>
+                                                                    <p style="font-weight: bolder">Visit our website at : <a href="'.$this->_website.'">'.$this->_website.'</a></p>
                                                                     <p> </p>
                                                                 </td>
                                                             </tr>
@@ -1239,7 +1263,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="info@exit-tb.org">info@exit-tb.org</a></strong></p>
+                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="'.$this->_info.'">'.$this->_info.'</a></strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table><!-- /column 2 -->
@@ -1284,18 +1308,18 @@ class Email {
 
             </body>
         </html>';
-        $mail->Host = "smtp.zoho.com";
+        $mail = new PHPMailer();
+        $mail->Host = $this->_smtpHost;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
-        $mail->Username = "info@exit-tb.org";
-        $mail->Password = "Server@admin1";
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
         $mail->SMTPSecure = "tls"; //TLS
         $mail->Port = 587; //587
         $mail->addAddress($email);
-        $mail->setFrom('info@exit-tb.org','EXIT-TB DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo('info@exit-tb.org');
-        $mail->addCC('admin@exit-tb.org');
-        $mail->addBCC('admin@exit-tb.org');
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+        $mail->addCC($this->_smtpaddCC);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body = $body;
@@ -1517,7 +1541,7 @@ class Email {
                                         <!-- column 1 -->
                                         <table align="" style="padding: 20px">
                                             <tr>
-                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">EXIT-TB DATA MANAGEMENT SYSTEM</h3></td>
+                                                <td align="right"><h3 class="collapse" style="font-weight: bolder">'.$this->_project.' DATA MANAGEMENT SYSTEM</h3></td>
                                             </tr>
                                         </table>
                                         <!-- /column 1 -->
@@ -1532,7 +1556,7 @@ class Email {
                                     <tr>
                                         <td>
                                             <h3>Dear '.$all.'</h3>
-                                            <p class="lead">In our best efforts to provide an excellent service to all users of EXIT-TB DMS, we have currently finished upgrade the system and its is now back online.</p>
+                                            <p class="lead">In our best efforts to provide an excellent service to all users of '.$this->_project.' DMS, we have currently finished upgrade the system and its is now back online.</p>
                                            
                                             <!-- Callout Panel -->
                                             <p class="" style="font-weight: bolder"> Updates performed:</p><!-- /Callout Panel -->
@@ -1543,7 +1567,6 @@ class Email {
                                                     <li>System reports</li>                              
                                                 </ul>
                                             <p class="" style="color: orangered;font-weight: bold">
-                                            Due to these security upgrade your required to RESET YOUR PASSWORD so that you can access your account again.<br><a href="https://system.exit-tb.org/reset.php?token='.$token.'" style="color: #1c94c4"> CLICK HERE TO RESET </a> </p>
                                             
                                             <p class="callout">
                                             <span style="color: darkred;font-weight: bold">Note: Secure password must contain at least 8 characters which include Upper letters,lower case letters,numbers and special characters</span><br><br>
@@ -1551,8 +1574,8 @@ class Email {
                                             
                                             <p class="lead">Kind regards,</p>
                                             <p class="lead">&nbsp;</p>
-                                            <p class="">Fredrick Amani,</p>
-                                            <p class="">Database developer</p>
+                                            <p class="">Winstone Makwesheni,</p>
+                                            <p class="">System Developer</p>
                                             <!-- contact Info -->
                                             <table class="social" width="100%">
                                                 <tr>
@@ -1561,7 +1584,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Visit our website at : <a href="https://exit-tb.org/">www.exit-tb.org</a></p>
+                                                                    <p style="font-weight: bolder">Visit our website at : <a href="'.$this->_website.'">'.$this->_website.'</a></p>
                                                                     <p> </p>
                                                                 </td>
                                                             </tr>
@@ -1572,7 +1595,7 @@ class Email {
                                                         <table align="left" class="column">
                                                             <tr>
                                                                 <td>
-                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="info@exit-tb.org">info@exit-tb.org</a></strong></p>
+                                                                    <p style="font-weight: bolder">Send us an Email : <strong><a href="'.$this->_info.'">'.$this->_info.'</a></strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table><!-- /column 2 -->
@@ -1617,18 +1640,18 @@ class Email {
 
             </body>
         </html>';
-        $mail->Host = "smtp.zoho.com";
+        $mail = new PHPMailer();
+        $mail->Host = $this->_smtpHost;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
-        $mail->Username = "info@exit-tb.org";
-        $mail->Password = "Server@admin1";
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
         $mail->SMTPSecure = "tls"; //TLS
         $mail->Port = 587; //587
         $mail->addAddress($email);
-        $mail->setFrom('info@exit-tb.org','EXIT-TB DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo('info@exit-tb.org');
-        $mail->addCC('admin@exit-tb.org');
-        $mail->addBCC('admin@exit-tb.org');
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+        $mail->addCC($this->_smtpaddCC);
         $mail->Subject = $subject;
         $mail->isHTML(true);
         $mail->Body = $body;
