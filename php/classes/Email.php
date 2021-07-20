@@ -19,7 +19,7 @@ class Email {
         $this->_smtpaddCC = 'manquiz92@gmail.com';
         $this->_website = 'www.ihi.or.tz';
         $this->_info = 'info@ihi.or.tz';
-        $this->_project = 'VAT082';
+        $this->_project = 'VAC082';
 
     }
 
