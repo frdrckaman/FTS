@@ -196,7 +196,7 @@ if($user->isLoggedIn()) {
                         'count'=>0,
                         'staff_id'=>$user->data()->id
                     ));
-                    $email->sendEmail(Input::get('email_address'),Input::get('lastname'),Input::get('username'),$password, 'Account Creation');
+                    $email->sendEmail(Input::get('email_address'),Input::get('firstname'),Input::get('username'),$password, 'Account Creation');
                     $successMessage = 'Staff Registered Successful' ;
                 } catch (Exception $e) {
                     die($e->getMessage());

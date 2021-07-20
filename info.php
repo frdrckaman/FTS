@@ -281,7 +281,7 @@ if($user->isLoggedIn()) {
                     'password' => Hash::make($password, $salt),
                     'salt' => $salt,
                 ),Input::get('id'));
-                if($email->resetPassword(Input::get('email'),Input::get('lastname'),'Password Reset')){
+                if($email->resetPassword(Input::get('email'),Input::get('firstname'),'Password Reset')){
                     $successMessage = 'Password Reset to Default Successful';
                 }
             }
@@ -1281,7 +1281,7 @@ if($user->isLoggedIn()) {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <div class="col-md-2 pull-right">
-                                                        <input type="hidden" name="lastname" value="<?=$staff['lastname']?>">
+                                                        <input type="hidden" name="firstname" value="<?=$staff['firstname']?>">
                                                         <input type="hidden" name="email" value="<?=$staff['email_address']?>">
                                                         <input type="hidden" name="id" value="<?=$staff['id']?>">
                                                         <input type="submit" name="reset_password" value="RESET" class="btn btn-default btn-clean">
