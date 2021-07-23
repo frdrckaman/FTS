@@ -17,7 +17,7 @@ class Email {
         $this->_smtpHost = 'smtp.gmail.com';
         $this->_smtpUsername = 'bagamoyoihi@gmail.com';
         $this->_smtpPassword = 'Data@2020';
-        $this->_smtpaddCC = 'frdrckaman@gmail.com';
+        $this->_smtpaddCC = 'manquiz92@gmail.com';
         $this->_website = 'www.ihi.or.tz';
         $this->_info = 'info@ihi.or.tz';
         $this->_project = 'VAC082';
