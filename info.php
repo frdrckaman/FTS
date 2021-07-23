@@ -281,13 +281,11 @@ if($user->isLoggedIn()) {
                     'password' => Hash::make($password, $salt),
                     'salt' => $salt,
                 ),Input::get('id'));
-                if($email->resetPassword(Input::get('email'),Input::get('firstname'),'Password Reset')){
-                    $successMessage = 'Password Reset to Default Successful';
-                }
+                $email->resetPassword(Input::get('email'),Input::get('firstname'),'Password Reset');
+                $successMessage = 'Password Reset to Default Successful';
             }
-            catch (PDOException $e){
+            catch (Exception $e) {
                 $e->getMessage();
-            } catch (Exception $e) {
             }
         }
         elseif (Input::get('add_reason')){
@@ -374,8 +372,40 @@ if($user->isLoggedIn()) {
             }
         }
         elseif (Input::get('download')){
-            $user->exportData($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']), 'patients');
-            $successMessage = 'Record Deleted Successful';
+            $override->dateRange('visit','visit_date',$_GET['from'],$_GET['to']);$y=0;$list= array();$data1=null;$mqz=null;$am=null;$r=0;
+            while($y<=$user->dateDiff($_GET['to'],$_GET['from'])){
+                if($y==0){$list[$y]='Study ID';$y++;}else{
+                    $list[$y]=date('Y-m-d', strtotime($_GET['from']. ' + '.$y.' days'));$y++;
+                }
+
+            }
+            $data1[0]=$list;
+
+            foreach ($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']) as $dt){$f=0;
+                $client=$override->get('clients', 'id', $dt['client_id'])[0];
+                foreach ($list as $data){
+                    $d=$override->getNews('visit','client_id',$dt['client_id'],'visit_date',$data)[0];
+                    if($f==0){
+                        $mqz[$f]= $client['study_id'];$f++;
+                    }else{
+                        if($d){
+                            if($d['status']==1){
+                                $mqz[$f]= 'Done '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                            }elseif ($d['status']==2){
+                                $mqz[$f]= 'Missed '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                            }elseif ($d['status']==0){
+                                $mqz[$f]= 'Scheduled '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                            }
+                        }
+                        else{
+                            $mqz[$f]= '-';$f++;
+                        }
+                    }
+                }
+                $am[$r] = $mqz;
+                $r++;
+            }
+            $user->exportSchedule($data1,$am,'schedule');
         }
     }
 }else{
@@ -1587,9 +1617,9 @@ if($user->isLoggedIn()) {
             elseif ($_GET['id'] == 12){
                 $override->dateRange('visit','visit_date',$_GET['from'],$_GET['to']);$y=0;$list= array();
                 while($y<=$user->dateDiff($_GET['to'],$_GET['from'])){$list[$y]=date('Y-m-d', strtotime($_GET['from']. ' + '.$y.' days'));$y++;}?>
-<!--                <form method="post">-->
-<!--                    <input type="submit" name="download" value="Download Data" class="btn btn-info">-->
-<!--                </form>-->
+                <form method="post">
+                    <input type="submit" name="download" value="Download Data" class="btn btn-info">
+                </form>
                 <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
                     <thead>
                     <tr>

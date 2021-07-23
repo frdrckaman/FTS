@@ -266,6 +266,22 @@ class User {
         }
         exit();
     }
+    function exportSchedule($data1,$data2,$file) {
+        $timestamp = time();
+        $filename = $file.'_' . $timestamp . '.xls';
+
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+
+        foreach ($data1 as $row) {
+            echo implode("\t", array_values($row)) . "\n";
+        }
+        foreach ($data2 as $row2) {
+            echo implode("\t", array_values($row2)) . "\n";
+
+        }
+        exit();
+    }
     function schedule(){
         $clients = $this->_override->getData('clients');
         foreach ($clients as $client){

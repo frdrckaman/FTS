@@ -6,6 +6,7 @@ class Email {
             $_smtpUsername,
             $_smtpHost,
             $_smtpaddCC,
+            $_smtpaddBcc,
             $_website,
             $_info,
             $_project;
@@ -16,15 +17,38 @@ class Email {
         $this->_smtpHost = 'smtp.gmail.com';
         $this->_smtpUsername = 'bagamoyoihi@gmail.com';
         $this->_smtpPassword = 'Data@2020';
-        $this->_smtpaddCC = 'manquiz92@gmail.com';
+        $this->_smtpaddCC = 'frdrckaman@gmail.com';
         $this->_website = 'www.ihi.or.tz';
         $this->_info = 'info@ihi.or.tz';
         $this->_project = 'VAC082';
 
     }
-
-    function sendEmail($email,$lastname,$username,$password,$subject){
+    function emailConf($email,$subject,$body){
         $mail = new PHPMailer();
+        $mail->Host = $this->_smtpHost;
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;
+        $mail->Username = $this->_smtpUsername;
+        $mail->Password = $this->_smtpPassword;
+        $mail->SMTPSecure = "tls"; //TLS
+        $mail->Port = 587; //587
+        $mail->addAddress($email);
+        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
+        $mail->addReplyTo($this->_smtpUsername);
+//        $mail->addCC($this->_smtpaddCC);
+        $mail->addBCC($this->_smtpaddCC);
+        $mail->Subject = $subject;
+        $mail->isHTML(true);
+        $mail->Body = $body;
+
+        if ($mail->send()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    function sendEmail($email,$lastname,$username,$password,$subject){
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" >
             <head>
@@ -320,31 +344,9 @@ class Email {
 
             </body>
         </html>';
-        $mail = new PHPMailer();
-        $mail->Host = $this->_smtpHost;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Username = $this->_smtpUsername;
-        $mail->Password = $this->_smtpPassword;
-        $mail->SMTPSecure = "tls"; //TLS
-        $mail->Port = 587; //587
-        $mail->addAddress($email);
-        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo($this->_smtpUsername);
-        $mail->addCC($this->_smtpaddCC);
-        $mail->Subject = $subject;
-        $mail->isHTML(true);
-        $mail->Body = $body;
-
-        if ($mail->send()){
-            return true;
-        }
-        else{
-            return 'not sent';
-        }
+        $this->emailConf($email,$subject,$body);
     }
     function  resetPassword($email,$lastname,$subject,$link=null){
-        $mail = new PHPMailer();
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" >
             <head>
@@ -642,31 +644,9 @@ class Email {
 
             </body>
         </html>';
-        $mail = new PHPMailer();
-        $mail->Host = $this->_smtpHost;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Username = $this->_smtpUsername;
-        $mail->Password = $this->_smtpPassword;
-        $mail->SMTPSecure = "tls"; //TLS
-        $mail->Port = 587; //587
-        $mail->addAddress($email);
-        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo($this->_smtpUsername);
-        $mail->addCC($this->_smtpaddCC);
-        $mail->Subject = $subject;
-        $mail->isHTML(true);
-        $mail->Body = $body;
-
-        if ($mail->send()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        $this->emailConf($email,$subject,$body);
     }
     function deactivation($email,$lastname,$subject){
-        $mail = new PHPMailer();
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" >
             <head>
@@ -961,55 +941,13 @@ class Email {
 
             </body>
         </html>';
-        $mail = new PHPMailer();
-        $mail->Host = $this->_smtpHost;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Username = $this->_smtpUsername;
-        $mail->Password = $this->_smtpPassword;
-        $mail->SMTPSecure = "tls"; //TLS
-        $mail->Port = 587; //587
-        $mail->addAddress($email);
-        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo($this->_smtpUsername);
-        $mail->addCC($this->_smtpaddCC);
-        $mail->Subject = $subject;
-        $mail->isHTML(true);
-        $mail->Body = $body;
-
-        if ($mail->send()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        $this->emailConf($email,$subject,$body);
     }
     function emailSend($email,$subject,$body){
-        $mail = new PHPMailer();
-        $mail->Host = $this->_smtpHost;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Username = $this->_smtpUsername;
-        $mail->Password = $this->_smtpPassword;
-        $mail->SMTPSecure = "tls"; //TLS
-        $mail->Port = 587; //587
-        $mail->addAddress($email);
-        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo($this->_smtpUsername);
-        $mail->addCC($this->_smtpaddCC);
-        $mail->Subject = $subject;
-        $mail->isHTML(true);
-        $mail->Body = $body;
-
-        if ($mail->send()){
-            return true;
-        }
-        else{
-            return 'not sent';
-        }
+        $this->emailConf($email,$subject,$body);
     }
     function systemUpdate($email,$subject){
-        $mail = new PHPMailer();$all='All';
+        $all='All';
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" >
             <head>
@@ -1308,31 +1246,10 @@ class Email {
 
             </body>
         </html>';
-        $mail = new PHPMailer();
-        $mail->Host = $this->_smtpHost;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Username = $this->_smtpUsername;
-        $mail->Password = $this->_smtpPassword;
-        $mail->SMTPSecure = "tls"; //TLS
-        $mail->Port = 587; //587
-        $mail->addAddress($email);
-        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo($this->_smtpUsername);
-        $mail->addCC($this->_smtpaddCC);
-        $mail->Subject = $subject;
-        $mail->isHTML(true);
-        $mail->Body = $body;
-
-        if ($mail->send()){
-            return true;
-        }
-        else{
-            return 'not sent';
-        }
+        $this->emailConf($email,$subject,$body);
     }
     function updateReport($email,$subject,$token){
-        $mail = new PHPMailer();$all='All';
+        $all='All';
         $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" >
             <head>
@@ -1640,27 +1557,6 @@ class Email {
 
             </body>
         </html>';
-        $mail = new PHPMailer();
-        $mail->Host = $this->_smtpHost;
-        $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->Username = $this->_smtpUsername;
-        $mail->Password = $this->_smtpPassword;
-        $mail->SMTPSecure = "tls"; //TLS
-        $mail->Port = 587; //587
-        $mail->addAddress($email);
-        $mail->setFrom($this->_smtpUsername,$this->_project.' DATA MANAGEMENT SYSTEM');
-        $mail->addReplyTo($this->_smtpUsername);
-        $mail->addCC($this->_smtpaddCC);
-        $mail->Subject = $subject;
-        $mail->isHTML(true);
-        $mail->Body = $body;
-
-        if ($mail->send()){
-            return true;
-        }
-        else{
-            return 'not sent';
-        }
+        $this->emailConf($email,$subject,$body);
     }
 }
