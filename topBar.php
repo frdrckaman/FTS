@@ -232,6 +232,27 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('end_reason')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'reason' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('end_study_reason', array(
+                        'reason' => Input::get('reason'),
+                    ));
+                    $successMessage = 'Reason Registered Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
         elseif (Input::get('add_site')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -334,7 +355,8 @@ if($user->isLoggedIn()) {
                     <ul class="dropdown-menu">
                         <li><a href="#add_country" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD COUNTRY</a></li>
                         <li><a href="#add_site" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD SITE</a></li>
-                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES</a></li>
+                        <li><a href="#end_study_reason" data-toggle="modal" data-backdrop="static" data-keyboard="false">END OF STUDY REASON</a></li>
+                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES / END STUDY</a></li>
                     </ul>
                 </li>
             <?php }elseif($user->data()->access_level == 4){?>
@@ -664,6 +686,36 @@ if($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="add_site" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="end_study_reason" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">END OF STUDY REASON</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Reason:</div>
+                            <div class="col-md-10">
+                                <textarea name="reason" rows="4" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="end_reason" value="ADD" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>

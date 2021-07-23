@@ -217,6 +217,15 @@ if($user->isLoggedIn()) {
                 die($e->getMessage());
             }
         }
+        elseif(Input::get('delete_end_study')){
+            try {
+                $user->deleteRecord('end_study_reason','id',Input::get('id'));
+                $successMessage = 'Reason Deleted Successful';
+
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
         elseif(Input::get('edit_site')){
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -265,6 +274,27 @@ if($user->isLoggedIn()) {
                         'short_code' => Input::get('short_code'),
                     ),Input::get('id'));
                     $successMessage = 'Country Updated Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif(Input::get('edit_end_study')){
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'reason' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->updateRecord('end_study_reason', array(
+                        'reason' => Input::get('reason'),
+                    ),Input::get('id'));
+                    $successMessage = 'Reason Updated Successful';
 
                 } catch (Exception $e) {
                     die($e->getMessage());
@@ -1599,6 +1629,88 @@ if($user->isLoggedIn()) {
                                                             <div class="col-md-2 pull-right">
                                                                 <input type="hidden" name="id" value="<?=$site['id']?>">
                                                                 <input type="submit" name="delete_site" value="DELETE" class="btn btn-default btn-clean">
+                                                            </div>
+                                                            <div class="col-md-2 pull-right">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php $x++;}?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="block">
+                            <div class="header">
+                                <h2>END OF STUDY REASON</h2>
+                            </div>
+                            <div class="content">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>REASON</th>
+                                        <th>MANAGE</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $x=1;foreach($override->getData('end_study_reason') as $site){?>
+                                        <tr>
+                                            <td><?=$x?></td>
+                                            <td><?=$site['reason']?></td>
+                                            <td>
+                                                <a href="#edit_end_reason<?=$x?>" data-toggle="modal" class="widget-icon" title="Edit Site Information"><span class="icon-pencil"></span></a>
+                                                <a href="#delete_end_reason<?=$x?>" data-toggle="modal" class="widget-icon" title="Delete Site"><span class="icon-trash"></span></a>
+                                            </td>
+                                        </tr>
+                                        <div class="modal" id="edit_end_reason<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">EDIT SITE</h4>
+                                                        </div>
+                                                        <div class="modal-body clearfix">
+                                                            <div class="controls">
+                                                                <div class="form-row">
+                                                                    <div class="col-md-2">Reason:</div>
+                                                                    <div class="col-md-10">
+                                                                        <textarea name="reason" rows="4" class="form-control"><?=$site['reason']?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <div class="pull-right col-md-3">
+                                                                <input type="hidden" name="id" value="<?=$site['id']?>">
+                                                                <input type="submit" name="edit_end_study" value="Submit" class="btn btn-success btn-clean">
+                                                            </div>
+                                                            <div class="pull-right col-md-2">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal modal-danger" id="delete_end_reason<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">YOU SURE YOU WANT TO DELETE THIS REASON</h4>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <div class="col-md-2 pull-right">
+                                                                <input type="hidden" name="id" value="<?=$site['id']?>">
+                                                                <input type="submit" name="delete_end_study" value="DELETE" class="btn btn-default btn-clean">
                                                             </div>
                                                             <div class="col-md-2 pull-right">
                                                                 <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
