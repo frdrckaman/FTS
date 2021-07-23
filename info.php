@@ -337,6 +337,27 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('edit_schedule')){
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'visit_date' => array(
+                    'required' => true,
+                ),
+                'visit' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->updateSchedule(Input::get('id'),Input::get('visit_date'),Input::get('visit'));
+                    $successMessage = 'Visit Edited Successful' ;
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
         elseif(Input::get('delete_visit')){
             try {
                 $vsc=$override->get('clients','id',Input::get('cl_id'));
@@ -814,6 +835,7 @@ if($user->isLoggedIn()) {
                                         <td>
                                             <a href="#edit_client<?=$y?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
                                             <a href="#reasons<?=$y?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
+                                            <a href="#edit_schedule<?=$y?>" data-toggle="modal" class="widget-icon" title="Edit Schedule"><span class="icon-refresh"></span></a>
                                             <a href="#delete_client<?=$y?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
                                             <a href="info.php?id=11&pid=<?=$client['id']?>" class="widget-icon" title="list schedule"><span class="icon-list"></span></a>
                                             <a href="#delete_client_schedule<?=$y?>" data-toggle="modal" class="widget-icon" title="Delete Patient Schedules"><span class="icon-remove"></span></a>
@@ -910,6 +932,51 @@ if($user->isLoggedIn()) {
                                                         <div class="pull-right col-md-3">
                                                             <input type="hidden" name="id" value="<?=$client['id']?>">
                                                             <input type="submit" name="add_reason" value="Submit" class="btn btn-success btn-clean">
+                                                        </div>
+                                                        <div class="pull-right col-md-2">
+                                                            <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal" id="edit_schedule<?=$y?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="post">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title">EDIT SCHEDULE</h4>
+                                                    </div>
+                                                    <div class="modal-body clearfix">
+                                                        <div class="controls">
+                                                            <div class="form-row">
+                                                                <div class="col-md-2">Visit:</div>
+                                                                <div class="col-md-10">
+                                                                    <select class="form-control" id="c" name="visit" required>
+                                                                        <option value="">Select Visit</option>
+                                                                        <option value="1">V1</option>
+                                                                        <option value="2">V2</option>
+                                                                        <option value="3">V3</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="col-md-2">VISIT DATE:</div>
+                                                                <div class="col-md-10">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                                                        <input type="text" name="visit_date" class="datepicker form-control" value="" required/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <div class="pull-right col-md-3">
+                                                            <input type="hidden" name="id" value="<?=$client['id']?>">
+                                                            <input type="submit" name="edit_schedule" value="Submit" class="btn btn-success btn-clean">
                                                         </div>
                                                         <div class="pull-right col-md-2">
                                                             <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>

@@ -372,6 +372,10 @@ class OverideData{
         return $this->_pdo->query("DELETE FROM $table WHERE $field = $value");
     }
 
+    public function deleteRec($table,$field1,$value1,$field2,$value2){
+        return $this->_pdo->query("DELETE FROM $table WHERE $field1 = $value1 AND $field2 = $value2");
+    }
+
     public function getExamType($table,$field,$value,$field1,$value1,$value2,$field2){
         $query = $this->_pdo->query("SELECT DISTINCT exam_id FROM $table WHERE $field = '$value' AND $field1 = '$value1' AND $value2 = '$field2'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
