@@ -552,66 +552,81 @@ if($user->isLoggedIn()) {
 
                                 <th width="20%">STUDY ID</th>
                                 <th width="10%">VISIT CODE</th>
-                                <th width="25%">LAST VISIT</th>
+                                <th width="25%">STATUS</th>
                                 <th width="20%">PHONE NUMBER</th>
                                 <th width="20%"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php $x=1;foreach ($override->get('schedule','visit_date',date('Y-m-d')) as $data){
+                            <?php $x=1;foreach ($override->get('visit','visit_date',date('Y-m-d')) as $data){
                                 $client=$override->get('clients','id',$data['client_id']);
-                                $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date')?>
-                                <tr>
-                                    <td><?=$client[0]['study_id']?></td>
-                                    <td><?=$client[0]['visit_code']?></td>
-                                    <td><?=$lastVisit[0]['visit_date']?></td>
-                                    <td><?=$client[0]['phone_number']?></td>
-                                    <td>
-                                        <a href="#appnt<?=$x?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
-                                    </td>
-                                    <div class="modal" id="appnt<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form method="post">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">APPOINTMENT</h4>
-                                                    </div>
-                                                    <div class="modal-body clearfix">
-                                                        <div class="controls">
-                                                            <div class="form-row">
-                                                                <div class="col-md-2">VISIT CODE:</div>
-                                                                <div class="col-md-10">
-                                                                    <input type="hidden" name="visit_code" value="<?=$client[0]['visit_code']+1?>">
-                                                                    <input type="number" name="visit_code" class="form-control" value="<?=$client[0]['visit_code']+1?>" disabled/>
+                                $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
+                                if($client[0]['status'] == 1){?>
+                                    <tr>
+                                        <td><?=$client[0]['study_id']?></td>
+                                        <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
+                                        <td>
+                                            <div class="btn-group btn-group-xs"><?php if($data['status']==0){?>&nbsp;<button class="btn btn-warning">Pending</button> <?php }elseif($data['status']==1){?><button class="btn btn-success">Completed</button><?php }?></div>
+                                        </td>
+                                        <td><?=$client[0]['phone_number']?></td>
+                                        <td>
+                                            <a href="#appnt<?=$x?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
+                                        </td>
+                                        <div class="modal" id="appnt<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">APPOINTMENT</h4>
+                                                        </div>
+                                                        <div class="modal-body clearfix">
+                                                            <div class="controls">
+                                                                <div class="form-row">
+                                                                    <div class="col-md-2">VISIT CODE:</div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="hidden" name="visit_code" value="<?=$client[0]['visit_code']+1?>">
+                                                                        <input type="number" name="visit_code" class="form-control" value="<?=$client[0]['visit_code']+1?>" disabled/>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="col-md-2">NEXT VISIT:</div>
-                                                                <div class="col-md-10">
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
-                                                                        <input type="text" name="visit_date" class="datepicker form-control" value=""/>
+                                                                <!--                                                        <div class="form-row">-->
+                                                                <!--                                                            <div class="col-md-2">NEXT VISIT:</div>-->
+                                                                <!--                                                            <div class="col-md-10">-->
+                                                                <!--                                                                <div class="input-group">-->
+                                                                <!--                                                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>-->
+                                                                <!--                                                                    <input type="text" name="visit_date" class="datepicker form-control" value=""/>-->
+                                                                <!--                                                                </div>-->
+                                                                <!--                                                            </div>-->
+                                                                <!--                                                        </div>-->
+                                                                <div class="form-row" id="st">
+                                                                    <div class="col-md-2">Status</div>
+                                                                    <div class="col-md-10">
+                                                                        <select class="form-control" id="site" name="visit_status" required>
+                                                                            <option value="">Select Status</option>
+                                                                            <option value="1">Complete</option>
+                                                                            <option value="2">Missing</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <div class="pull-right col-md-3">
-                                                            <input type="hidden" name="id" value="<?=$data['id']?>">
-                                                            <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
+                                                        <div class="modal-footer">
+                                                            <div class="pull-right col-md-3">
+                                                                <input type="hidden" name="id" value="<?=$lastVisit[0]['id']?>">
+                                                                <input type="hidden" name="v_id" value="<?=$data['id']?>">
+                                                                <input type="hidden" name="client_id" value="<?=$client[0]['id']?>">
+                                                                <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
+                                                            </div>
+                                                            <div class="pull-right col-md-2">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
                                                         </div>
-                                                        <div class="pull-right col-md-2">
-                                                            <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </tr>
-                                <?php $x++;}?>
+                                    </tr>
+                                <?php }$x++;}?>
                             </tbody>
                         </table>
                     </div>
