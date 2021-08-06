@@ -6,7 +6,7 @@ $site=$override->get('site','id',$user->data()->s_id);
 $country=$override->get('country','id',$user->data()->c_id);
 $clntNo=$override->getNo('clients');
 $ap=$override->countNoRepeatAll('visit','client_id');
-$end=$override->getCount('clients','status',2);
+$end=$override->getCount('clients','status',0);
 $tv=$override->getCount('visit','visit_date',date('Y-m-d'));
 $msAp=0;$apnt=0;
 $msNo=0;foreach ($override->getData('schedule') as $data){

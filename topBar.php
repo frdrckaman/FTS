@@ -25,6 +25,9 @@ if($user->isLoggedIn()) {
                 'screening_date' => array(
                     'required' => true,
                 ),
+                'group' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 $s_date=date('Y-m-d',strtotime(Input::get('screening_date')));
@@ -64,56 +67,6 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
-        /*elseif (Input::get('add_visit')){
-            $validate = new validate();
-            $validate = $validate->check($_POST, array(
-                'study_id' => array(
-                    'required' => true,
-                ),
-                'last_visit' => array(
-                    'required' => true,
-                ),
-                'nxt_visit' => array(
-                    'required' => true,
-                ),
-                'visit_code' => array(
-                    'required' => true,
-                ),
-            ));
-            if ($validate->passed()) {
-                try {
-                    $date=date('Y-m-d',strtotime(Input::get('last_visit')));
-                    $user->createRecord('visit', array(
-                        'visit_code' => Input::get('visit_code'),
-                        'visit_date' => $date,
-                        'client_id' => Input::get('study_id'),
-                        'staff_id'=>$user->data()->id
-                    ));
-                    $date=null;
-                    $checkClient=$override->get('schedule','client_id',Input::get('study_id'));
-                    $date=date('Y-m-d',strtotime(Input::get('nxt_visit')));
-                    if($checkClient){
-                        $user->updateRecord('schedule',array('visit_date'=>$date),Input::get('study_id'));
-                    }else{
-                        $user->createRecord('schedule', array(
-                            'visit_date' => $date,
-                            'client_id' => Input::get('study_id'),
-                        ));
-                    }
-                    $date=null;
-                    $getVisit=$override->get('clients','id',Input::get('study_id'));
-                    $visitCode = $getVisit[0]['visit_code'] + 1;
-                    if($visitCode){
-                        $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('study_id'));
-                    }
-                    $successMessage = 'Visit Added Successful' ;
-                } catch (Exception $e) {
-                    die($e->getMessage());
-                }
-            } else {
-                $pageError = $validate->errors();
-            }
-        }*/
         elseif (Input::get('add_staff')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -307,6 +260,27 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('add_pt_group')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'group_name' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('patient_group', array(
+                        'name' => Input::get('group_name'),
+                    ));
+                    $successMessage = 'Group Added Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
     }
 }else{
     Redirect::to('index.php');
@@ -355,8 +329,9 @@ if($user->isLoggedIn()) {
                     <ul class="dropdown-menu">
                         <li><a href="#add_country" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD COUNTRY</a></li>
                         <li><a href="#add_site" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD SITE</a></li>
+                        <li><a href="#add_pt_group" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD PATIENT GROUP</a></li>
                         <li><a href="#end_study_reason" data-toggle="modal" data-backdrop="static" data-keyboard="false">END OF STUDY REASON</a></li>
-                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES / END STUDY</a></li>
+                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES / END STUDY / GROUPS </a></li>
                     </ul>
                 </li>
             <?php }elseif($user->data()->access_level == 4){?>
@@ -428,9 +403,11 @@ if($user->isLoggedIn()) {
                         <div class="form-row" id="st">
                             <div class="col-md-2">Group:</div>
                             <div class="col-md-10">
-                                <select class="form-control" id="site" name="site_id" required="">
+                                <select class="form-control" id="group" name="group" required>
                                     <option value="">Select Group</option>
-                                    <option value="1">Group 1</option>
+                                    <?php foreach ($override->getData('patient_group') as $group){?>
+                                        <option value="<?=$group['id']?>"><?=$group['name']?></option>
+                                    <?php }?>
                                 </select>
                             </div>
                         </div>
@@ -754,6 +731,36 @@ if($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="search_schedule" value="Search" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_pt_group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD GROUP</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="group_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_pt_group" value="ADD" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>

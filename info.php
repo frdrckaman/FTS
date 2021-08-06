@@ -328,7 +328,7 @@ if($user->isLoggedIn()) {
             if ($validate->passed()) {
                 try {
                     $user->updateRecord('clients',array(
-                            'status'=>2,
+                            'status'=>0,
                             'reason'=>Input::get('reason'),
                             'details'=>Input::get('details')
                     ),Input::get('id'));
@@ -458,6 +458,27 @@ if($user->isLoggedIn()) {
             }
             $user->exportSchedule($data1,$am,'schedule');
         }
+        elseif(Input::get('edit_pt_group')){
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'group_name' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->updateRecord('patient_group', array(
+                        'name' => Input::get('group_name'),
+                    ),Input::get('id'));
+                    $successMessage = 'Group Updated Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
     }
 }else{
     Redirect::to('index.php');
@@ -551,9 +572,9 @@ if($user->isLoggedIn()) {
                             <tr>
 
                                 <th width="20%">STUDY ID</th>
-                                <th width="10%">VISIT CODE</th>
+                                <th width="20%">GROUP</th>
                                 <th width="25%">STATUS</th>
-                                <th width="20%">PHONE NUMBER</th>
+                                <th width="10%">PHONE NUMBER</th>
                                 <th width="20%"></th>
                             </tr>
                             </thead>
@@ -564,7 +585,7 @@ if($user->isLoggedIn()) {
                                 if($client[0]['status'] == 1){?>
                                     <tr>
                                         <td><?=$client[0]['study_id']?></td>
-                                        <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
+                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ( '.$data['visit_type'].' ) '?></td>
                                         <td>
                                             <div class="btn-group btn-group-xs"><?php if($data['status']==0){?>&nbsp;<button class="btn btn-warning">Pending</button> <?php }elseif($data['status']==1){?><button class="btn btn-success">Completed</button><?php }?></div>
                                         </td>
@@ -643,7 +664,7 @@ if($user->isLoggedIn()) {
                             <thead>
                             <tr>
                                 <th width="20%">STUDY ID</th>
-                                <th width="20%">LAST VISIT</th>
+                                <th width="20%">GROUP</th>
                                 <th width="5%">DAYS</th>
                                 <th width="50%">DETAILS</th>
                                 <th width="5%"></th>
@@ -656,10 +677,11 @@ if($user->isLoggedIn()) {
                                         if($data['visit_date'] < date('Y-m-d')){
                                             $lastVisit=$override->getlastRow('visit','client_id',$data['client_id'],'id');
                                             $client=$override->get('clients','id',$data['client_id']);
+                                            $group=$override->get('patient_group','id',$client[0]['pt_group'])[0]['name'];
                                             $mcDays=(strtotime(date('Y-m-d'))-strtotime($data['visit_date']))?>
                                             <tr>
                                                 <td><?=$client[0]['study_id'].' ( '?><?=$client[0]['phone_number'].' ) '?></td>
-                                                <td><?=$lastVisit[0]['visit_date']?></td>
+                                                <td><?=$group?></td>
                                                 <td><?=($mcDays/86400)?></td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs"><?php if($client[0]['status']==2){?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo$client[0]['reason'].' { '.$client[0]['details'].' } ';}else{?><button class="btn btn-success">Active</button><?php }echo' '?></div>
@@ -863,7 +885,7 @@ if($user->isLoggedIn()) {
                             <thead>
                             <tr>
                                 <th width="15%">STUDY ID</th>
-                                <th width="10%">VISIT CODE</th>
+                                <th width="10%">GROUP</th>
                                 <th width="25%">LAST VISIT</th>
                                 <th width="20%">PHONE NUMBER</th>
                                 <th width="20%">Manage</th>
@@ -874,7 +896,7 @@ if($user->isLoggedIn()) {
                                     $lastVisit=$override->getlastRow('visit','client_id',$client['id'],'id')?>
                                     <tr>
                                         <td><?=$client['study_id'].'  ( '.$client['initials'].' )  '?><?php if($client['status'] == 1){?><div class="btn-group btn-group-xs"><button class="btn btn-success">Active</button></div><?php }else{?><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div><?php }?></td>
-                                        <td><?=$client['visit_code']?></td>
+                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name']?></td>
                                         <td><?php if($lastVisit){echo $lastVisit[0]['visit_date'];}else{echo '';}?></td>
                                         <td><?=$client['phone_number'].' '.$client['phone_number2']?></td>
                                         <td>
@@ -1037,7 +1059,7 @@ if($user->isLoggedIn()) {
                                                 <form method="post">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">YOU SURE YOU WANT TO END STUDY FOR THIS PATIENT ?</h4>
+                                                        <h4 class="modal-title">YOU SURE YOU WANT TO DELETE THIS PATIENT ?</h4>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="col-md-2">Reason:</div>
@@ -1741,6 +1763,88 @@ if($user->isLoggedIn()) {
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="block">
+                            <div class="header">
+                                <h2>PATIENT GROUP</h2>
+                            </div>
+                            <div class="content">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>NAME</th>
+                                        <th>MANAGE</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $x=1;foreach($override->getData('patient_group') as $group){?>
+                                        <tr>
+                                            <td><?=$x?></td>
+                                            <td><?=$group['name']?></td>
+                                            <td>
+                                                <a href="#edit_patient_group<?=$x?>" data-toggle="modal" class="widget-icon" title="Edit Site Information"><span class="icon-pencil"></span></a>
+<!--                                                <a href="#delete_patient_group--><?//=$x?><!--" data-toggle="modal" class="widget-icon" title="Delete Site"><span class="icon-trash"></span></a>-->
+                                            </td>
+                                        </tr>
+                                        <div class="modal" id="edit_patient_group<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">EDIT PATIENT GROUP</h4>
+                                                        </div>
+                                                        <div class="modal-body clearfix">
+                                                            <div class="controls">
+                                                                <div class="form-row">
+                                                                    <div class="col-md-2">Name:</div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" name="group_name" class="form-control" value="<?=$group['name']?>" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <div class="pull-right col-md-3">
+                                                                <input type="hidden" name="id" value="<?=$group['id']?>">
+                                                                <input type="submit" name="edit_pt_group" value="Submit" class="btn btn-success btn-clean">
+                                                            </div>
+                                                            <div class="pull-right col-md-2">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal modal-danger" id="delete_patient_group<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">YOU SURE YOU WANT TO DELETE THIS GROUP</h4>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <div class="col-md-2 pull-right">
+                                                                <input type="hidden" name="id" value="<?=$site['id']?>">
+                                                                <input type="submit" name="delete_pt_group" value="DELETE" class="btn btn-default btn-clean">
+                                                            </div>
+                                                            <div class="col-md-2 pull-right">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php $x++;}?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <?php }
             elseif ($_GET['id'] == 10){?>
@@ -1755,7 +1859,7 @@ if($user->isLoggedIn()) {
                             <tr>
                                 <th width="5%">#</th>
                                 <th width="20%">STUDY ID</th>
-                                <th width="20%">LAST VISIT</th>
+                                <th width="20%">GROUP</th>
                                 <th width="5%">STATUS</th>
                                 <th width="50%">DETAILS</th>
                             </tr>
@@ -1767,9 +1871,9 @@ if($user->isLoggedIn()) {
                                 <tr>
                                     <td><?=$x?></td>
                                     <td><?=$data['study_id'].' ( '?><?=$data['phone_number'].' ) '?></td>
-                                    <td><?=$lVisit?></td>
+                                    <td><?=$override->get('patient_group','id',$data['pt_group'])[0]['name']?></td>
                                     <td><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div></td>
-                                    <td><?=$data['reason']?></td>
+                                    <td>( <?=$data['reason']?> ) <?=$data['details']?></td>
                                 </tr>
 
                                 <?php $x++;}?>
