@@ -572,7 +572,7 @@ if($user->isLoggedIn()) {
                             <tr>
 
                                 <th width="20%">STUDY ID</th>
-                                <th width="20%">GROUP</th>
+                                <th width="20%">VISIT CODE</th>
                                 <th width="25%">STATUS</th>
                                 <th width="10%">PHONE NUMBER</th>
                                 <th width="20%"></th>
@@ -584,8 +584,8 @@ if($user->isLoggedIn()) {
                                 $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
                                 if($client[0]['status'] == 1){?>
                                     <tr>
-                                        <td><?=$client[0]['study_id']?></td>
-                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ( '.$data['visit_type'].' ) '?></td>
+                                        <td><?=$client[0]['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?></td>
+                                        <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                         <td>
                                             <div class="btn-group btn-group-xs"><?php if($data['status']==0){?>&nbsp;<button class="btn btn-warning">Pending</button> <?php }elseif($data['status']==1){?><button class="btn btn-success">Completed</button><?php }?></div>
                                         </td>
