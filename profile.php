@@ -290,7 +290,7 @@ if($user->isLoggedIn()) {
             <div class="form-row">
                 <div class="col-md-6">Position:</div>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" value="<?=$user->data()->position?>" disabled/>
+                    <input type="text" class="form-control" value="<?=$override->get('position','id',$user->data()->position)[0]['name']?>" disabled/>
                 </div>
             </div>
             <div class="form-row">

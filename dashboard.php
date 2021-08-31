@@ -20,18 +20,33 @@ if($user->isLoggedIn()) {
             ));
             $getVisit=$override->get('clients','id',Input::get('client_id'));
             $getV = $override->getNews('visit','id',Input::get('id'),'visit_date',date('Y-m-d'));
+            if($user->data()->position == 1){$a_status='dm_status';}
+            elseif ($user->data()->position == 6 || $user->data()->position == 5){$a_status='sn_cl_status';}
+            elseif ($user->data()->position == 12){$a_status='dc_status';}
             if ($validate->passed()) {
                 try {
-                    $user->updateRecord('visit', array(
-                        'status' => Input::get('visit_status'),
-                        'staff_id'=>$user->data()->id
-                    ),Input::get('v_id'));
-                    $date=null;
-                    $visitCode = $getVisit[0]['visit_code'] + 1;
-                    if($visitCode){
-                        $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('client_id'));
+                    if($user->data()->position == 6){
+                        $user->updateRecord('visit', array(
+                            $a_status => Input::get('visit_status'),
+                            'status' => Input::get('visit_status'),
+                            'staff_id'=>$user->data()->id
+                        ),Input::get('v_id'));
+                        $date=null;
+                        $visitCode = $getVisit[0]['visit_code'] + 1;
+                        if($visitCode){
+                            $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('client_id'));
+                        }
+                        $successMessage = 'Visit Added Successful' ;
+                    }else{
+                        if(Input::get('sn') == 1){
+                            $user->updateRecord('visit', array(
+                                $a_status => Input::get('visit_status'),
+                                'staff_id'=>$user->data()->id
+                            ),Input::get('v_id'));
+                        }else{
+                            $errorMessage='Patient must be attended by study nurse or clinician first';
+                        }
                     }
-                    $successMessage = 'Visit Added Successful' ;
                 } catch (Exception $e) {
                     die($e->getMessage());
                 }
@@ -162,16 +177,36 @@ if($user->isLoggedIn()) {
                         </thead>
                         <tbody>
                         <?php $x=1;foreach ($override->get('visit','visit_date',date('Y-m-d')) as $data){
-                            $client=$override->get('clients','id',$data['client_id']);
+                            $client=$override->get('clients','id',$data['client_id'])[0];
                             $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
-                            if($client[0]['status'] == 1){?>
+                            if($client['status'] == 1){?>
                             <tr>
-                                <td><?=$client[0]['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?></td>
+                                <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?></td>
                                 <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                 <td>
-                                    <div class="btn-group btn-group-xs"><?php if($data['status']==0){?>&nbsp;<button class="btn btn-warning">Pending</button> <?php }elseif($data['status']==1){?><button class="btn btn-success">Completed</button><?php }?></div>
+                                    <div class="btn-group btn-group-xs">
+                                        <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                            <button class="btn btn-warning">SN|CL:Pending</button>
+                                        <?php }elseif($data['sn_cl_status']==1){?>
+                                            <button class="btn btn-success">SN:Completed</button>
+                                        <?php }?>
+                                    </div>
+                                    <div class="btn-group btn-group-xs">
+                                        <?php if($data['dc_status']==0){?>&nbsp;
+                                            <button class="btn btn-warning">DC:Pending</button>
+                                        <?php }elseif($data['dc_status']==1){?>
+                                            <button class="btn btn-success">DC:Completed</button>
+                                        <?php }?>
+                                    </div>
+                                    <div class="btn-group btn-group-xs">
+                                        <?php if($data['dm_status']==0){?>&nbsp;
+                                            <button class="btn btn-warning">DM:Pending</button>
+                                        <?php }elseif($data['dm_status']==1){?>
+                                            <button class="btn btn-success">DM:Completed</button>
+                                        <?php }?>
+                                    </div>
                                 </td>
-                                <td><?=$client[0]['phone_number']?></td>
+                                <td><?=$client['phone_number']?></td>
                                 <td>
                                     <a href="#appnt<?=$x?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
                                 </td>
@@ -188,19 +223,10 @@ if($user->isLoggedIn()) {
                                                         <div class="form-row">
                                                             <div class="col-md-2">VISIT CODE:</div>
                                                             <div class="col-md-10">
-                                                                <input type="hidden" name="visit_code" value="<?=$client[0]['visit_code']+1?>">
-                                                                <input type="number" name="visit_code" class="form-control" value="<?=$client[0]['visit_code']+1?>" disabled/>
+                                                                <input type="hidden" name="visit_code" value="<?=$client['visit_code']+1?>">
+                                                                <input type="text" name="visit_code" class="form-control" value="<?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?>" disabled/>
                                                             </div>
                                                         </div>
-<!--                                                        <div class="form-row">-->
-<!--                                                            <div class="col-md-2">NEXT VISIT:</div>-->
-<!--                                                            <div class="col-md-10">-->
-<!--                                                                <div class="input-group">-->
-<!--                                                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>-->
-<!--                                                                    <input type="text" name="visit_date" class="datepicker form-control" value=""/>-->
-<!--                                                                </div>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
                                                         <div class="form-row" id="st">
                                                             <div class="col-md-2">Status</div>
                                                             <div class="col-md-10">
@@ -217,7 +243,8 @@ if($user->isLoggedIn()) {
                                                     <div class="pull-right col-md-3">
                                                         <input type="hidden" name="id" value="<?=$lastVisit[0]['id']?>">
                                                         <input type="hidden" name="v_id" value="<?=$data['id']?>">
-                                                        <input type="hidden" name="client_id" value="<?=$client[0]['id']?>">
+                                                        <input type="hidden" name="client_id" value="<?=$client['id']?>">
+                                                        <input type="hidden" name="sn" value="<?=$data['sn_cl_status']?>">
                                                         <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
                                                     </div>
                                                     <div class="pull-right col-md-2">

@@ -104,27 +104,17 @@ if($user->isLoggedIn()) {
                 $salt = $random->get_rand_alphanumeric(32);
                 $password = '123456';
                 switch (Input::get('position')) {
-                    case 'Principle Investigator':
+                    case 1:
                         $accessLevel = 1;
                         break;
-                    case 'Coordinator':
-                        $accessLevel = 2;
+                    case 2:
+                        $accessLevel = 1;
                         break;
-                    case 'Data Manager':
-                        $accessLevel = 3;
+                    case 3:
+                        $accessLevel = 1;
                         break;
-                    case 'Country Coordinator':
+                    default:
                         $accessLevel = 4;
-                        break;
-                    case 'Country PI':
-                        $accessLevel = 4;
-                        break;
-                    case 'Country Data Manager':
-                        $accessLevel = 5;
-                        break;
-                    case 'Data Clark':
-                        $accessLevel = 6;
-                        break;
                 }
                 try {
                     $user->createRecord('staff', array(
@@ -542,13 +532,13 @@ if($user->isLoggedIn()) {
                                     <!-- you need to properly manage positions -->
                                     <option value="">Select Position</option>
                                     <?php foreach($override->getData('position') as $position){if($user->data()->access_level == 1 && $user->data()->power == 1){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }elseif($user->data()->access_level == 1 && $position['name'] != 'Principle Investigator'){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }elseif($user->data()->access_level == 2 || $user->data()->access_level == 3 && $position['name'] != 'Coordinator' && $position['name'] != 'Principle Investigator'){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }elseif ($user->data()->access_level == 4 && $position['name'] != 'Coordinator' && $position['name'] != 'Principle Investigator' && $position['name'] !='Data Manager' /*&& $position['name'] !='Country Coordinator'*/ ){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }}?>
                                 </select>
                             </div>
