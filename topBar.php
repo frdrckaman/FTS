@@ -46,18 +46,18 @@ if($user->isLoggedIn()) {
                         'visit_cat'=> 0,
                         'staff_id'=>$user->data()->id
                     ));
-                    $client = $override->get('clients','study_id',Input::get('study_id'))[0];
-                    $checkClient=$override->get('schedule','client_id',$client['id']);
-                    $nxt_visit=date('Y-m-d',strtotime($s_date.' + 1 days'));
-
-                    if($checkClient){
-                        $user->updateRecord('schedule',array('visit_date'=>$nxt_visit),$client['id']);
-                    } else{
-                        $user->createRecord('schedule', array(
-                            'visit_date' => $nxt_visit,
-                            'client_id' => $client['id'],
-                        ));
-                    }
+//                    $client = $override->get('clients','study_id',Input::get('study_id'))[0];
+//                    $checkClient=$override->get('schedule','client_id',$client['id']);
+//                    $nxt_visit=date('Y-m-d',strtotime($s_date.' + 1 days'));
+//
+//                    if($checkClient){
+//                        $user->updateRecord('schedule',array('visit_date'=>$nxt_visit),$client['id']);
+//                    } else{
+//                        $user->createRecord('schedule', array(
+//                            'visit_date' => $nxt_visit,
+//                            'client_id' => $client['id'],
+//                        ));
+//                    }
 
                    $successMessage = 'Client Added Successful' ;
                 } catch (Exception $e) {

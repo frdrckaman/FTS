@@ -86,7 +86,7 @@ if($user->isLoggedIn()) {
             elseif ($user->data()->position == 12){$a_status='dc_status';}
             if ($validate->passed()) {
                 try {
-                    if($user->data()->position == 6){
+                    if($user->data()->position == 5 || $user->data()->position == 6){
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             'status' => Input::get('visit_status'),
@@ -99,7 +99,7 @@ if($user->isLoggedIn()) {
                         }
                         $successMessage = 'Visit Added Successful' ;
                     }else{
-                        if(Input::get('sn') == 1){
+                        if(Input::get('sn') == 1 || Input::get('sn') == 2){
                             $user->updateRecord('visit', array(
                                 $a_status => Input::get('visit_status'),
                                 'staff_id'=>$user->data()->id
@@ -584,9 +584,11 @@ if($user->isLoggedIn()) {
                                         <td>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['sn_cl_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">SN:Pending</button>
+                                                    <button class="btn btn-warning">SN|CL:Pending</button>
                                                 <?php }elseif($data['sn_cl_status']==1){?>
-                                                    <button class="btn btn-success">SN:Completed</button>
+                                                    <button class="btn btn-success">SN|CL:Completed</button>
+                                                <?php }elseif($data['sn_cl_status']==2){?>
+                                                    <button class="btn btn-danger">SN|CL:Missed</button>
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
@@ -594,6 +596,8 @@ if($user->isLoggedIn()) {
                                                     <button class="btn btn-warning">DC:Pending</button>
                                                 <?php }elseif($data['dc_status']==1){?>
                                                     <button class="btn btn-success">DC:Completed</button>
+                                                <?php }elseif($data['dc_status']==2){?>
+                                                    <button class="btn btn-danger">DC:Missed</button>
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
@@ -601,6 +605,8 @@ if($user->isLoggedIn()) {
                                                     <button class="btn btn-warning">DM:Pending</button>
                                                 <?php }elseif($data['dm_status']==1){?>
                                                     <button class="btn btn-success">DM:Completed</button>
+                                                <?php }elseif($data['dm_status']==2){?>
+                                                    <button class="btn btn-danger">DM:Missed</button>
                                                 <?php }?>
                                             </div>
                                         </td>
@@ -712,12 +718,9 @@ if($user->isLoggedIn()) {
                                                                         <div class="col-md-10">
                                                                             <select class="form-control" id="c" name="reason" required="">
                                                                                 <option value="">Select reason for study termination</option>
-                                                                                <option value="Patient completed 12 months of follow-up">Patient completed 12 months of follow-up</option>
-                                                                                <option value="Patient lost to follow-up">Patient lost to follow-up</option>
-                                                                                <option value="Reported/known to have died">Reported/known to have died</option>
-                                                                                <option value="Withdrawal of Subject Consent for participation">Withdrawal of Subject Consent for participation</option>
-                                                                                <option value="Care transferred to another facility">Care transferred to another facility</option>
-                                                                                <option value="Late exclusion criteria met">Late exclusion criteria met</option>
+                                                                                <?php foreach ($override->getData('end_study_reason') as $end_study){?>
+                                                                                    <option value="<?=$end_study['reason']?>"><?=$end_study['reason']?></option>
+                                                                                <?php }?>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -1866,6 +1869,7 @@ if($user->isLoggedIn()) {
                                 <th width="20%">STUDY ID</th>
                                 <th width="20%">GROUP</th>
                                 <th width="5%">STATUS</th>
+                                <th width="20%">Reason</th>
                                 <th width="50%">DETAILS</th>
                             </tr>
                             </thead>
@@ -1878,7 +1882,8 @@ if($user->isLoggedIn()) {
                                     <td><?=$data['study_id'].' ( '?><?=$data['phone_number'].' ) '?></td>
                                     <td><?=$override->get('patient_group','id',$data['pt_group'])[0]['name']?></td>
                                     <td><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div></td>
-                                    <td>( <?=$data['reason']?> ) <?=$data['details']?></td>
+                                    <td>( <?=$data['reason']?> )</td>
+                                    <td><?=$data['details']?></td>
                                 </tr>
 
                                 <?php $x++;}?>

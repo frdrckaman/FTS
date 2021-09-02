@@ -25,7 +25,7 @@ if($user->isLoggedIn()) {
             elseif ($user->data()->position == 12){$a_status='dc_status';}
             if ($validate->passed()) {
                 try {
-                    if($user->data()->position == 6){
+                    if($user->data()->position == 5 || $user->data()->position == 6){
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             'status' => Input::get('visit_status'),
@@ -38,7 +38,7 @@ if($user->isLoggedIn()) {
                         }
                         $successMessage = 'Visit Added Successful' ;
                     }else{
-                        if(Input::get('sn') == 1){
+                        if(Input::get('sn') == 1 || Input::get('sn') == 2){
                             $user->updateRecord('visit', array(
                                 $a_status => Input::get('visit_status'),
                                 'staff_id'=>$user->data()->id
@@ -188,7 +188,9 @@ if($user->isLoggedIn()) {
                                         <?php if($data['sn_cl_status']==0){?>&nbsp;
                                             <button class="btn btn-warning">SN|CL:Pending</button>
                                         <?php }elseif($data['sn_cl_status']==1){?>
-                                            <button class="btn btn-success">SN:Completed</button>
+                                            <button class="btn btn-success">SN|CL:Completed</button>
+                                        <?php }elseif($data['sn_cl_status']==2){?>
+                                            <button class="btn btn-danger">SN|CL:Missed</button>
                                         <?php }?>
                                     </div>
                                     <div class="btn-group btn-group-xs">
@@ -196,6 +198,8 @@ if($user->isLoggedIn()) {
                                             <button class="btn btn-warning">DC:Pending</button>
                                         <?php }elseif($data['dc_status']==1){?>
                                             <button class="btn btn-success">DC:Completed</button>
+                                        <?php }elseif($data['dc_status']==2){?>
+                                            <button class="btn btn-danger">DC:Missed</button>
                                         <?php }?>
                                     </div>
                                     <div class="btn-group btn-group-xs">
@@ -203,6 +207,8 @@ if($user->isLoggedIn()) {
                                             <button class="btn btn-warning">DM:Pending</button>
                                         <?php }elseif($data['dm_status']==1){?>
                                             <button class="btn btn-success">DM:Completed</button>
+                                        <?php }elseif($data['dm_status']==2){?>
+                                            <button class="btn btn-danger">DM:Missed</button>
                                         <?php }?>
                                     </div>
                                 </td>
