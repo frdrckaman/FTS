@@ -1,5 +1,5 @@
 <?php
-require_once'php/core/init.php';
+require_once 'php/core/init.php';
 $user = new User();
 $override = new OverideData();
 $pageError = null;$successMessage = null;$errorM = false;$errorMessage = null;
