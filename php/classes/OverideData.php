@@ -477,4 +477,25 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    // public function countPending($table,$where,$id){
+    //     $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id'");
+    //     $result = $query->fetchAll(PDO::FETCH_ASSOC);
+    //     $num = $result->rowCount();
+    //     return $num;
+    // }
+
+    // public function getPending($table,$where,$id,$where2,$id2){
+    //     $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id' AND $where2 = '$id2'");
+    //     // $result = $query->fetchAll(PDO::FETCH_ASSOC);
+    //     // return $result;
+    //     $num = $query->rowCount();
+    //     return $num;
+    // }
+
+    // public function countPending($table,$where,$id){
+    //     $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id'");
+    //     $num = $query->rowCount();
+    //     return $num;
+    // }
 }

@@ -9,6 +9,9 @@ $ap=$override->countNoRepeatAll('visit','client_id');
 $end=$override->getCount('clients','status',0);
 $tv=$override->getCount('visit','visit_date',date('Y-m-d'));
 $nv=$override->getNo('visit');
+// $getPending=$override->getPending('visit','sn_cl_status',1,'status', 1);
+// $countPending=$override->countPending('clients','id',$getPending['client_id'])[0];
+
 $msAp=0;$apnt=0;
 $msNo=0;foreach ($override->getData('schedule') as $data){
     if($data['visit_date'] < date('Y-m-d')){
@@ -70,7 +73,9 @@ if($clntNo){
         <a href="info.php?id=4" class="list-group-item"><span class="icon-calendar"></span>All Visits<i class="icon-angle-right pull-right"></i>
             <span class="label label-success pull-right"><?=$nv; ?></span>
         </a>
-        <a href="info.php?id=13" class="list-group-item"><span class="icon-windows"></span>Pending Verification<i class="icon-angle-right pull-right"></i></a>
+        <a href="info.php?id=13" class="list-group-item"><span class="icon-windows"></span>Pending Verification<i class="icon-angle-right pull-right"></i>
+        
+        </a>
         <a href="info.php?id=5" class="list-group-item"><span class="icon-user"></span>Patients<i class="icon-angle-right pull-right"></i><?php if($clntNo>0){?><span class="label label-info pull-right"><?=$clntNo?></span><?php }?></a>
         <a href="logout.php" class="list-group-item"><span class="icon-off"></span>Logout<i class="icon-angle-right pull-right"></i></a>
     </div>
