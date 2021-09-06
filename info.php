@@ -937,7 +937,7 @@ if($user->isLoggedIn()) {
                                                             <div class="form-row">
                                                                 <div class="col-md-2">VISIT CODE:</div>
                                                                 <div class="col-md-10">
-                                                                    <input type="number" name="visit_code" class="form-control" value="<?=$client['visit_code']?>" required=""/>
+                                                                    <input type="text" name="visit_code" class="form-control" value="<?=$client['visit_code']?>" required=""/>
                                                                 </div>
                                                             </div>
                                                             <div class="form-row">
