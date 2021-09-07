@@ -28,6 +28,9 @@ if($user->isLoggedIn()) {
                 'group' => array(
                     'required' => true,
                 ),
+                'project_id' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 $s_date=date('Y-m-d',strtotime(Input::get('screening_date')));
@@ -44,20 +47,9 @@ if($user->isLoggedIn()) {
                         'reason' => '',
                         'details'=> '',
                         'visit_cat'=> 0,
+                        'project_id'=> Input::get('project_id'),
                         'staff_id'=>$user->data()->id
                     ));
-//                    $client = $override->get('clients','study_id',Input::get('study_id'))[0];
-//                    $checkClient=$override->get('schedule','client_id',$client['id']);
-//                    $nxt_visit=date('Y-m-d',strtotime($s_date.' + 1 days'));
-//
-//                    if($checkClient){
-//                        $user->updateRecord('schedule',array('visit_date'=>$nxt_visit),$client['id']);
-//                    } else{
-//                        $user->createRecord('schedule', array(
-//                            'visit_date' => $nxt_visit,
-//                            'client_id' => $client['id'],
-//                        ));
-//                    }
 
                    $successMessage = 'Client Added Successful' ;
                 } catch (Exception $e) {
@@ -167,6 +159,37 @@ if($user->isLoggedIn()) {
                         'status' => 1
                     ));
                     $successMessage = 'Country Registered Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('add_study')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'name' => array(
+                    'required' => true,
+                ),
+                'study_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('study', array(
+                        'name' => Input::get('name'),
+                        'study_code' => Input::get('study_code'),
+                        'sample_size' => Input::get('sample_size'),
+                        'duration' => Input::get('duration'),
+                        'start_date' => Input::get('start_date'),
+                        'end_date' => Input::get('end_date'),
+                        'details' => Input::get('details'),
+                    ));
+                    $successMessage = 'Study Registered Successful';
 
                 } catch (Exception $e) {
                     die($e->getMessage());
@@ -319,9 +342,10 @@ if($user->isLoggedIn()) {
                     <ul class="dropdown-menu">
                         <li><a href="#add_country" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD COUNTRY</a></li>
                         <li><a href="#add_site" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD SITE</a></li>
+                        <li><a href="#add_project" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD STUDY</a></li>
                         <li><a href="#add_pt_group" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD PATIENT GROUP</a></li>
                         <li><a href="#end_study_reason" data-toggle="modal" data-backdrop="static" data-keyboard="false">END OF STUDY REASON</a></li>
-                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES / END STUDY / GROUPS </a></li>
+                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES / END STUDY / GROUPS / STUDY</a></li>
                     </ul>
                 </li>
             <?php }elseif($user->data()->access_level == 4){?>
@@ -388,6 +412,17 @@ if($user->isLoggedIn()) {
                                     <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
                                     <input type="text" name="screening_date" class="datepicker form-control" value=""/>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-row" id="st">
+                            <div class="col-md-2">Project:</div>
+                            <div class="col-md-10">
+                                <select class="form-control" id="project_id" name="project_id" required>
+                                    <option value="">Select Project</option>
+                                    <?php foreach ($override->getData('study') as $group){?>
+                                        <option value="<?=$group['id']?>"><?=$group['name']?></option>
+                                    <?php }?>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row" id="st">
@@ -751,6 +786,78 @@ if($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="add_pt_group" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_project" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD NEW STUDY</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-3">STUDY NAME:</div>
+                            <div class="col-md-8">
+                                <input type="text" name="name" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">STUDY CODE:</div>
+                            <div class="col-md-8">
+                                <input type="text" name="study_code" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">STUDY DURATION:</div>
+                            <div class="col-md-8">
+                                <input type="number" name="duration" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">SAMPLE SIZE:</div>
+                            <div class="col-md-8">
+                                <input type="number" name="sample_size" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">START DATE:</div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                    <input type="text" name="start_date" class="datepicker form-control" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">END DATE:</div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                    <input type="text" name="end_date" class="datepicker form-control" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">Details:</div>
+                            <div class="col-md-8">
+                                <textarea name="details" class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_study" value="ADD" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
