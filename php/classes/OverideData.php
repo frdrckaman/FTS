@@ -27,6 +27,16 @@ class OverideData{
         $num = $query->rowCount();
         return $num;
     }
+    public function countDataNot($table,$field,$value,$field1,$value1){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != '$value' AND $field1 = '$value1'");
+        $num = $query->rowCount();
+        return $num;
+    }
+    public function getDataNot($table,$field,$value,$field1,$value1){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $field1 = '$value1'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     public function getCounted($table,$field,$value,$field1,$value1,$field2,$value2){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field1 = '$value1' AND $field2 = '$value2'");
         $num = $query->rowCount();

@@ -7,7 +7,6 @@ $user->schedule();
 $pageError = null;$successMessage = null;$errorM = false;$errorMessage = null;
 $t_crf=0;$p_crf=0;$w_crf=0;$s_name=null;$c_name=null;$site=null;$country=null;
 $study_crf=null;$data_limit=10000;
-
 //modification remove all pilot crf have been removed/deleted from study crf
 if($user->isLoggedIn()) {
     if (Input::exists('post')) {
@@ -181,7 +180,7 @@ if($user->isLoggedIn()) {
                             $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
                             if($client['status'] == 1){?>
                             <tr>
-                                <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?></td>
+                                <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code'].' ) '?></td>
                                 <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                 <td>
                                     <div class="btn-group btn-group-xs">

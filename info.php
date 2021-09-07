@@ -474,6 +474,37 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('edit_study')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'name' => array(
+                    'required' => true,
+                ),
+                'study_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->updateRecord('study', array(
+                        'name' => Input::get('name'),
+                        'study_code' => Input::get('study_code'),
+                        'sample_size' => Input::get('sample_size'),
+                        'duration' => Input::get('duration'),
+                        'start_date' => Input::get('start_date'),
+                        'end_date' => Input::get('end_date'),
+                        'details' => Input::get('details'),
+                    ),Input::get('id'));
+                    $successMessage = 'Study Edited Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
     }
 }else{
     Redirect::to('index.php');
@@ -684,7 +715,7 @@ if($user->isLoggedIn()) {
                             </tr>
                             </thead>
                             <tbody>
-                                <?php $x=1;foreach ($override->getDataOrderByAs('schedule','visit_date') as $data){
+                                <?php $x=1;foreach ($override->getDataOrderBy1('visit','status',2,'visit_date') as $data){
                                     $cl=$override->get('clients','id',$data['client_id']);
                                     if($cl[0]['status'] == 1){
                                         if($data['visit_date'] < date('Y-m-d')){
@@ -694,7 +725,7 @@ if($user->isLoggedIn()) {
                                             $mcDays=(strtotime(date('Y-m-d'))-strtotime($data['visit_date']))?>
                                             <tr>
                                                 <td><?=$client[0]['study_id'].' ( '?><?=$client[0]['phone_number'].' ) '?></td>
-                                                <td><?=$group?></td>
+                                                <td><?=$group.' / '.$override->get('study','id',$client[0]['project_id'])[0]['study_code']?></td>
                                                 <td><?=($mcDays/86400)?></td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs"><?php if($client[0]['status']==2){?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo$client[0]['reason'].' { '.$client[0]['details'].' } ';}else{?><button class="btn btn-success">Active</button><?php }echo' '?></div>
@@ -895,7 +926,7 @@ if($user->isLoggedIn()) {
                             <thead>
                             <tr>
                                 <th width="15%">STUDY ID</th>
-                                <th width="10%">GROUP</th>
+                                <th width="10%">GROUP/STUDY</th>
                                 <th width="25%">LAST VISIT</th>
                                 <th width="20%">PHONE NUMBER</th>
                                 <th width="20%">Manage</th>
@@ -906,7 +937,7 @@ if($user->isLoggedIn()) {
                                     $lastVisit=$override->getlastRow('visit','client_id',$client['id'],'id')?>
                                     <tr>
                                         <td><?=$client['study_id'].'  ( '.$client['initials'].' )  '?><?php if($client['status'] == 1){?><div class="btn-group btn-group-xs"><button class="btn btn-success">Active</button></div><?php }else{?><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div><?php }?></td>
-                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name']?></td>
+                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code']?></td>
                                         <td><?php if($lastVisit){echo $lastVisit[0]['visit_date'];}else{echo '';}?></td>
                                         <td><?=$client['phone_number'].' '.$client['phone_number2']?></td>
                                         <td>
@@ -956,6 +987,17 @@ if($user->isLoggedIn()) {
                                                                 <div class="col-md-2">Phone2:</div>
                                                                 <div class="col-md-10">
                                                                     <input type="text" name="phone_number2" class="form-control" value="<?=$client['phone_number2']?>" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row" id="st">
+                                                                <div class="col-md-2">Project:</div>
+                                                                <div class="col-md-10">
+                                                                    <select class="form-control" id="project_id" name="project_id" required>
+                                                                        <option value="<?=$group['project_id']?>"><?=$override->get('study','id',$group['project_id'])['id']['name']?></option>
+                                                                        <?php foreach ($override->getData('study') as $group){?>
+                                                                            <option value="<?=$group['id']?>"><?=$group['name']?></option>
+                                                                        <?php }?>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1853,6 +1895,142 @@ if($user->isLoggedIn()) {
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="block">
+                            <div class="header">
+                                <h2>STUDY</h2>
+                            </div>
+                            <div class="content">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>NAME</th>
+                                        <th>CODE</th>
+                                        <th>DURATION</th>
+                                        <th>SAMPLE SIZE</th>
+                                        <th>START</th>
+                                        <th>END</th>
+                                        <th>DETAILS</th>
+                                        <th>MANAGE</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $x=1;foreach($override->getData('study') as $group){?>
+                                        <tr>
+                                            <td><?=$x?></td>
+                                            <td><?=$group['name']?></td>
+                                            <td><?=$group['study_code']?></td>
+                                            <td><?=$group['duration']?></td>
+                                            <td><?=$group['sample_size']?></td>
+                                            <td><?=$group['start_date']?></td>
+                                            <td><?=$group['end_date']?></td>
+                                            <td><?=$group['details']?></td>
+                                            <td>
+                                                <a href="#edit_study<?=$x?>" data-toggle="modal" class="widget-icon" title="Edit Site Information"><span class="icon-pencil"></span></a>
+                                                <!--                                                <a href="#delete_patient_group--><?//=$x?><!--" data-toggle="modal" class="widget-icon" title="Delete Site"><span class="icon-trash"></span></a>-->
+                                            </td>
+                                        </tr>
+                                        <div class="modal" id="edit_study<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">EDIT STUDY</h4>
+                                                        </div>
+                                                        <div class="modal-body clearfix">
+                                                            <div class="controls">
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">STUDY NAME:</div>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" name="name" class="form-control" value="<?=$group['name']?>" required=""/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">STUDY CODE:</div>
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" name="study_code" class="form-control" value="<?=$group['study_code']?>" required=""/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">STUDY DURATION:</div>
+                                                                    <div class="col-md-8">
+                                                                        <input type="number" name="duration" class="form-control" value="<?=$group['duration']?>" required=""/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">SAMPLE SIZE:</div>
+                                                                    <div class="col-md-8">
+                                                                        <input type="number" name="sample_size" class="form-control" value="<?=$group['sample_size']?>" required=""/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">START DATE:</div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                                                            <input type="text" name="start_date" class="datepicker form-control" value="<?=$group['start_date']?>"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">END DATE:</div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                                                            <input type="text" name="end_date" class="datepicker form-control" value="<?=$group['end_date']?>"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-3">Details:</div>
+                                                                    <div class="col-md-8">
+                                                                        <textarea name="details" class="form-control" rows="4"><?=$group['details']?></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <div class="pull-right col-md-3">
+                                                                <input type="hidden" name="id" class="form-control" value="<?=$group['id']?>"/>
+                                                                <input type="submit" name="edit_study" value="ADD" class="btn btn-success btn-clean">
+                                                            </div>
+                                                            <div class="pull-right col-md-2">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal modal-danger" id="delete_delete<?=$x?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form method="post">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">YOU SURE YOU WANT TO DELETE THIS GROUP</h4>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <div class="col-md-2 pull-right">
+                                                                <input type="hidden" name="id" value="<?=$site['id']?>">
+                                                                <input type="submit" name="delete_pt_group" value="DELETE" class="btn btn-default btn-clean">
+                                                            </div>
+                                                            <div class="col-md-2 pull-right">
+                                                                <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php $x++;}?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <?php }
             elseif ($_GET['id'] == 10){?>
@@ -1880,7 +2058,7 @@ if($user->isLoggedIn()) {
                                 <tr>
                                     <td><?=$x?></td>
                                     <td><?=$data['study_id'].' ( '?><?=$data['phone_number'].' ) '?></td>
-                                    <td><?=$override->get('patient_group','id',$data['pt_group'])[0]['name']?></td>
+                                    <td><?=$override->get('patient_group','id',$data['pt_group'])[0]['name'].' / '.$override->get('study','id',$data['project_id'])[0]['study_code']?></td>
                                     <td><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div></td>
                                     <td>( <?=$data['reason']?> )</td>
                                     <td><?=$data['details']?></td>
@@ -1991,36 +2169,56 @@ if($user->isLoggedIn()) {
                             <tbody>
                             <?php
                             if($user->data()->position == 1){$a_status='dm_status';}
-                            elseif ($user->data()->position == 6){$a_status='sn_status';}
+                            elseif ($user->data()->position == 6){$a_status='sn_cl_status';}
                             elseif ($user->data()->position == 12){$a_status='dc_status';}
-                            elseif ($user->data()->position == 5){$a_status='cl_status';}
-                            $x=1;foreach ($override->getNews('visit',$a_status,0,'status', 1) as $data){
+                            elseif ($user->data()->position == 5){$a_status='sn_cl_status';}
+                            $x=1;foreach ($override->getDataNot('visit','status', 0,$a_status,0) as $data){
                                 $client=$override->get('clients','id',$data['client_id'])[0];
                                 $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
                                 if($client['status'] == 1){?>
                                     <tr>
-                                        <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?></td>
+                                        <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code'].' ) '?></td>
                                         <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                         <td>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['sn_cl_status']==0){?>&nbsp;
+<<<<<<< HEAD
                                                     <button class="btn btn-warning">Visit Pending</button>
                                                 <?php }elseif($data['sn_cl_status']==1){?>
                                                     <button class="btn btn-success">Visit Completed</button>
+=======
+                                                    <button class="btn btn-warning">SN|CL:Pending</button>
+                                                <?php }elseif($data['sn_cl_status']==1){?>
+                                                    <button class="btn btn-success">SN|CL:Completed</button>
+                                                <?php }elseif($data['sn_cl_status']==2){?>
+                                                    <button class="btn btn-danger">SN|CL:Missed</button>
+>>>>>>> e90eef527f9b7288f5992103e9a8742b7bdf2a2d
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['dc_status']==0){?>&nbsp;
                                                     <button class="btn btn-warning">Data Entry Pending</button>
                                                 <?php }elseif($data['dc_status']==1){?>
+<<<<<<< HEAD
                                                     <button class="btn btn-success">Data Entry Completed</button>
+=======
+                                                    <button class="btn btn-success">DC:Completed</button>
+                                                <?php }elseif($data['dc_status']==2){?>
+                                                    <button class="btn btn-danger">DC:Missed</button>
+>>>>>>> e90eef527f9b7288f5992103e9a8742b7bdf2a2d
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['dm_status']==0){?>&nbsp;
                                                     <button class="btn btn-warning">Data Review Pending</button>
                                                 <?php }elseif($data['dm_status']==1){?>
+<<<<<<< HEAD
                                                     <button class="btn btn-success">Data Review Completed</button>
+=======
+                                                    <button class="btn btn-success">DM:Completed</button>
+                                                <?php }elseif($data['dm_status']==2){?>
+                                                    <button class="btn btn-danger">DM:Missed</button>
+>>>>>>> e90eef527f9b7288f5992103e9a8742b7bdf2a2d
                                                 <?php }?>
                                             </div>
                                         </td>
