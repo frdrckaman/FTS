@@ -178,7 +178,10 @@ if($user->isLoggedIn()) {
                         <?php $x=1;foreach ($override->get('visit','visit_date',date('Y-m-d')) as $data){
                             $client=$override->get('clients','id',$data['client_id'])[0];
                             $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
-                            if($client['status'] == 1){?>
+                            if($client['status'] == 1){
+                                //This need improvement so as to increase performance( find a way to just update it once)
+                                if($data['status'] == 0){$user->updateRecord('visit',array('status'=>3),$data['id']);}
+                                ?>
                             <tr>
                                 <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code'].' ) '?></td>
                                 <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
