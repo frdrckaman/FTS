@@ -25,6 +25,12 @@ if($user->isLoggedIn()) {
                 'screening_date' => array(
                     'required' => true,
                 ),
+                'group' => array(
+                    'required' => true,
+                ),
+                'project_id' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 $s_date=date('Y-m-d',strtotime(Input::get('screening_date')));
@@ -41,20 +47,9 @@ if($user->isLoggedIn()) {
                         'reason' => '',
                         'details'=> '',
                         'visit_cat'=> 0,
+                        'project_id'=> Input::get('project_id'),
                         'staff_id'=>$user->data()->id
                     ));
-                    $client = $override->get('clients','study_id',Input::get('study_id'))[0];
-                    $checkClient=$override->get('schedule','client_id',$client['id']);
-                    $nxt_visit=date('Y-m-d',strtotime($s_date.' + 1 days'));
-
-                    if($checkClient){
-                        $user->updateRecord('schedule',array('visit_date'=>$nxt_visit),$client['id']);
-                    } else{
-                        $user->createRecord('schedule', array(
-                            'visit_date' => $nxt_visit,
-                            'client_id' => $client['id'],
-                        ));
-                    }
 
                    $successMessage = 'Client Added Successful' ;
                 } catch (Exception $e) {
@@ -64,56 +59,6 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
-        /*elseif (Input::get('add_visit')){
-            $validate = new validate();
-            $validate = $validate->check($_POST, array(
-                'study_id' => array(
-                    'required' => true,
-                ),
-                'last_visit' => array(
-                    'required' => true,
-                ),
-                'nxt_visit' => array(
-                    'required' => true,
-                ),
-                'visit_code' => array(
-                    'required' => true,
-                ),
-            ));
-            if ($validate->passed()) {
-                try {
-                    $date=date('Y-m-d',strtotime(Input::get('last_visit')));
-                    $user->createRecord('visit', array(
-                        'visit_code' => Input::get('visit_code'),
-                        'visit_date' => $date,
-                        'client_id' => Input::get('study_id'),
-                        'staff_id'=>$user->data()->id
-                    ));
-                    $date=null;
-                    $checkClient=$override->get('schedule','client_id',Input::get('study_id'));
-                    $date=date('Y-m-d',strtotime(Input::get('nxt_visit')));
-                    if($checkClient){
-                        $user->updateRecord('schedule',array('visit_date'=>$date),Input::get('study_id'));
-                    }else{
-                        $user->createRecord('schedule', array(
-                            'visit_date' => $date,
-                            'client_id' => Input::get('study_id'),
-                        ));
-                    }
-                    $date=null;
-                    $getVisit=$override->get('clients','id',Input::get('study_id'));
-                    $visitCode = $getVisit[0]['visit_code'] + 1;
-                    if($visitCode){
-                        $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('study_id'));
-                    }
-                    $successMessage = 'Visit Added Successful' ;
-                } catch (Exception $e) {
-                    die($e->getMessage());
-                }
-            } else {
-                $pageError = $validate->errors();
-            }
-        }*/
         elseif (Input::get('add_staff')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -151,27 +96,17 @@ if($user->isLoggedIn()) {
                 $salt = $random->get_rand_alphanumeric(32);
                 $password = '123456';
                 switch (Input::get('position')) {
-                    case 'Principle Investigator':
+                    case 1:
                         $accessLevel = 1;
                         break;
-                    case 'Coordinator':
-                        $accessLevel = 2;
+                    case 2:
+                        $accessLevel = 1;
                         break;
-                    case 'Data Manager':
-                        $accessLevel = 3;
+                    case 3:
+                        $accessLevel = 1;
                         break;
-                    case 'Country Coordinator':
+                    default:
                         $accessLevel = 4;
-                        break;
-                    case 'Country PI':
-                        $accessLevel = 4;
-                        break;
-                    case 'Country Data Manager':
-                        $accessLevel = 5;
-                        break;
-                    case 'Data Clark':
-                        $accessLevel = 6;
-                        break;
                 }
                 try {
                     $user->createRecord('staff', array(
@@ -196,6 +131,7 @@ if($user->isLoggedIn()) {
                         'count'=>0,
                         'staff_id'=>$user->data()->id
                     ));
+                    $email->sendEmail(Input::get('email_address'),Input::get('firstname'),Input::get('username'),$password, 'Account Creation');
                     $successMessage = 'Staff Registered Successful' ;
                 } catch (Exception $e) {
                     die($e->getMessage());
@@ -223,6 +159,58 @@ if($user->isLoggedIn()) {
                         'status' => 1
                     ));
                     $successMessage = 'Country Registered Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('add_study')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'name' => array(
+                    'required' => true,
+                ),
+                'study_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('study', array(
+                        'name' => Input::get('name'),
+                        'study_code' => Input::get('study_code'),
+                        'sample_size' => Input::get('sample_size'),
+                        'duration' => Input::get('duration'),
+                        'start_date' => Input::get('start_date'),
+                        'end_date' => Input::get('end_date'),
+                        'details' => Input::get('details'),
+                    ));
+                    $successMessage = 'Study Registered Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('end_reason')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'reason' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('end_study_reason', array(
+                        'reason' => Input::get('reason'),
+                    ));
+                    $successMessage = 'Reason Registered Successful';
 
                 } catch (Exception $e) {
                     die($e->getMessage());
@@ -263,6 +251,49 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('search_schedule')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'from_date' => array(
+                    'required' => true,
+                ),
+                'to_date' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $link='info.php?id=12&from='.$date=date('Y-m-d',strtotime(Input::get('from_date'))).'&to='.$date=date('Y-m-d',strtotime(Input::get('to_date')));
+                    Redirect::to($link);
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('add_pt_group')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'group_name' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('patient_group', array(
+                        'name' => Input::get('group_name'),
+                    ));
+                    $successMessage = 'Group Added Successful';
+
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
     }
 }else{
     Redirect::to('index.php');
@@ -291,6 +322,9 @@ if($user->isLoggedIn()) {
                 <a href="add.php" ><span class="icon-bookmark"></span> Add Visit</a>
             </li>
             <li class="">
+                <a href="#searchSchedule" data-toggle="modal"><span class="icon-search"></span> Search Schedule</a>
+            </li>
+            <li class="">
                 <a href="profile.php">
                     <span class="icon-user"></span> Profile
                 </a>
@@ -308,7 +342,10 @@ if($user->isLoggedIn()) {
                     <ul class="dropdown-menu">
                         <li><a href="#add_country" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD COUNTRY</a></li>
                         <li><a href="#add_site" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD SITE</a></li>
-                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES</a></li>
+                        <li><a href="#add_project" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD STUDY</a></li>
+                        <li><a href="#add_pt_group" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD PATIENT GROUP</a></li>
+                        <li><a href="#end_study_reason" data-toggle="modal" data-backdrop="static" data-keyboard="false">END OF STUDY REASON</a></li>
+                        <li><a href="info.php?id=9">MANAGE SITE / COUNTRIES / END STUDY / GROUPS / STUDY</a></li>
                     </ul>
                 </li>
             <?php }elseif($user->data()->access_level == 4){?>
@@ -378,11 +415,24 @@ if($user->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-row" id="st">
+                            <div class="col-md-2">Project:</div>
+                            <div class="col-md-10">
+                                <select class="form-control" id="project_id" name="project_id" required>
+                                    <option value="">Select Project</option>
+                                    <?php foreach ($override->getData('study') as $group){?>
+                                        <option value="<?=$group['id']?>"><?=$group['name']?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row" id="st">
                             <div class="col-md-2">Group:</div>
                             <div class="col-md-10">
-                                <select class="form-control" id="site" name="site_id" required="">
+                                <select class="form-control" id="group" name="group" required>
                                     <option value="">Select Group</option>
-                                    <option value="1">Group 1</option>
+                                    <?php foreach ($override->getData('patient_group') as $group){?>
+                                        <option value="<?=$group['id']?>"><?=$group['name']?></option>
+                                    <?php }?>
                                 </select>
                             </div>
                         </div>
@@ -504,7 +554,9 @@ if($user->isLoggedIn()) {
                             <div class="col-md-10">
                                 <select class="form-control" id="site" name="site_id" required="">
                                     <option value="">Select Site</option>
-
+                                    <?php foreach ($override->getData('site') as $site){?>
+                                        <option value="<?=$site['id']?>"><?=$site['name']?></option>
+                                    <?php }?>
                                 </select>
                             </div>
                         </div>
@@ -515,13 +567,13 @@ if($user->isLoggedIn()) {
                                     <!-- you need to properly manage positions -->
                                     <option value="">Select Position</option>
                                     <?php foreach($override->getData('position') as $position){if($user->data()->access_level == 1 && $user->data()->power == 1){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }elseif($user->data()->access_level == 1 && $position['name'] != 'Principle Investigator'){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }elseif($user->data()->access_level == 2 || $user->data()->access_level == 3 && $position['name'] != 'Coordinator' && $position['name'] != 'Principle Investigator'){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }elseif ($user->data()->access_level == 4 && $position['name'] != 'Coordinator' && $position['name'] != 'Principle Investigator' && $position['name'] !='Data Manager' /*&& $position['name'] !='Country Coordinator'*/ ){?>
-                                        <option value="<?=$position['name']?>"><?=$position['name']?></option>
+                                        <option value="<?=$position['id']?>"><?=$position['name']?></option>
                                     <?php }}?>
                                 </select>
                             </div>
@@ -636,6 +688,176 @@ if($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="add_site" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="end_study_reason" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">END OF STUDY REASON</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Reason:</div>
+                            <div class="col-md-10">
+                                <textarea name="reason" rows="4" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="end_reason" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="searchSchedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">SEARCH SCHEDULE</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">From:</div>
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                <input type="text" name="from_date" class="datepicker form-control" value="" required/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">To:</div>
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                <input type="text" name="to_date" class="datepicker form-control" value="" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="search_schedule" value="Search" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_pt_group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD GROUP</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="group_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_pt_group" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_project" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD NEW STUDY</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-3">STUDY NAME:</div>
+                            <div class="col-md-8">
+                                <input type="text" name="name" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">STUDY CODE:</div>
+                            <div class="col-md-8">
+                                <input type="text" name="study_code" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">STUDY DURATION:</div>
+                            <div class="col-md-8">
+                                <input type="number" name="duration" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">SAMPLE SIZE:</div>
+                            <div class="col-md-8">
+                                <input type="number" name="sample_size" class="form-control" value="" required=""/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">START DATE:</div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                    <input type="text" name="start_date" class="datepicker form-control" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">END DATE:</div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                    <input type="text" name="end_date" class="datepicker form-control" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-3">Details:</div>
+                            <div class="col-md-8">
+                                <textarea name="details" class="form-control" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_study" value="ADD" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>

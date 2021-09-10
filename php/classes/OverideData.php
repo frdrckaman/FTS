@@ -27,6 +27,16 @@ class OverideData{
         $num = $query->rowCount();
         return $num;
     }
+    public function countDataNot($table,$field,$value,$field1,$value1){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != '$value' AND $field1 = '$value1'");
+        $num = $query->rowCount();
+        return $num;
+    }
+    public function getDataNot($table,$field,$value,$field1,$value1){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $field1 = '$value1'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     public function getCounted($table,$field,$value,$field1,$value1,$field2,$value2){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field1 = '$value1' AND $field2 = '$value2'");
         $num = $query->rowCount();
@@ -119,6 +129,16 @@ class OverideData{
     }
     public function dateRange($table,$value,$start,$end){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $value BETWEEN '$start' AND '$end'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public function dateRangeW($table,$id,$idv,$value,$start,$end){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $id = '$idv' AND $value BETWEEN '$start' AND '$end'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public function dateRangeD($table,$vl,$value,$start,$end){
+        $query = $this->_pdo->query("SELECT DISTINCT $vl FROM $table WHERE $value BETWEEN '$start' AND '$end'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -360,6 +380,10 @@ class OverideData{
     }
     public function delete($table,$field,$value){
         return $this->_pdo->query("DELETE FROM $table WHERE $field = $value");
+    }
+
+    public function deleteRec($table,$field1,$value1,$field2,$value2){
+        return $this->_pdo->query("DELETE FROM $table WHERE $field1 = $value1 AND $field2 = $value2");
     }
 
     public function getExamType($table,$field,$value,$field1,$value1,$value2,$field2){
