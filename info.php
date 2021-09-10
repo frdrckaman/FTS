@@ -2152,7 +2152,7 @@ if($user->isLoggedIn()) {
             <?php }elseif ($_GET['id'] == 13){?>
                 <div class="block">
                     <div class="header">
-                        <h2>TODAY SCHEDULE VISITS</h2>
+                        <h2>LIST OF PENDING VISITS</h2>
                     </div>
                     <div class="content">
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
