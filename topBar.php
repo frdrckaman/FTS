@@ -5,6 +5,8 @@ $override = new OverideData();
 $email = new Email();
 $random = new Random();
 $countries=null;$checkError=false;$date=null;
+$favicon=$override->get('images','cat',1)[0];
+$logo=$override->get('images','cat',2)[0];
 if($user->isLoggedIn()) {
     if (Input::exists('post')) {
         if (Input::get('add_client')) {
@@ -294,6 +296,43 @@ if($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         }
+        elseif (Input::get('add_image')){
+            // $attachment_file = Input::get('pic');
+            if (!empty($_FILES['image']["tmp_name"])) {
+                $attach_file = $_FILES['image']['type'];
+                if ($attach_file == "image/jpeg" || $attach_file == "image/jpg" || $attach_file == "image/png" || $attach_file == "image/gif" || $attach_file == "image/ico") {
+                    $folderName = 'img/project/';
+                    $attachment_file = $folderName . basename($_FILES['image']['name']);
+                    if (move_uploaded_file($_FILES['image']["tmp_name"], $attachment_file)) {
+                        $file = true;
+                    } else {
+                        {
+                            $errorM1 = true;
+                            $errorMessage = 'Your Image Not Uploaded ,';
+                        }
+                    }
+                } else {
+                    $errorM1 = true;
+                    $errorMessage = 'None supported file format';
+                }//not supported format
+                if($errorM1 == false){
+                    try {
+                        $user->createRecord('images', array(
+                            'location' => $attachment_file,
+                            'project_id'=>Input::get('project'),
+                            'cat' => Input::get('image_cat'),
+                            'status'=>1
+                        ));
+                        $successMessage = 'Your Image Uploaded successfully';
+                    } catch (Exception $e) {
+                        $e->getMessage();
+                    }
+                }
+            }else{
+                $errorMessage = 'You have not select any image to upload';
+
+            }
+        }
     }
 }else{
     Redirect::to('index.php');
@@ -305,7 +344,7 @@ if($user->isLoggedIn()) {
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-reorder"></span>
         </button>
-        <a class="navbar-brand" href="index.php"><img src="img/nimrLogo.png" class="img-thumbnail img-circle"/></a>
+        <a class="navbar-brand" href="index.php"><img src="<?php if($logo){echo $logo['location'];}else{echo 'img/nimrLogo.png';}?>" class="img-thumbnail img-circle"/></a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
@@ -342,6 +381,7 @@ if($user->isLoggedIn()) {
                     <ul class="dropdown-menu">
                         <li><a href="#add_country" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD COUNTRY</a></li>
                         <li><a href="#add_site" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD SITE</a></li>
+                        <li><a href="#add_images" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD LOGO</a></li>
                         <li><a href="#add_project" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD STUDY</a></li>
                         <li><a href="#add_pt_group" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD PATIENT GROUP</a></li>
                         <li><a href="#end_study_reason" data-toggle="modal" data-backdrop="static" data-keyboard="false">END OF STUDY REASON</a></li>
@@ -858,6 +898,65 @@ if($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="add_study" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_images" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form enctype="multipart/form-data" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD IMAGES</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Image:</div>
+                            <div class="col-md-10">
+                                <div class="input-group file">
+                                    <input type="text" class="form-control" value=""/>
+                                    <input type="file" name="image" required/>
+                                    <span class="input-group-btn">
+                                        <button class="btn" type="button">Browse</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Project:</div>
+                            <div class="col-md-10">
+                                <select class="form-control" name="project" required="">
+                                    <option value="">Select Project</option>
+                                    <?php foreach($override->getData('study') as $study){?>
+                                        <option value="<?=$study['id']?>"><?=$study['name']?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Image Purpose:</div>
+                            <div class="col-md-10">
+                                <select class="form-control" name="image_cat" required="">
+                                    <option value="">Select Purpose</option>
+                                    <option value="1">Favicon</option>
+                                    <option value="2">Logo</option>
+                                    <option value="3">Image</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_image" value="ADD" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>

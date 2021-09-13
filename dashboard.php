@@ -7,6 +7,8 @@ $user->schedule();
 $pageError = null;$successMessage = null;$errorM = false;$errorMessage = null;
 $t_crf=0;$p_crf=0;$w_crf=0;$s_name=null;$c_name=null;$site=null;$country=null;
 $study_crf=null;$data_limit=10000;
+$favicon=$override->get('images','cat',1)[0];
+$logo=$override->get('images','cat',2)[0];
 //modification remove all pilot crf have been removed/deleted from study crf
 if($user->isLoggedIn()) {
     if (Input::exists('post')) {
@@ -70,7 +72,7 @@ if($user->isLoggedIn()) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/ico" href="favicon.ico">
+    <link rel="icon" type="image/ico" href="<?php if($favicon){echo $favicon['location'];}else{echo 'favicon.ico';}?>">
     <link href="css/stylesheets.css" rel="stylesheet" type="text/css">
 
     <script type='text/javascript' src='js/plugins/jquery/jquery.min.js'></script>
