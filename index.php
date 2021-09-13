@@ -5,6 +5,9 @@ $override = new OverideData();$usr=null;
 $email = new Email();$st=null;
 $random = new Random();
 $pageError = null;$successMessage = null;$errorM = false;$errorMessage = null;
+$favicon=$override->get('images','cat',1)[0];
+$logo=$override->get('images','cat',2)[0];
+$img=$override->get('images','cat',3)[0];
 if(!$user->isLoggedIn()) {
     if (Input::exists('post')) {
         if (Token::check(Input::get('token'))) {
@@ -83,7 +86,7 @@ if(!$user->isLoggedIn()) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/ico" href="favicon.ico">
+    <link rel="icon" type="image/ico" href="<?php if($favicon){echo $favicon['location'];}else{echo 'favicon.ico';}?>">
     <link href="css/stylesheets.css" rel="stylesheet" type="text/css">
 
     <script type='text/javascript' src='js/plugins/jquery/jquery.min.js'></script>
@@ -107,7 +110,7 @@ if(!$user->isLoggedIn()) {
             <div class="head">
                 <div class="user">
                     <div class="info user-change">
-                        <img src="img/nimr.jpg" class="img-circle img-thumbnail" width="225"/>
+                        <img src="<?php if($img){echo $img['location'];}else{echo 'img/nimr.jpg';}?>" class="img-circle img-thumbnail" width="225"/>
                     </div>
                 </div>
             </div>
