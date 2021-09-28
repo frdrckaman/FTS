@@ -1,4 +1,4 @@
-<?php require_once('php/core/init.php');
+<?php require_once 'php/core/init.php';
 $user = new User();
 $override = new OverideData();
 if($_GET['content'] == 'visit'){
