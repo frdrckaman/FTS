@@ -1,5 +1,5 @@
 <?php
-require_once'php/core/init.php';
+require_once 'php/core/init.php';
 $user = new User();
 $override = new OverideData();
 $email = new Email();
@@ -552,7 +552,7 @@ if($user->isLoggedIn()) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title> FTS </title>
+    <title> VTS </title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -654,29 +654,29 @@ if($user->isLoggedIn()) {
                                         <td>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['sn_cl_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">SN|CL:Pending</button>
+                                                    <button class="btn btn-warning">Clinician Pending</button>
                                                 <?php }elseif($data['sn_cl_status']==1){?>
-                                                    <button class="btn btn-success">SN|CL:Completed</button>
+                                                    <button class="btn btn-success">Clinician Completed</button>
                                                 <?php }elseif($data['sn_cl_status']==2){?>
-                                                    <button class="btn btn-danger">SN|CL:Missed</button>
+                                                    <button class="btn btn-danger">Clinician Missed</button>
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['dc_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">DC:Pending</button>
+                                                    <button class="btn btn-warning">Data Pending</button>
                                                 <?php }elseif($data['dc_status']==1){?>
-                                                    <button class="btn btn-success">DC:Completed</button>
+                                                    <button class="btn btn-success">Data Completed</button>
                                                 <?php }elseif($data['dc_status']==2){?>
-                                                    <button class="btn btn-danger">DC:Missed</button>
+                                                    <button class="btn btn-danger">Data Missed</button>
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['dm_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">DM:Pending</button>
+                                                    <button class="btn btn-warning">Review Pending</button>
                                                 <?php }elseif($data['dm_status']==1){?>
-                                                    <button class="btn btn-success">DM:Completed</button>
+                                                    <button class="btn btn-success">Review Completed</button>
                                                 <?php }elseif($data['dm_status']==2){?>
-                                                    <button class="btn btn-danger">DM:Missed</button>
+                                                    <button class="btn btn-danger">Review Missed</button>
                                                 <?php }?>
                                             </div>
                                         </td>
@@ -2304,7 +2304,7 @@ if($user->isLoggedIn()) {
             <?php }elseif ($_GET['id'] == 13){?>
                 <div class="block">
                     <div class="header">
-                        <h2>TODAY SCHEDULE VISITS</h2>
+                        <h2>TODAY PENDING VISITS</h2>
                     </div>
                     <div class="content">
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
@@ -2334,29 +2334,29 @@ if($user->isLoggedIn()) {
                                         <td>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['sn_cl_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">SN|CL:Pending</button>
+                                                    <button class="btn btn-warning">Clinician Pending</button>
                                                 <?php }elseif($data['sn_cl_status']==1){?>
-                                                    <button class="btn btn-success">SN|CL:Completed</button>
+                                                    <button class="btn btn-success">Clinician Completed</button>
                                                 <?php }elseif($data['sn_cl_status']==2){?>
-                                                    <button class="btn btn-danger">SN|CL:Missed</button>
+                                                    <button class="btn btn-danger">Clinician Missed</button>
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['dc_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">DC:Pending</button>
+                                                    <button class="btn btn-warning">Data Pending</button>
                                                 <?php }elseif($data['dc_status']==1){?>
-                                                    <button class="btn btn-success">DC:Completed</button>
+                                                    <button class="btn btn-success">Data Completed</button>
                                                 <?php }elseif($data['dc_status']==2){?>
-                                                    <button class="btn btn-danger">DC:Missed</button>
+                                                    <button class="btn btn-danger">Data Missed</button>
                                                 <?php }?>
                                             </div>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['dm_status']==0){?>&nbsp;
-                                                    <button class="btn btn-warning">DM:Pending</button>
+                                                    <button class="btn btn-warning">Review  Pending</button>
                                                 <?php }elseif($data['dm_status']==1){?>
-                                                    <button class="btn btn-success">DM:Completed</button>
+                                                    <button class="btn btn-success">Review Completed</button>
                                                 <?php }elseif($data['dm_status']==2){?>
-                                                    <button class="btn btn-danger">DM:Missed</button>
+                                                    <button class="btn btn-danger">Review Missed</button>
                                                 <?php }?>
                                             </div>
                                         </td>
