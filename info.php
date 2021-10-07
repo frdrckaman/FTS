@@ -637,9 +637,11 @@ if($user->isLoggedIn()) {
                             <thead>
                             <tr>
 
-                                <th width="20%">STUDY ID</th>
-                                <th width="20%">VISIT CODE</th>
-                                <th width="25%">STATUS</th>
+                                <th width="8%">STUDY ID</th>
+                                <th width="15">GROUP NAME / STUDY NAME</th>
+                                <th width="10%">VISIT CODE</th>
+                                <th width="10%">VISIT STATUS</th>
+                                <th width="25%">DATA STATUS</th>
                                 <th width="10%">PHONE NUMBER</th>
                                 <th width="20%"></th>
                             </tr>
@@ -650,8 +652,20 @@ if($user->isLoggedIn()) {
                                 $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
                                 if($client['status'] == 1){?>
                                     <tr>
-                                        <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?></td>
+                                        <td><?=$client['study_id']; ?></td>
+                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code']; ?></td>
                                         <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
+                                        <td>
+                                        <div class="btn-group btn-group-xs">
+                                                <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                                    <button class="btn btn-warning">Visit Pending</button>
+                                                <?php }elseif($data['sn_cl_status']==1){?>
+                                                    <button class="btn btn-success">Visit Completed</button>
+                                                <?php }elseif($data['sn_cl_status']==2){?>
+                                                    <button class="btn btn-danger">Visit Missed</button>
+                                                <?php }?>
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['sn_cl_status']==0){?>&nbsp;
@@ -2312,9 +2326,11 @@ if($user->isLoggedIn()) {
                             <thead>
                             <tr>
 
-                                <th width="20%">STUDY ID</th>
-                                <th width="20%">VISIT CODE</th>
-                                <th width="25%">STATUS</th>
+                                <th width="8%">STUDY ID</th>
+                                <th width="15%">GROUP NAME / STUDY NAME</th>
+                                <th width="10%">VISIT CODE</th>
+                                <th width="10%">VISIT STATUS</th>
+                                <th width="25%">DATA STATUS</th>
                                 <th width="10%">PHONE NUMBER</th>
                                 <th width="20%"></th>
                             </tr>
@@ -2330,8 +2346,20 @@ if($user->isLoggedIn()) {
                                 $lastVisit= $override->getlastRow('visit','client_id',$data['client_id'],'visit_date');
                                 if($client['status'] == 1){?>
                                     <tr>
-                                        <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code'].' ) '?></td>
+                                    <td><?=$client['study_id']; ?></td>
+                                        <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code']; ?></td>
                                         <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
+                                        <td>
+                                        <div class="btn-group btn-group-xs">
+                                                <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                                    <button class="btn btn-warning">Visit Pending</button>
+                                                <?php }elseif($data['sn_cl_status']==1){?>
+                                                    <button class="btn btn-success">Visit Completed</button>
+                                                <?php }elseif($data['sn_cl_status']==2){?>
+                                                    <button class="btn btn-danger">Visit Missed</button>
+                                                <?php }?>
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="btn-group btn-group-xs">
                                                 <?php if($data['sn_cl_status']==0){?>&nbsp;
