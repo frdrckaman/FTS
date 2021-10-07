@@ -66,7 +66,7 @@ if($clntNo){
         <a href="info.php?id=3" class="list-group-item"><span class="icon-book"></span>All Schedule Visits<i class="icon-angle-right pull-right"></i><span class="label label-success pull-right"><?=$override->getNo('visit')?></span></a>
         <a href="info.php?id=2" class="list-group-item"><span class="icon-calendar-empty"></span>Missed Visit<i class="icon-angle-right pull-right"></i><span class="label label-warning pull-right"><?=$msa?></span></a>
         <a href="info.php?id=10" class="list-group-item"><span class="icon-warning-sign"></span>End of Study<i class="icon-angle-right pull-right"></i><span class="label label-danger pull-right"><?=$end?></span></a>
-        <a href="info.php?id=4" class="list-group-item"><span class="icon-calendar"></span>Total Vaccinated Patients<i class="icon-angle-right pull-right"></i></a>
+        <a href="info.php?id=4" class="list-group-item"><span class="icon-calendar"></span>Total Vaccinated Patients<i class="icon-angle-right pull-right"></i><span class="label label-info pull-right"><?=$override->countActiveUser(); ?></span></a>
         <a href="info.php?id=13" class="list-group-item"><span class="icon-windows"></span>Pending Verification<i class="icon-angle-right pull-right"></i><span class="label label-warning pull-right"><?=$pnd?></span></a>
         <a href="info.php?id=5" class="list-group-item"><span class="icon-user"></span>Total Screened Patients<i class="icon-angle-right pull-right"></i><span class="label label-info pull-right"><?=$clntNo?></span></a>
         <a href="logout.php" class="list-group-item"><span class="icon-off"></span>Logout<i class="icon-angle-right pull-right"></i></a>
