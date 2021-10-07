@@ -657,11 +657,11 @@ if($user->isLoggedIn()) {
                                         <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                         <td>
                                         <div class="btn-group btn-group-xs">
-                                                <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                                <?php if($data['status']==0){?>&nbsp;
                                                     <button class="btn btn-warning">Visit Pending</button>
-                                                <?php }elseif($data['sn_cl_status']==1){?>
+                                                <?php }elseif($data['status']==1){?>
                                                     <button class="btn btn-success">Visit Completed</button>
-                                                <?php }elseif($data['sn_cl_status']==2){?>
+                                                <?php }elseif($data['status']==2){?>
                                                     <button class="btn btn-danger">Visit Missed</button>
                                                 <?php }?>
                                             </div>
@@ -2351,11 +2351,11 @@ if($user->isLoggedIn()) {
                                         <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                         <td>
                                         <div class="btn-group btn-group-xs">
-                                                <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                                <?php if($data['status']==0){?>&nbsp;
                                                     <button class="btn btn-warning">Visit Pending</button>
-                                                <?php }elseif($data['sn_cl_status']==1){?>
+                                                <?php }elseif($data['status']==1){?>
                                                     <button class="btn btn-success">Visit Completed</button>
-                                                <?php }elseif($data['sn_cl_status']==2){?>
+                                                <?php }elseif($data['status']==2){?>
                                                     <button class="btn btn-danger">Visit Missed</button>
                                                 <?php }?>
                                             </div>
