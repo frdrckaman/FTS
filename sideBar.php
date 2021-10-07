@@ -68,7 +68,7 @@ if($clntNo){
         <a href="info.php?id=10" class="list-group-item"><span class="icon-warning-sign"></span>End of Study<i class="icon-angle-right pull-right"></i><span class="label label-danger pull-right"><?=$end?></span></a>
         <a href="info.php?id=4" class="list-group-item"><span class="icon-calendar"></span>All Patient Visits<i class="icon-angle-right pull-right"></i></a>
         <a href="info.php?id=13" class="list-group-item"><span class="icon-windows"></span>Pending Verification<i class="icon-angle-right pull-right"></i><span class="label label-warning pull-right"><?=$pnd?></span></a>
-        <a href="info.php?id=5" class="list-group-item"><span class="icon-user"></span>Patients<i class="icon-angle-right pull-right"></i><span class="label label-info pull-right"><?=$clntNo?></span></a>
+        <a href="info.php?id=5" class="list-group-item"><span class="icon-user"></span>Total Patients<i class="icon-angle-right pull-right"></i><span class="label label-info pull-right"><?=$clntNo?></span></a>
         <a href="logout.php" class="list-group-item"><span class="icon-off"></span>Logout<i class="icon-angle-right pull-right"></i></a>
     </div>
 </div>
