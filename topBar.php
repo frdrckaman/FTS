@@ -361,8 +361,16 @@ if($user->isLoggedIn()) {
                 <!--<a href="#add_visit" data-toggle="modal" data-backdrop="static" data-keyboard="false" ><span class="icon-bookmark"></span> Add Visit</a>-->
                 <a href="add.php" ><span class="icon-bookmark"></span> Add Visit</a>
             </li>
+            <li class="dropdown active">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon-file-alt"></span> STUDY </a>
+                <ul class="dropdown-menu">
+                    <?php foreach ($override->getData('study') as $study){?>
+                        <li><a href="study.php?sid=<?=$study['id']?>"><?=$study['name']?></a></li>
+                    <?php }?>
+                </ul>
+            </li>
             <li class="">
-                <a href="#searchSchedule" data-toggle="modal"><span class="icon-search"></span> Search Schedule</a>
+                <a href="#searchSchedule" data-toggle="modal"><span class="icon-search"></span> Search Schedule </a>
             </li>
             <li class="">
                 <a href="profile.php">

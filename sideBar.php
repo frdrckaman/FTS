@@ -91,30 +91,29 @@ if($clntNo){
 </div>
 <div class="block block-drop-shadow">
     <div class="head bg-dot20">
-        <h2>STATUS</h2>
+        <h2>Summary</h2>
         <div class="side pull-right">
             <ul class="buttons">
                 <li><a href="#"><span class="icon-cogs"></span></a></li>
             </ul>
         </div>
-        <div class="head-subtitle">Missed vs Follow up</div>
+        <div class="head-subtitle"></div>
         <div class="head-panel">
-            <div class="hp-info hp-simple pull-left hp-inline">
-                <span class="hp-main">Missed Appointment <span class="icon-angle-right"></span> <?=number_format((float)$msAp, 2, '.', '')?>%</span>
-                <div class="hp-sm">
-                    <div class="progress progress-small">
-                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100" style="width: <?=number_format((float)$msAp, 2, '.', '')?>%"></div>
+            <?php foreach ($override->getData('study') as $study){
+                $nV=0;$clients=$override->getNoRepeat('clients','id','project_id',$study['id']);
+                foreach ($clients as $client){
+                    $noV=$override->getCount('visit','client_id',$client['id']);$nV+=$noV;?>
+
+            <?php }?>
+                <div class="hp-info hp-simple pull-left hp-inline">
+                    <span class="hp-main"><?=$study['study_code']?> <span class="icon-angle-right"></span> <?=number_format($nV);?> </span>
+                    <div class="hp-sm">
+                        <div class="progress progress-small">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100" style="width: <?=number_format((float)$msAp, 2, '.', '')?>%"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="hp-info hp-simple pull-left hp-inline">
-                <span class="hp-main">Clinical Follow ups <span class="icon-angle-right"></span> <?=number_format((float)$apnt, 2, '.', '')?>%</span>
-                <div class="hp-sm">
-                    <div class="progress progress-small">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100" style="width: <?=number_format((float)$apnt, 2, '.', '')?>%"></div>
-                    </div>
-                </div>
-            </div>
+            <?php }?>
         </div>
     </div>
 </div>
