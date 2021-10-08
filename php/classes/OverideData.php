@@ -490,18 +490,7 @@ class OverideData{
     }
 
     public function countActiveUser(){
-        $sql = "SELECT DISTINCT clients.`study_id`, 
-                    clients.`status`
-                FROM clients 
-                RIGHT JOIN visit 
-                ON clients.id = visit.client_id 
-                WHERE visit.`visit_group` IS NOT NULL
-                ORDER BY `study_id`";
-        $query = $this->_pdo->query($sql);
-        // $result = $query->fetchAll(PDO::FETCH_ASSOC);
-        // $query = $this->_pdo->query("SELECT * FROM $table WHERE $field1 = $value1 AND $field2 = $value2 AND $field3 >= '$value3' AND $field4 <= '$value4'");
-        $num = $query->rowCount();
-        return $num;
+        return $this->countNoRepeatAll('visit','client_id');
     }
 }
 
