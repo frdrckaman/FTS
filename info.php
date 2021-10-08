@@ -930,7 +930,7 @@ if($user->isLoggedIn()) {
             elseif ($_GET['id'] == 4){?>
                 <div class="block">
                     <div class="header">
-                        <h2>ALL VISITS</h2>
+                        <h2>TOTAL VACCINATED PATIENTS</h2>
                     </div>
                     <div class="content">
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
