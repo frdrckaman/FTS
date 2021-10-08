@@ -315,7 +315,7 @@ if($user->isLoggedIn()) {
                 $e->getMessage();
             }
         }
-        elseif (Input::get('add_reason')){
+        elseif (Input::get('add_end_study')){
             $validate = new validate();
             $validate = $validate->check($_POST, array(
                 'reason' => array(
@@ -329,6 +329,11 @@ if($user->isLoggedIn()) {
                             'reason'=>Input::get('reason'),
                             'details'=>Input::get('details')
                     ),Input::get('id'));
+                    foreach ($override->get('visit','client_id',Input::get('id')) as $end){
+                        if($end['status'] == 0){
+                            $user->updateRecord('visit',array('status'=>4),$end['id']);
+                        }
+                    }
 
                     $successMessage = 'End of Study Added Successful' ;
                 } catch (Exception $e) {
@@ -430,29 +435,31 @@ if($user->isLoggedIn()) {
             $data1[0]=$list;
 
             foreach ($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']) as $dt){$f=0;
-                $client=$override->get('clients', 'id', $dt['client_id'])[0];
-                $clientGroup=$override->get('patient_group','id',$client['pt_group'])[0]['name'];
-                foreach ($list as $data){
-                    $d=$override->getNews('visit','client_id',$dt['client_id'],'visit_date',$data)[0];
-                    if($f==0){
-                        $mqz[$f]= $client['study_id'].'('.$clientGroup.') ';$f++;
-                    }else{
-                        if($d){
-                            if($d['status']==1){
-                                $mqz[$f]= 'Done '.$d['visit_code'].' '.$d['visit_type'];$f++;
-                            }elseif ($d['status']==2){
-                                $mqz[$f]= 'Missed '.$d['visit_code'].' '.$d['visit_type'];$f++;
-                            }elseif ($d['status']==0){
-                                $mqz[$f]= 'Scheduled '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                if($dt['status'] != 4){
+                    $client=$override->get('clients', 'id', $dt['client_id'])[0];
+                    $clientGroup=$override->get('patient_group','id',$client['pt_group'])[0]['name'];
+                    foreach ($list as $data){
+                        $d=$override->getNews('visit','client_id',$dt['client_id'],'visit_date',$data)[0];
+                        if($f==0){
+                            $mqz[$f]= $client['study_id'].'('.$clientGroup.') ';$f++;
+                        }else{
+                            if($d){
+                                if($d['status']==1){
+                                    $mqz[$f]= 'Done '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                                }elseif ($d['status']==2){
+                                    $mqz[$f]= 'Missed '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                                }elseif ($d['status']==0){
+                                    $mqz[$f]= 'Scheduled '.$d['visit_code'].' '.$d['visit_type'];$f++;
+                                }
+                            }
+                            else{
+                                $mqz[$f]= '-';$f++;
                             }
                         }
-                        else{
-                            $mqz[$f]= '-';$f++;
-                        }
                     }
+                    $am[$r] = $mqz;
+                    $r++;
                 }
-                $am[$r] = $mqz;
-                $r++;
             }
             $user->exportSchedule($data1,$am,'schedule');
         }
@@ -630,7 +637,7 @@ if($user->isLoggedIn()) {
             <?php if($_GET['id'] == 1){?>
                 <div class="block">
                     <div class="header">
-                        <h2>TODAY SCHEDULE VISITS</h2>
+                        <h2>TODAY SCHEDULE VISITS FOR ALL STUDIES</h2>
                     </div>
                     <div class="content">
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
@@ -1101,7 +1108,7 @@ if($user->isLoggedIn()) {
                                                     <div class="modal-footer">
                                                         <div class="pull-right col-md-3">
                                                             <input type="hidden" name="id" value="<?=$client['id']?>">
-                                                            <input type="submit" name="add_reason" value="Submit" class="btn btn-success btn-clean">
+                                                            <input type="submit" name="add_end_study" value="Submit" class="btn btn-success btn-clean">
                                                         </div>
                                                         <div class="pull-right col-md-2">
                                                             <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
@@ -2285,6 +2292,7 @@ if($user->isLoggedIn()) {
                     </thead>
                     <tbody>
                     <?php foreach ($override->dateRangeD('visit','client_id','visit_date',$_GET['from'],$_GET['to']) as $dt){
+                        if($dt['status'] != 4){
                         $client=$override->get('clients', 'id', $dt['client_id'])[0];?>
                         <tr>
                             <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' ) '?>
@@ -2292,7 +2300,7 @@ if($user->isLoggedIn()) {
                                     <div class="btn-group btn-group-xs">
                                         <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
                                     </div>
-                                <?php }?>
+                                <?php }}?>
                             </td>
                             <?php $x=1;foreach ($list as $data){
                                 $d=$override->getNews('visit','client_id',$dt['client_id'],'visit_date',$data)[0];
