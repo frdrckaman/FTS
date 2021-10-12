@@ -980,16 +980,17 @@ if($user->isLoggedIn()) {
             elseif ($_GET['id'] == 5){?>
                 <div class="block">
                     <div class="header">
-                        <h2>LIST OF ALL PATIENTS</h2>
+                        <h2>LIST OF ALL SCREENED PATIENTS</h2>
                     </div>
                     <div class="content">
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                             <thead>
                             <tr>
                                 <th width="15%">STUDY ID</th>
-                                <th width="10%">GROUP/STUDY</th>
-                                <th width="25%">LAST VISIT</th>
-                                <th width="20%">PHONE NUMBER</th>
+                                <th width="10%">GROUP / STUDY</th>
+                                <th width="8%">END OF STUDY</th>
+                                <th width="8%">PHONE NUMBER 1</th>
+                                <th width="8%">PHONE NUMBER 2</th>
                                 <th width="20%">Manage</th>
                             </tr>
                             </thead>
@@ -1000,7 +1001,8 @@ if($user->isLoggedIn()) {
                                         <td><?=$client['study_id'].'  ( '.$client['initials'].' )  '?><?php if($client['status'] == 1){?><div class="btn-group btn-group-xs"><button class="btn btn-success">Active</button></div><?php }else{?><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div><?php }?></td>
                                         <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code']?></td>
                                         <td><?php if($lastVisit){echo $lastVisit[0]['visit_date'];}else{echo '';}?></td>
-                                        <td><?=$client['phone_number'].' '.$client['phone_number2']?></td>
+                                        <td><?=$client['phone_number']?></td>
+                                        <td><?=$client['phone_number2']?></td>
                                         <td>
                                             <a href="#edit_client<?=$y?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
                                             <a href="#reasons<?=$y?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
