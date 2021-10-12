@@ -163,17 +163,19 @@ if($user->isLoggedIn()) {
             </div>
             <div class="block">
                 <div class="header">
-                    <h2>TODAY SCHEDULE VISITS FOR ALL STUDIES</h2>
+                    <h2>TODAY SCHEDULE VISITS </h2>
                 </div>
                 <div class="content">
                     <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                         <thead>
                         <tr>
 
-                            <th width="20%">STUDY ID</th>
+                            <th width="8%">STUDY ID</th>
+                            <th width="20">GROUP NAME / STUDY NAME</th>
                             <th width="10%">VISIT CODE</th>
-                            <th width="25%">STATUS</th>
-                            <th width="20%">PHONE NUMBER</th>
+                            <th width="10%">VISIT STATUS</th>
+                            <th width="25%">DATA STATUS</th>
+                            <th width="10%">PHONE NUMBER</th>
                             <th width="20%"></th>
                         </tr>
                         </thead>
@@ -186,16 +188,28 @@ if($user->isLoggedIn()) {
                                 if($data['status'] == 0){$user->updateRecord('visit',array('status'=>3),$data['id']);}
                                 ?>
                             <tr>
-                                <td><?=$client['study_id'].' ( '.$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code'].' ) '?></td>
+                                <td><?=$client['study_id']; ?></td>
+                                <td><?=$override->get('patient_group','id',$client['pt_group'])[0]['name'].' / '.$override->get('study','id',$client['project_id'])[0]['study_code']; ?></td>        
                                 <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                 <td>
-                                    <div class="btn-group btn-group-xs">
+                                <div class="btn-group btn-group-xs">
                                         <?php if($data['sn_cl_status']==0){?>&nbsp;
                                             <button class="btn btn-warning">Visit Pending</button>
                                         <?php }elseif($data['sn_cl_status']==1){?>
                                             <button class="btn btn-success">Visit Completed</button>
                                         <?php }elseif($data['sn_cl_status']==2){?>
                                             <button class="btn btn-danger">Visit Missed</button>
+                                        <?php }?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-xs">
+                                        <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                            <button class="btn btn-warning">Clinician Pending</button>
+                                        <?php }elseif($data['sn_cl_status']==1){?>
+                                            <button class="btn btn-success">Clinician Completed</button>
+                                        <?php }elseif($data['sn_cl_status']==2){?>
+                                            <button class="btn btn-danger">Clinician Missed</button>
                                         <?php }?>
                                     </div>
                                     <div class="btn-group btn-group-xs">
