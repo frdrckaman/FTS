@@ -2478,7 +2478,7 @@ if ($user->isLoggedIn()) {
                                                     <button class="btn btn-success"><span class="icon-ok-sign"></span> Done <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
                                                 <?php } elseif ($d['status'] == 2) { ?>
                                                     <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></span></button>
-                                                <?php } elseif ($d['status'] == 0) { ?>
+                                                <?php } elseif ($d['status'] == 0 || $d['status'] == 3) { ?>
                                                     <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
                                                 <?php }
                                                                                     } else { ?>
