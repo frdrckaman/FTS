@@ -23,14 +23,39 @@ if($user->isLoggedIn()) {
             $getVisit=$override->get('clients','id',Input::get('client_id'));
             $getV = $override->getNews('visit','id',Input::get('id'),'visit_date',date('Y-m-d'));
             if($user->data()->position == 1){$a_status='dm_status';}
-            elseif ($user->data()->position == 6 || $user->data()->position == 5){$a_status='sn_cl_status';}
+            elseif ($user->data()->position == 5){$a_status='sn_cl_status';}
+            elseif ($user->data()->position == 6){$a_status='status';}
             elseif ($user->data()->position == 12){$a_status='dc_status';}
             if ($validate->passed()) {
                 try {
-                    if($user->data()->position == 5 || $user->data()->position == 6){
+                    if($user->data()->position == 5){
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
-                            'status' => Input::get('visit_status'),
+                            // 'status' => Input::get('visit_status'),
+                            'staff_id'=>$user->data()->id
+                        ),Input::get('v_id'));
+                        $date=null;
+                        $visitCode = $getVisit[0]['visit_code'] + 1;
+                        if($visitCode){
+                            $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('client_id'));
+                        }
+                        $successMessage = 'Visit Added Successful' ;}
+                    elseif($user->data()->position == 6){
+                        $user->updateRecord('visit', array(
+                            $a_status => Input::get('visit_status'),
+                            // 'status' => Input::get('visit_status'),
+                            'staff_id'=>$user->data()->id
+                        ),Input::get('v_id'));
+                        $date=null;
+                        $visitCode = $getVisit[0]['visit_code'] + 1;
+                        if($visitCode){
+                            $user->updateRecord('clients',array('visit_code'=>$visitCode),Input::get('client_id'));
+                        }
+                        $successMessage = 'Visit Added Successful' ;}
+                    elseif($user->data()->position == 12){
+                        $user->updateRecord('visit', array(
+                            $a_status => Input::get('visit_status'),
+                            // 'status' => Input::get('visit_status'),
                             'staff_id'=>$user->data()->id
                         ),Input::get('v_id'));
                         $date=null;
@@ -40,13 +65,13 @@ if($user->isLoggedIn()) {
                         }
                         $successMessage = 'Visit Added Successful' ;
                     }else{
-                        if(Input::get('sn') == 1 || Input::get('sn') == 2){
+                        if((Input::get('sn') == 1 || Input::get('sn') == 2) && (Input::get('sn2') == 1 || Input::get('sn2') == 2) && (Input::get('sn3') == 1 || Input::get('sn3') == 2)){
                             $user->updateRecord('visit', array(
                                 $a_status => Input::get('visit_status'),
                                 'staff_id'=>$user->data()->id
                             ),Input::get('v_id'));
                         }else{
-                            $errorMessage='Patient must be attended by study nurse or clinician first';
+                            $errorMessage='Patient must be attended by study nurse, clinician and Data Clerk first';
                         }
                     }
                 } catch (Exception $e) {
@@ -171,13 +196,14 @@ if($user->isLoggedIn()) {
                         <tr>
 
                             <th width="8%">STUDY ID</th>
-                            <th width="20">GROUP NAME / STUDY NAME</th>
+                            <th width="10">GROUP NAME / STUDY NAME</th>
                             <th width="10%">VISIT CODE</th>
                             <th width="10%">VISIT STATUS</th>
-                            <th width="25%">DATA STATUS</th>
+                            <th width="25%">FILE  REVIEW  LOG</th>
                             <th width="10%">PHONE NUMBER</th>
                             <th width="20%"></th>
                         </tr>
+                        
                         </thead>
                         <tbody>
                         <?php $x=1;foreach ($override->get('visit','visit_date',date('Y-m-d')) as $data){
@@ -193,11 +219,11 @@ if($user->isLoggedIn()) {
                                 <td><?=$data['visit_code'].' ( '.$data['visit_type'].' ) '?></td>
                                 <td>
                                 <div class="btn-group btn-group-xs">
-                                        <?php if($data['sn_cl_status']==0){?>&nbsp;
+                                        <?php if($data['status']==3){?>&nbsp;
                                             <button class="btn btn-warning">Visit Pending</button>
-                                        <?php }elseif($data['sn_cl_status']==1){?>
+                                        <?php }elseif($data['status']==1){?>
                                             <button class="btn btn-success">Visit Completed</button>
-                                        <?php }elseif($data['sn_cl_status']==2){?>
+                                        <?php }elseif($data['status']==2){?>
                                             <button class="btn btn-danger">Visit Missed</button>
                                         <?php }?>
                                     </div>
@@ -231,6 +257,7 @@ if($user->isLoggedIn()) {
                                         <?php }?>
                                     </div>
                                 </td>
+                                
                                 <td><?=$client['phone_number']?></td>
                                 <td>
                                     <a href="#appnt<?=$x?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
@@ -269,7 +296,9 @@ if($user->isLoggedIn()) {
                                                         <input type="hidden" name="id" value="<?=$lastVisit[0]['id']?>">
                                                         <input type="hidden" name="v_id" value="<?=$data['id']?>">
                                                         <input type="hidden" name="client_id" value="<?=$client['id']?>">
+                                                        <input type="hidden" name="sn2" value="<?=$data['status']?>">
                                                         <input type="hidden" name="sn" value="<?=$data['sn_cl_status']?>">
+                                                        <input type="hidden" name="sn3" value="<?=$data['dc_status']?>">
                                                         <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
                                                     </div>
                                                     <div class="pull-right col-md-2">

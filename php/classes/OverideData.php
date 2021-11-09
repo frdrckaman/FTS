@@ -29,12 +29,12 @@ class OverideData{
         return $num;
     }
     public function countDataNot($table,$field,$value,$field1,$value1){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != '$value' AND $field1 = '$value1'");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != '$value' AND $field1 = '$value1' OR $field1 = '3'");
         $num = $query->rowCount();
         return $num;
     }
     public function getDataNot($table,$field,$value,$field1,$value1){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $field1 = '$value1'");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $field1 = '$value1' OR $field1 = '3'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }

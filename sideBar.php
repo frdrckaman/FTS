@@ -10,7 +10,7 @@ $ap=$override->countNoRepeatAll('visit','client_id');
 $end=$override->getCount('clients','status',0);
 $tv=$override->getCount('visit','visit_date',date('Y-m-d'));
 if($user->data()->position == 1){$a_status='dm_status';}
-elseif ($user->data()->position == 6){$a_status='sn_cl_status';}
+elseif ($user->data()->position == 6){$a_status='status';}
 elseif ($user->data()->position == 12){$a_status='dc_status';}
 elseif ($user->data()->position == 5){$a_status='sn_cl_status';}
 $pnd=$override->countDataNot('visit','status', 0, $a_status,0);
