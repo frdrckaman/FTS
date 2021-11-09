@@ -923,7 +923,8 @@ if ($user->isLoggedIn()) {
                                 </thead>
                                 <tbody>
                                     <?php $x = 1;
-                                    foreach ($override->getDataOrderByAsc('schedule', 'visit_date') as $data) {
+                                    // foreach ($override->getDataOrderByAsc('schedule', 'visit_date') as $data) {
+                                        foreach ($override->getDataOrderByAsc('visit', 'client_id') as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id']);
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ?>
                                         <tr>
