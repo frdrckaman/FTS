@@ -686,12 +686,15 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-
                                         <th width="8%">STUDY ID</th>
-                                        <th width="15">GROUP NAME / STUDY NAME</th>
-                                        <th width="10%">VISIT CODE</th>
+                                        <th width="10%">STUDY NAME</th>
+                                        <th width="10%">GROUP NAME</th>
+                                        <th width="8%">VISIT CODE</th>
+                                        <th width="8%">VISIT TYPE</th>
                                         <th width="10%">VISIT STATUS</th>
-                                        <th width="25%">FILE REVIEW LOG</th>
+                                        <th width="10%">CLINICIAN STATUS</th>
+                                        <th width="10%">DATACLERK STATUS</th>
+                                        <th width="13%">DATAMANAGER STATUS</th>
                                         <th width="10%">PHONE NUMBER</th>
                                         <th width="20%"></th>
                                     </tr>
@@ -704,8 +707,10 @@ if ($user->isLoggedIn()) {
                                         if ($client['status'] == 1) { ?>
                                             <tr>
                                                 <td><?= $client['study_id']; ?></td>
-                                                <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] . ' / ' . $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
-                                                <td><?= $data['visit_code'] . ' ( ' . $data['visit_type'] . ' ) ' ?></td>
+                                                <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
+                                                <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
+                                                <td><?= $data['visit_code'] ?></td>
+                                                <td><?= $data['visit_type'] ?></td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
@@ -727,6 +732,8 @@ if ($user->isLoggedIn()) {
                                                         <button class="btn btn-danger">Clinician Missed</button>
                                                     <?php } ?>
                                                     </div>
+                                                </td>
+                                                <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dc_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Data Pending</button>
@@ -736,6 +743,8 @@ if ($user->isLoggedIn()) {
                                                         <button class="btn btn-danger">Data Missed</button>
                                                     <?php } ?>
                                                     </div>
+                                                </td>
+                                                <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dm_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Review Pending</button>
@@ -839,7 +848,7 @@ if ($user->isLoggedIn()) {
                                                     <td>
                                                         <div class="btn-group btn-group-xs"><?php if ($client[0]['status'] == 2) { ?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo $client[0]['reason'] . ' { ' . $client[0]['details'] . ' } ';
                                                                                                                                                                                             } else { ?><button class="btn btn-success">Active</button><?php }
-                                                                                                                                                                                                                                            echo ' ' ?></div>
+                                                                                                                                                                                                                                                    echo ' ' ?></div>
                                                     </td>
                                                     <td>
                                                         <a href="#reason<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Information"><span class="glyphicon-log-out"></span></a>
@@ -2493,10 +2502,14 @@ if ($user->isLoggedIn()) {
                                 <thead>
                                     <tr>
                                         <th width="8%">STUDY ID</th>
-                                        <th width="10%">GROUP NAME / STUDY NAME</th>
+                                        <th width="10%">STUDY NAME</th>
+                                        <th width="10%">GROUP NAME</th>
                                         <th width="8%">VISIT CODE</th>
+                                        <th width="8%">VISIT TYPE</th>
                                         <th width="10%">VISIT STATUS</th>
-                                        <th width="25%">FILE REVIEW LOG ( DATA MANAGEMENT )</th>
+                                        <th width="10%">CLINICIAN STATUS</th>
+                                        <th width="10%">DATACLERK STATUS</th>
+                                        <th width="13%">DATAMANAGER STATUS</th>
                                         <th width="10%">PHONE NUMBER</th>
                                         <th width="20%"></th>
                                     </tr>
@@ -2519,8 +2532,10 @@ if ($user->isLoggedIn()) {
                                         if ($client['status'] == 1) { ?>
                                             <tr>
                                                 <td><?= $client['study_id']; ?></td>
-                                                <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] . ' / ' . $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
-                                                <td><?= $data['visit_code'] . ' ( ' . $data['visit_type'] . ' ) ' ?></td>
+                                                <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
+                                                <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
+                                                <td><?= $data['visit_code'] ?></td>
+                                                <td><?= $data['visit_type'] ?></td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
@@ -2542,6 +2557,8 @@ if ($user->isLoggedIn()) {
                                                         <button class="btn btn-danger">Clinician Missed</button>
                                                     <?php } ?>
                                                     </div>
+                                                </td>
+                                                <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dc_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Data Pending</button>
@@ -2551,6 +2568,8 @@ if ($user->isLoggedIn()) {
                                                         <button class="btn btn-danger">Data Missed</button>
                                                     <?php } ?>
                                                     </div>
+                                                </td>
+                                                <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dm_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Review Pending</button>
