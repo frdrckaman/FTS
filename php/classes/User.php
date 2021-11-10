@@ -346,7 +346,7 @@ class User {
             }elseif ($x == 42){$y=1;$vg='V3';
                 if($status == 'c'){
                     $nxt_visit = date('Y-m-d', strtotime($nxt_visit. ' + 14 days'));
-                }elseif ($status == 'u'){
+                }elseif ($status == 'u'){$status='c';
                     $nxt_visit = date('Y-m-d', strtotime($date));
                 }
                 $x += 14;$vc='V3';$vty='Clinic';$lw=7;$hw=14;
@@ -452,7 +452,7 @@ class User {
             }elseif ($x == 56){$y=1;$vg='V3';
                 if($status == 'c'){
                     $nxt_visit = date('Y-m-d', strtotime($nxt_visit. ' + 126 days'));
-                }elseif ($status == 'u'){
+                }elseif ($status == 'u'){$status='c';
                     $nxt_visit = date('Y-m-d', strtotime($date));
                 }
                 $x += 126;$vc='V3';$vty='Clinic';$lw=7;$hw=14;
@@ -505,7 +505,7 @@ class User {
                 $this->deleteRecord('visit','id',$vst['id']);
             }
             $this->generateScheduleDelayedVac080($pid,$date,$v_p,'u');
-        }elseif ($day==3){$visit= 'V3';$v_p=42;
+        }elseif ($day==3){$visit= 'V3';$v_p=56;
             foreach ($this->_override->getNews('visit','client_id',$pid, 'visit_group',$visit) as $vst){
                 $this->deleteRecord('visit','id',$vst['id']);
             }
@@ -554,7 +554,7 @@ class User {
             }elseif ($x == 42){$y=1;$vg='V3';
                 if($status == 'c'){
                     $nxt_visit = date('Y-m-d', strtotime($nxt_visit. ' + 14 days'));
-                }elseif ($status == 'u'){
+                }elseif ($status == 'u'){$status='c';
                     $nxt_visit = date('Y-m-d', strtotime($date));
                 }
                 $x += 14;$vc='V3';$vty='Clinic';$lw=7;$hw=14;
@@ -659,7 +659,7 @@ class User {
             }elseif ($x == 56){$y=1;$vg='V3';
                 if($status == 'c'){
                     $nxt_visit = date('Y-m-d', strtotime($nxt_visit. ' + 126 days'));
-                }elseif ($status == 'u'){
+                }elseif ($status == 'u'){$status='c';
                     $nxt_visit = date('Y-m-d', strtotime($date));
                 }
                 $x += 126;$vc='V3';$vty='Clinic';$lw=7;$hw=14;
@@ -717,7 +717,7 @@ class User {
                 $this->deleteRecord('visit','id',$vst['id']);
             }
             $this->generateScheduleDelayedVac082($pid,$date,$v_p,'u');
-        }elseif ($day==3){$visit= 'V3';$v_p=42;
+        }elseif ($day==3){$visit= 'V3';$v_p=56;
             foreach ($this->_override->getNews('visit','client_id',$pid, 'visit_group',$visit) as $vst){
                 $this->deleteRecord('visit','id',$vst['id']);
             }
