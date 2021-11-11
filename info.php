@@ -824,12 +824,13 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="10%">STUDY ID</th>
-                                        <th width="10%">PHONE</th>
-                                        <th width="10%">STUDY</th>
-                                        <th width="10%">GROUP</th>
+                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">PHONE</th>
+                                        <th width="5%">STUDY</th>
+                                        <th width="5%">GROUP</th>
                                         <th width="5%">DAYS MISSING</th>
-                                        <th width="50%">DETAILS</th>
+                                        <th width="5%">STATUS</th>
+                                        <th width="5%">DETAILS</th>
                                         <th width="5%"></th>
                                     </tr>
                                 </thead>
@@ -853,6 +854,9 @@ if ($user->isLoggedIn()) {
                                                         <div class="btn-group btn-group-xs"><?php if ($client[0]['status'] == 2) { ?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo $client[0]['reason'] . ' { ' . $client[0]['details'] . ' } ';
                                                                                                                                                                                             } else { ?><button class="btn btn-success">Active</button><?php }
                                                                                                                                                                                                                                                     echo ' ' ?></div>
+                                                    </td>
+                                                    <td>
+
                                                     </td>
                                                     <td>
                                                         <a href="#reason<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Information"><span class="glyphicon-log-out"></span></a>
@@ -2405,8 +2409,10 @@ if ($user->isLoggedIn()) {
                                 <thead>
                                     <tr>
                                         <th width="5%">#</th>
-                                        <th width="20%">STUDY ID</th>
-                                        <th width="20%">GROUP</th>
+                                        <th width="10%">STUDY ID</th>
+                                        <th width="10%">PHONE</th>
+                                        <th width="10%">STUDY</th>
+                                        <th width="10%">GROUP</th>
                                         <th width="5%">STATUS</th>
                                         <th width="20%">Reason</th>
                                         <th width="50%">DETAILS</th>
@@ -2423,8 +2429,10 @@ if ($user->isLoggedIn()) {
                                         } ?>
                                         <tr>
                                             <td><?= $x ?></td>
-                                            <td><?= $data['study_id'] . ' ( ' ?><?= $data['phone_number'] . ' ) ' ?></td>
-                                            <td><?= $override->get('patient_group', 'id', $data['pt_group'])[0]['name'] . ' / ' . $override->get('study', 'id', $data['project_id'])[0]['study_code'] ?></td>
+                                            <td><?= $data['study_id'] ?></td>
+                                            <td><?= $data['phone_number'] ?></td>
+                                            <td><?= $override->get('study', 'id', $data['project_id'])[0]['study_code'] ?></td>
+                                            <td><?= $override->get('patient_group', 'id', $data['pt_group'])[0]['name'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div>
                                             </td>
