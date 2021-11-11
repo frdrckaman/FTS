@@ -916,22 +916,34 @@ if ($user->isLoggedIn()) {
                                     <tr>
                                         <th width="20%">STUDY ID</th>
                                         <th width="10%">VISIT CODE</th>
-                                        <th width="25%">LAST VISIT</th>
-                                        <th width="20%">NEXT VISIT</th>
+                                        <th width="20%">STATUS</th>
+                                        <th width="25%">END DATE</th>
                                         <th width="20%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $x = 1;
                                     // foreach ($override->getDataOrderByAsc('schedule', 'visit_date') as $data) {
-                                        foreach ($override->getDataOrderByAsc('visit', 'client_id') as $data) {
+                                    foreach ($override->getDataOrderByAsc('visit', 'client_id') as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id']);
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ?>
                                         <tr>
                                             <td><?= $client[0]['study_id'] . ' ( ' . $client[0]['initials'] . ' ) ' . $client[0]['phone_number'] ?></td>
-                                            <td><?= $client[0]['visit_code'] ?></td>
+                                            <td><?= $data['visit_code'] ?></td>
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <?php if ($data['status'] == 0) { ?>&nbsp;
+                                                    <button class="btn btn-warning">Pending</button>
+                                                <?php } elseif ($data['status'] == 3) { ?>
+                                                    <button class="btn btn-success">Pending</button>
+                                                <?php } elseif ($data['status'] == 1) { ?>
+                                                    <button class="btn btn-success">Completed</button>
+                                                <?php } elseif ($data['status'] == 2) { ?>
+                                                    <button class="btn btn-danger">Missed</button>
+                                                <?php } ?>
+                                                </div>
+                                            </td>
                                             <td><?= $lastVisit[0]['visit_date'] ?></td>
-                                            <td><?= $data['visit_date'] ?></td>
                                             <td>
                                                 <a href="#next_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
                                             </td>
@@ -1007,9 +1019,10 @@ if ($user->isLoggedIn()) {
                                 <thead>
                                     <tr>
                                         <th width="5%">#</th>
-                                        <th width="35%">STUDY ID</th>
-                                        <th width="20%">CURRENT VISIT CODE</th>
-                                        <th width="20%">PHONE NUMBER</th>
+                                        <th width="10%">STUDY ID</th>
+                                        <th width="10%">STATUS</th>
+                                        <th width="10%">GROUP</th>
+                                        <th width="10%">PHONE NUMBER</th>
                                         <th width="15%">VIEW</th>
                                     </tr>
                                 </thead>
@@ -1019,10 +1032,16 @@ if ($user->isLoggedIn()) {
                                     $data = $override->getRepeatAll('visit', 'client_id', 'id');
 
                                     foreach ($data as $value) {
-                                        $client = $override->get('clients', 'id', $value['client_id']); ?>
+                                        $client = $override->get('clients', 'id', $value['client_id']);
+                                        $group = $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'];
+                                    ?>
+
                                         <tr>
                                             <td><?= $x ?></td>
-                                            <td><?= $client[0]['study_id'] ?>
+                                            <td>
+                                                <?= $client[0]['study_id'] ?>
+                                            </td>
+                                            <td>
                                                 <?php if ($client[0]['status'] == 0) { ?>
                                                     <div class="btn-group btn-group-xs">
                                                         <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
@@ -1033,7 +1052,7 @@ if ($user->isLoggedIn()) {
                                                     </div>
                                                 <?php } ?>
                                             </td>
-                                            <td><?= $client[0]['visit_code'] ?></td>
+                                            <td><?= $group ?></td>
                                             <td><?= $client[0]['phone_number'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs"><a href="info.php?id=6&cid=<?= $value['client_id'] ?>" class="btn btn-info btn-clean"><span class="icon-eye-open"></span> View All Visits</a></div>
@@ -1054,9 +1073,12 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="15%">STUDY ID</th>
-                                        <th width="10%">GROUP / STUDY</th>
-                                        <th width="8%">END OF STUDY</th>
+                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">INITIAL</th>
+                                        <th width="5%">STATUS</th>
+                                        <th width="5%">STUDY</th>
+                                        <th width="5%">GROUP</th>
+                                        <th width="6%">END OF STUDY</th>
                                         <th width="8%">PHONE NUMBER 1</th>
                                         <th width="8%">PHONE NUMBER 2</th>
                                         <th width="20%">Manage</th>
@@ -1067,8 +1089,23 @@ if ($user->isLoggedIn()) {
                                     foreach ($override->getDataOrderByAsc('clients', 'study_id') as $client) {
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $client['id'], 'id') ?>
                                         <tr>
-                                            <td><?= $client['study_id'] . '  ( ' . $client['initials'] . ' )  ' ?><?php if ($client['status'] == 1) { ?><div class="btn-group btn-group-xs"><button class="btn btn-success">Active</button></div><?php } else { ?><div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div><?php } ?></td>
-                                            <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] . ' / ' . $override->get('study', 'id', $client['project_id'])[0]['study_code'] ?></td>
+                                            <td><?= $client['study_id'] ?></td>
+                                            <td><?= $client['initials'] ?></td>
+                                            <td>
+                                                <?php
+                                                if ($client['status'] == 1) {
+                                                ?><div class="btn-group btn-group-xs"><button class="btn btn-success">Active</button></div><?php
+                                                                                                                                                } else {
+                                                                                                                                                    ?>
+
+                                                    <div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div>
+
+                                                <?php
+                                                                                                                                                }
+                                                ?>
+                                            </td>
+                                            <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code'] ?></td>
+                                            <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
                                             <td><?php if ($lastVisit) {
                                                     echo $lastVisit[0]['visit_date'];
                                                 } else {
