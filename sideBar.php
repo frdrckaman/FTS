@@ -24,7 +24,7 @@ $msa=0;$clnt=null;
 foreach ($override->get('visit','status',2) as $sch){
     $clnt=$override->get('clients','id',$sch['client_id']);
     if($clnt[0]['status'] == 1){
-        if($sch['visit_date'] < date('Y-m-d')){
+        if($sch['visit_date'] <= date('Y-m-d')){
             $msa++;
         }
     }

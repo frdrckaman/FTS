@@ -824,9 +824,11 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="20%">STUDY ID</th>
-                                        <th width="20%">GROUP</th>
-                                        <th width="5%">DAYS</th>
+                                        <th width="10%">STUDY ID</th>
+                                        <th width="10%">PHONE</th>
+                                        <th width="10%">STUDY</th>
+                                        <th width="10%">GROUP</th>
+                                        <th width="5%">DAYS MISSING</th>
                                         <th width="50%">DETAILS</th>
                                         <th width="5%"></th>
                                     </tr>
@@ -836,14 +838,16 @@ if ($user->isLoggedIn()) {
                                     foreach ($override->getDataOrderBy1('visit', 'status', 2, 'visit_date') as $data) {
                                         $cl = $override->get('clients', 'id', $data['client_id']);
                                         if ($cl[0]['status'] == 1) {
-                                            if ($data['visit_date'] < date('Y-m-d')) {
+                                            if ($data['visit_date'] <= date('Y-m-d')) {
                                                 $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id');
                                                 $client = $override->get('clients', 'id', $data['client_id']);
                                                 $group = $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'];
                                                 $mcDays = (strtotime(date('Y-m-d')) - strtotime($data['visit_date'])) ?>
                                                 <tr>
-                                                    <td><?= $client[0]['study_id'] . ' ( ' ?><?= $client[0]['phone_number'] . ' ) ' ?></td>
-                                                    <td><?= $group . ' / ' . $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
+                                                    <td><?= $client[0]['study_id'] ?></td>
+                                                    <td><?= $client[0]['phone_number']  ?></td>
+                                                    <td><?= $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
+                                                    <td><?= $group ?></td>
                                                     <td><?= ($mcDays / 86400) ?></td>
                                                     <td>
                                                         <div class="btn-group btn-group-xs"><?php if ($client[0]['status'] == 2) { ?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo $client[0]['reason'] . ' { ' . $client[0]['details'] . ' } ';
