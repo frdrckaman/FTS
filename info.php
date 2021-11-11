@@ -922,10 +922,12 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="20%">STUDY ID</th>
-                                        <th width="10%">VISIT CODE</th>
-                                        <th width="20%">STATUS</th>
-                                        <th width="25%">END DATE</th>
+                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">INITIAL</th>
+                                        <th width="5%">PHONE</th>
+                                        <th width="5%">VISIT CODE</th>
+                                        <th width="5%">STATUS</th>
+                                        <th width="5%">END DATE</th>
                                         <th width="20%"></th>
                                     </tr>
                                 </thead>
@@ -936,7 +938,9 @@ if ($user->isLoggedIn()) {
                                         $client = $override->get('clients', 'id', $data['client_id']);
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ?>
                                         <tr>
-                                            <td><?= $client[0]['study_id'] . ' ( ' . $client[0]['initials'] . ' ) ' . $client[0]['phone_number'] ?></td>
+                                            <td><?= $client[0]['study_id'] ?></td>
+                                            <td><?= $client[0]['initials'] ?></td>
+                                            <td><?= $client[0]['phone_number'] ?></td>
                                             <td><?= $data['visit_code'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
