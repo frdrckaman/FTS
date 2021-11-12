@@ -966,7 +966,7 @@ if ($user->isLoggedIn()) {
                                                     <form method="post">
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                            <h4 class="modal-title">EDIT NEXT VISIT</h4>
+                                                            <h4 class="modal-title">EDIT VISIT</h4>
                                                         </div>
                                                         <div class="modal-body clearfix">
                                                             <div class="controls">
@@ -979,7 +979,7 @@ if ($user->isLoggedIn()) {
                                                                 <div class="form-row">
                                                                     <div class="col-md-2">VISIT CODE:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="number" name="visit_code" class="form-control" value="<?= $client[0]['visit_code'] ?>" disabled />
+                                                                        <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
@@ -997,7 +997,7 @@ if ($user->isLoggedIn()) {
                                                                 <div class="form-row">
                                                                     <div class="col-md-2">Next Visit:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="text" name="next_visit" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                        <input type="text" name="next_visit" class="datepicker form-control" value="<?= $data['visit_date'] ?>" disabled/>
                                                                     </div>
                                                                 </div>
                                                             </div>
