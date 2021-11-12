@@ -103,6 +103,8 @@ if ($user->isLoggedIn()) {
 } else {
     Redirect::to('index.php');
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -225,8 +227,13 @@ if ($user->isLoggedIn()) {
                                     <th width="10%">CLINICIAN STATUS</th>
                                     <th width="10%">DATACLERK STATUS</th>
                                     <th width="13%">DATAMANAGER STATUS</th>
+                                    <?php
+                                    if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12 ) {
+                                                ?>
                                     <th width="10%">PHONE NUMBER</th>
                                     <th width="20%"></th>
+
+                                    <?php } ?>
                                 </tr>
                             </thead>
                             <tbody>
@@ -291,6 +298,11 @@ if ($user->isLoggedIn()) {
                                                 </div>
                                             </td>
 
+                                            <?php
+
+                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12 ) {
+                                                ?>
+                                            
                                             <td><?= $client['phone_number'] ?></td>
                                             <td>
                                                 <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
@@ -342,6 +354,8 @@ if ($user->isLoggedIn()) {
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <?php } ?>
                                         </tr>
                                 <?php }
                                     $x++;

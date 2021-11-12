@@ -13,6 +13,9 @@ if($user->data()->position == 1){$a_status='dm_status';}
 elseif ($user->data()->position == 6){$a_status='status';}
 elseif ($user->data()->position == 12){$a_status='dc_status';}
 elseif ($user->data()->position == 5){$a_status='sn_cl_status';}
+else{
+    $a_status='dm_status';
+}
 $pnd=$override->countDataNot('visit','status', 0, $a_status,0);
 //$msAp=0;$apnt=0;
 $msNo=0;foreach ($override->getData('schedule') as $data){
@@ -63,7 +66,7 @@ if($clntNo){
     </div>
     <div class="content list-group list-group-icons">
         <a href="info.php?id=1" class="list-group-item"><span class="icon-text-height"></span>Today Schedule Visits<i class="icon-angle-right pull-right"></i><span class="label label-success pull-right"><?=$tv?></span></a>
-        <a href="info.php?id=3" class="list-group-item"><span class="icon-book"></span>All Schedule Visits<i class="icon-angle-right pull-right"></i><span class="label label-success pull-right"><?=$override->getNo('visit')?></span></a>
+        <a href="info.php?id=3" class="list-group-item"><span class="icon-book"></span>All Scheduled Visits<i class="icon-angle-right pull-right"></i><span class="label label-success pull-right"><?=$override->getNo('visit')?></span></a>
         <a href="info.php?id=2" class="list-group-item"><span class="icon-calendar-empty"></span>Missed Visit<i class="icon-angle-right pull-right"></i><span class="label label-warning pull-right"><?=$msa?></span></a>
         <a href="info.php?id=10" class="list-group-item"><span class="icon-warning-sign"></span>End of Study<i class="icon-angle-right pull-right"></i><span class="label label-danger pull-right"><?=$end?></span></a>
         <a href="info.php?id=4" class="list-group-item"><span class="icon-calendar"></span>Total Vaccinated Patients<i class="icon-angle-right pull-right"></i><span class="label label-info pull-right"><?=$override->countActiveUser(); ?></span></a>

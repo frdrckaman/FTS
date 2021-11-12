@@ -148,7 +148,7 @@ if ($user->isLoggedIn()) {
 
                 <div class="block">
                     <div class="header">
-                        <h2>ADD VISITS</h2>
+                        <h2>ADD SCHEDULED VISITS</h2>
                     </div>
                     <div class="content">
                         <div class="col-md-offset-2 col-md-8">

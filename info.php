@@ -695,8 +695,15 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">CLINICIAN STATUS</th>
                                         <th width="10%">DATACLERK STATUS</th>
                                         <th width="13%">DATAMANAGER STATUS</th>
-                                        <th width="10%">PHONE NUMBER</th>
-                                        <th width="20%"></th>
+
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+
+                                            <th width="10%">PHONE NUMBER</th>
+                                            <th width="20%"></th>
+
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -755,10 +762,17 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
-                                                <td><?= $client['phone_number'] ?></td>
-                                                <td>
-                                                    <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
-                                                </td>
+
+                                                <?php
+                                                if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                                ?>
+
+                                                    <td><?= $client['phone_number'] ?></td>
+                                                    <td>
+                                                        <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
+                                                    </td>
+
+                                                <?php } ?>
                                                 <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -825,13 +839,23 @@ if ($user->isLoggedIn()) {
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
-                                        <th width="5%">PHONE</th>
                                         <th width="5%">STUDY</th>
                                         <th width="5%">GROUP</th>
                                         <th width="5%">DAYS MISSING</th>
                                         <th width="5%">STATUS</th>
                                         <th width="5%">DETAILS</th>
-                                        <th width="5%"></th>
+
+
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+
+                                        ?>
+                                            <th width="5%">ACTION</th>
+
+                                            <th width="5%">PHONE</th>
+
+                                        <?php } ?>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -846,10 +870,12 @@ if ($user->isLoggedIn()) {
                                                 $mcDays = (strtotime(date('Y-m-d')) - strtotime($data['visit_date'])) ?>
                                                 <tr>
                                                     <td><?= $client[0]['study_id'] ?></td>
-                                                    <td><?= $client[0]['phone_number']  ?></td>
+
+
                                                     <td><?= $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
                                                     <td><?= $group ?></td>
                                                     <td><?= ($mcDays / 86400) ?></td>
+
                                                     <td>
                                                         <div class="btn-group btn-group-xs"><?php if ($client[0]['status'] == 2) { ?>&nbsp;<button class="btn btn-danger">End Study</button> <?php echo $client[0]['reason'] . ' { ' . $client[0]['details'] . ' } ';
                                                                                                                                                                                             } else { ?><button class="btn btn-success">Active</button><?php }
@@ -858,9 +884,18 @@ if ($user->isLoggedIn()) {
                                                     <td>
 
                                                     </td>
-                                                    <td>
-                                                        <a href="#reason<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Information"><span class="glyphicon-log-out"></span></a>
-                                                    </td>
+
+                                                    <?php
+                                                    if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                                    ?>
+
+
+                                                        <td>
+                                                            <a href="#reason<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Information"><span class="glyphicon-log-out"></span></a>
+                                                        </td>
+                                                        <td><?= $client[0]['phone_number']  ?></td>
+
+                                                    <?php } ?>
                                                 </tr>
                                                 <div class="modal" id="reason<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
@@ -916,7 +951,7 @@ if ($user->isLoggedIn()) {
                 <?php } elseif ($_GET['id'] == 3) { ?>
                     <div class="block">
                         <div class="header">
-                            <h2>All SCHEDULES</h2>
+                            <h2>All SCHEDULED VISIT</h2>
                         </div>
                         <div class="content">
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
@@ -924,11 +959,18 @@ if ($user->isLoggedIn()) {
                                     <tr>
                                         <th width="5%">STUDY ID</th>
                                         <th width="5%">INITIAL</th>
-                                        <th width="5%">PHONE</th>
+
                                         <th width="5%">VISIT CODE</th>
                                         <th width="5%">STATUS</th>
                                         <th width="5%">END DATE</th>
-                                        <th width="20%"></th>
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+
+                                        ?>
+                                            <th width="5%">PHONE</th>
+                                            <th width="20%">ACTION</th>
+
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -940,7 +982,7 @@ if ($user->isLoggedIn()) {
                                         <tr>
                                             <td><?= $client[0]['study_id'] ?></td>
                                             <td><?= $client[0]['initials'] ?></td>
-                                            <td><?= $client[0]['phone_number'] ?></td>
+
                                             <td><?= $data['visit_code'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
@@ -956,9 +998,18 @@ if ($user->isLoggedIn()) {
                                                 </div>
                                             </td>
                                             <td><?= $lastVisit[0]['visit_date'] ?></td>
-                                            <td>
-                                                <a href="#next_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
-                                            </td>
+
+                                            <?php
+                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+
+                                            ?>
+
+                                                <td><?= $client[0]['phone_number'] ?></td>
+                                                <td>
+                                                    <a href="#next_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
+                                                </td>
+
+                                            <?php } ?>
                                         </tr>
                                         <div class="modal" id="next_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -997,7 +1048,7 @@ if ($user->isLoggedIn()) {
                                                                 <div class="form-row">
                                                                     <div class="col-md-2">Next Visit:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="text" name="next_visit" class="datepicker form-control" value="<?= $data['visit_date'] ?>" disabled/>
+                                                                        <input type="text" name="next_visit" class="datepicker form-control" value="<?= $data['visit_date'] ?>" disabled />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1034,8 +1085,13 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">STUDY ID</th>
                                         <th width="10%">STATUS</th>
                                         <th width="10%">GROUP</th>
-                                        <th width="10%">PHONE NUMBER</th>
                                         <th width="15%">VIEW</th>
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+                                            <th width="10%">PHONE NUMBER</th>
+                                        <?php } ?>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1065,10 +1121,22 @@ if ($user->isLoggedIn()) {
                                                 <?php } ?>
                                             </td>
                                             <td><?= $group ?></td>
-                                            <td><?= $client[0]['phone_number'] ?></td>
+
+                                            <?php
+                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                            ?>
+
+                                            <?php } ?>
                                             <td>
                                                 <div class="btn-group btn-group-xs"><a href="info.php?id=6&cid=<?= $value['client_id'] ?>" class="btn btn-info btn-clean"><span class="icon-eye-open"></span> View All Visits</a></div>
                                             </td>
+
+                                            <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+                                            <td><?= $client[0]['phone_number'] ?></td>
+
+                                            <?php } ?>
                                         </tr>
                                     <?php $x++;
                                     } ?>
@@ -1091,9 +1159,16 @@ if ($user->isLoggedIn()) {
                                         <th width="5%">STUDY</th>
                                         <th width="5%">GROUP</th>
                                         <th width="6%">END OF STUDY</th>
-                                        <th width="8%">PHONE NUMBER 1</th>
-                                        <th width="8%">PHONE NUMBER 2</th>
-                                        <th width="20%">Manage</th>
+
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+
+                                            <th width="8%">PHONE NUMBER 1</th>
+                                            <th width="8%">PHONE NUMBER 2</th>
+                                            <th width="20%">Manage</th>
+
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1107,13 +1182,13 @@ if ($user->isLoggedIn()) {
                                                 <?php
                                                 if ($client['status'] == 1) {
                                                 ?><div class="btn-group btn-group-xs"><button class="btn btn-success">Active</button></div><?php
-                                                                                                                                                } else {
-                                                                                                                                                    ?>
+                                                                                                                                        } else {
+                                                                                                                                            ?>
 
                                                     <div class="btn-group btn-group-xs"><button class="btn btn-danger">End Study</button></div>
 
                                                 <?php
-                                                                                                                                                }
+                                                                                                                                        }
                                                 ?>
                                             </td>
                                             <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code'] ?></td>
@@ -1123,16 +1198,23 @@ if ($user->isLoggedIn()) {
                                                 } else {
                                                     echo '';
                                                 } ?></td>
-                                            <td><?= $client['phone_number'] ?></td>
-                                            <td><?= $client['phone_number2'] ?></td>
-                                            <td>
-                                                <a href="#edit_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
-                                                <a href="#reasons<?= $y ?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
-                                                <a href="#edit_schedule<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Schedule"><span class="icon-refresh"></span></a>
-                                                <a href="#delete_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
-                                                <a href="info.php?id=11&pid=<?= $client['id'] ?>" class="widget-icon" title="list schedule"><span class="icon-list"></span></a>
-                                                <a href="#delete_client_schedule<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Patient Schedules"><span class="icon-remove"></span></a>
-                                            </td>
+
+                                            <?php
+                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                            ?>
+
+                                                <td><?= $client['phone_number'] ?></td>
+                                                <td><?= $client['phone_number2'] ?></td>
+                                                <td>
+                                                    <a href="#edit_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
+                                                    <a href="#reasons<?= $y ?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
+                                                    <a href="#edit_schedule<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Schedule"><span class="icon-refresh"></span></a>
+                                                    <a href="#delete_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
+                                                    <a href="info.php?id=11&pid=<?= $client['id'] ?>" class="widget-icon" title="list schedule"><span class="icon-list"></span></a>
+                                                    <a href="#delete_client_schedule<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Patient Schedules"><span class="icon-remove"></span></a>
+                                                </td>
+
+                                            <?php } ?>
                                         </tr>
                                         <div class="modal" id="edit_client<?= $y ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -1376,7 +1458,7 @@ if ($user->isLoggedIn()) {
                                         <th width="20%">STUDY ID</th>
                                         <th width="10%">INITIALS</th>
                                         <th width="10%">VISIT CODE</th>
-                                        <th width="25%">VISIT DTE</th>
+                                        <th width="25%">VISIT DATE</th>
                                         <th width="30%"></th>
                                     </tr>
                                 </thead>
@@ -1392,10 +1474,16 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $client[0]['initials'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
                                                 <td><?= $data['visit_date'] ?></td>
-                                                <td>
-                                                    <a href="#edit_visit<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
-                                                    <a href="#delete_visit<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
-                                                </td>
+
+                                                <?php
+                                                if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                                ?>
+                                                    <td>
+                                                        <a href="#edit_visit<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
+                                                        <a href="#delete_visit<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
+                                                    </td>
+
+                                                <?php } ?>
                                             </tr>
                                             <div class="modal" id="edit_visit<?= $y ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -1488,8 +1576,14 @@ if ($user->isLoggedIn()) {
                                         <th width="20%">STUDY ID</th>
                                         <th width="10%">VISIT CODE</th>
                                         <th width="25%">LAST VISIT</th>
-                                        <th width="20%">PHONE NUMBER</th>
-                                        <th width="20%"></th>
+
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+                                            <th width="20%">PHONE NUMBER</th>
+                                            <th width="20%"></th>
+
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2414,7 +2508,13 @@ if ($user->isLoggedIn()) {
                                     <tr>
                                         <th width="5%">#</th>
                                         <th width="10%">STUDY ID</th>
+
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
                                         <th width="10%">PHONE</th>
+
+                                        <?php } ?>
                                         <th width="10%">STUDY</th>
                                         <th width="10%">GROUP</th>
                                         <th width="5%">STATUS</th>
@@ -2434,7 +2534,13 @@ if ($user->isLoggedIn()) {
                                         <tr>
                                             <td><?= $x ?></td>
                                             <td><?= $data['study_id'] ?></td>
+
+                                            <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
                                             <td><?= $data['phone_number'] ?></td>
+
+                                            <?php } ?>
                                             <td><?= $override->get('study', 'id', $data['project_id'])[0]['study_code'] ?></td>
                                             <td><?= $override->get('patient_group', 'id', $data['pt_group'])[0]['name'] ?></td>
                                             <td>
@@ -2564,8 +2670,15 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">CLINICIAN STATUS</th>
                                         <th width="10%">DATACLERK STATUS</th>
                                         <th width="13%">DATAMANAGER STATUS</th>
+
+                                        <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+
                                         <th width="10%">PHONE NUMBER</th>
-                                        <th width="20%"></th>
+                                        <th width="20%">ACTION</th>
+
+                                        <?php } ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2634,10 +2747,17 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
+
+                                                <?php
+                                        if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                        ?>
+
                                                 <td><?= $client['phone_number'] ?></td>
                                                 <td>
                                                     <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
                                                 </td>
+
+                                                <?php } ?>
                                                 <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
