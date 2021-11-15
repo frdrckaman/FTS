@@ -1504,7 +1504,7 @@ if ($user->isLoggedIn()) {
                                                                     <div class="form-row">
                                                                         <div class="col-md-2">VISIT CODE:</div>
                                                                         <div class="col-md-10">
-                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
+                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-row">
@@ -2666,10 +2666,10 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">GROUP NAME</th>
                                         <th width="8%">VISIT CODE</th>
                                         <th width="8%">VISIT TYPE</th>
-                                        <th width="10%">VISIT STATUS</th>
-                                        <th width="10%">CLINICIAN STATUS</th>
-                                        <th width="10%">DATACLERK STATUS</th>
-                                        <th width="13%">DATAMANAGER STATUS</th>
+                                        <th width="10%">VISIT STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit','status', 0, 'status',0) ?></span></th>
+                                        <th width="10%">CLINICIAN STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit','status', 0, 'sn_cl_status',0) ?></span></th>
+                                        <th width="10%">DATACLERK STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit','status', 0, 'dc_status',0) ?></span></th>
+                                        <th width="10%">DATAMANAGER STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit','status', 0, 'dm_status',0) ?></span></th>
 
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
@@ -2706,9 +2706,9 @@ if ($user->isLoggedIn()) {
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
-                                                        <button class="btn btn-warning">Visit Pending</button>
+                                                        <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['status'] == 1) { ?>
-                                                        <button class="btn btn-success">Visit Completed</button>
+                                                        <button class="btn btn-success">Completed</button>
                                                     <?php } elseif ($data['status'] == 2) { ?>
                                                         <button class="btn btn-danger">Visit Missed</button>
                                                     <?php } ?>
@@ -2717,33 +2717,33 @@ if ($user->isLoggedIn()) {
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['sn_cl_status'] == 0) { ?>&nbsp;
-                                                        <button class="btn btn-warning">Clinician Pending</button>
+                                                        <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['sn_cl_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Clinician Completed</button>
+                                                        <button class="btn btn-success">Reviewed</button>
                                                     <?php } elseif ($data['sn_cl_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Clinician Missed</button>
+                                                        <button class="btn btn-danger">Missed</button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dc_status'] == 0) { ?>&nbsp;
-                                                        <button class="btn btn-warning">Data Pending</button>
+                                                        <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['dc_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Data Completed</button>
+                                                        <button class="btn btn-success">Entered</button>
                                                     <?php } elseif ($data['dc_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Data Missed</button>
+                                                        <button class="btn btn-danger">Missed</button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dm_status'] == 0) { ?>&nbsp;
-                                                        <button class="btn btn-warning">Review Pending</button>
+                                                        <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['dm_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Review Completed</button>
+                                                        <button class="btn btn-success">Reviewed</button>
                                                     <?php } elseif ($data['dm_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Review Missed</button>
+                                                        <button class="btn btn-danger">Missed</button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
