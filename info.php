@@ -1504,7 +1504,7 @@ if ($user->isLoggedIn()) {
                                                                     <div class="form-row">
                                                                         <div class="col-md-2">VISIT CODE:</div>
                                                                         <div class="col-md-10">
-                                                                            <input type="number" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" />
+                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-row">
