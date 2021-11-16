@@ -256,7 +256,7 @@ if ($user->isLoggedIn()) {
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <div class="pull-right col-md-3">
+                                    <div>
                                         <input type="submit" name="add_unschedule_visit" value="ADD UNSCHEDULE VISIT" class="btn btn-success">
                                     </div>
                                 </div>
