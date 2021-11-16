@@ -476,7 +476,6 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
-
         } elseif (Input::get('reschedule_pending_visit')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -739,6 +738,7 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">STUDY NAME</th>
                                         <th width="10%">GROUP NAME</th>
                                         <th width="8%">VISIT CODE</th>
+                                        <th width="8%">SCHEDLUE TYPE</th>
                                         <th width="8%">VISIT TYPE</th>
                                         <th width="10%">VISIT STATUS</th>
                                         <th width="10%">CLINICIAN STATUS</th>
@@ -767,6 +767,27 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
                                                 <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
+
+                                                <td>
+
+                                                    <?php if ($data['schedule'] == 'Scheduled') { ?>
+                                                        <div class="btn-group btn-group-xs">
+                                                            <button class="btn btn-info">
+                                                                <?= $data['schedule'] ?>
+                                                            </button>
+                                                        </div>
+
+                                                    <?php } else { ?>
+                                                        <div class="btn-group btn-group-xs">
+                                                            <button class="btn btn-danger">
+                                                                <?= $data['schedule'] ?>
+                                                            </button>
+                                                        </div>
+                                                    <?php }  ?>
+                                                </td>
+
+
+
                                                 <td><?= $data['visit_type'] ?></td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
@@ -831,7 +852,7 @@ if ($user->isLoggedIn()) {
 
 
 
-                                                <div class="modal"  id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal" id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <form method="post">
@@ -2780,6 +2801,7 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">STUDY NAME</th>
                                         <th width="10%">GROUP NAME</th>
                                         <th width="8%">VISIT CODE</th>
+                                        <th width="8%">SCHEDLUE TYPE</th>
                                         <th width="8%">VISIT TYPE</th>
                                         <th width="10%">VISIT STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'status', 0) ?></span></th>
                                         <th width="10%">CLINICIAN STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'sn_cl_status', 0) ?></span></th>
@@ -2818,6 +2840,27 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
                                                 <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
+
+
+                                                <td>
+
+                                                    <?php if ($data['schedule'] == 'Scheduled') { ?>
+                                                        <div class="btn-group btn-group-xs">
+                                                            <button class="btn btn-info">
+                                                                <?= $data['schedule'] ?>
+                                                            </button>
+                                                        </div>
+
+                                                    <?php } else { ?>
+                                                        <div class="btn-group btn-group-xs">
+                                                            <button class="btn btn-danger">
+                                                                <?= $data['schedule'] ?>
+                                                            </button>
+                                                        </div>
+                                                    <?php }  ?>
+                                                </td>
+
+
                                                 <td><?= $data['visit_type'] ?></td>
                                                 <td>
                                                     <div class="btn-group btn-group-xs">

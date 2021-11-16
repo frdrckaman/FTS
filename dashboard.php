@@ -98,39 +98,31 @@ if ($user->isLoggedIn()) {
         } elseif (Input::get('search')) {
             $link = 'info.php?id=7&cid=' . Input::get('study_id');
             Redirect::to($link);
-        }
+        } elseif (Input::get('reschedule_visit')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'reschedule_id' => array(
+                    'required' => true,
+                ),
+                'reschedule_date' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
+                    $user->updateRecord('visit', array(
+                        'visit_date' => $date
+                    ), Input::get('reschedule_id'));
 
-
-    elseif (Input::get('reschedule_visit')) {
-        $validate = new validate();
-        $validate = $validate->check($_POST, array(
-            'reschedule_id' => array(
-                'required' => true,
-            ),
-            'reschedule_date' => array(
-                'required' => true,
-            ),
-        ));
-        if ($validate->passed()) {
-            try {
-                $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
-                $user->updateRecord('visit', array(
-                    'visit_date' => $date
-                ), Input::get('reschedule_id'));
-
-                $successMessage = 'Visit Re - Scheduled Successful';
-            } catch (Exception $e) {
-                die($e->getMessage());
+                    $successMessage = 'Visit Re - Scheduled Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
             }
-        } else {
-            $pageError = $validate->errors();
         }
-    }
-
-
-
-
-
     }
 } else {
     Redirect::to('index.php');
@@ -254,6 +246,7 @@ if ($user->isLoggedIn()) {
                                     <th width="10%">STUDY NAME</th>
                                     <th width="10%">GROUP NAME</th>
                                     <th width="8%">VISIT CODE</th>
+                                    <th width="8%">SCHEDLUE TYPE</th>
                                     <th width="8%">VISIT TYPE</th>
                                     <th width="10%">VISIT STATUS</th>
                                     <th width="10%">CLINICIAN STATUS</th>
@@ -285,6 +278,27 @@ if ($user->isLoggedIn()) {
                                             <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
                                             <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code'] ?></td>
                                             <td><?= $data['visit_code'] ?></td>
+
+
+                                            <td>
+
+                                            <?php if ($data['schedule'] == 'Scheduled') { ?>
+                                                <div class="btn-group btn-group-xs">
+                                                    <button class="btn btn-info">
+                                                        <?= $data['schedule'] ?>
+                                                    </button>
+                                                </div>
+
+                                            <?php } else { ?>
+                                                <div class="btn-group btn-group-xs">
+                                                    <button class="btn btn-danger">
+                                                        <?= $data['schedule'] ?>
+                                                    </button>
+                                                </div>
+                                            <?php }  ?>
+                                            </td>
+
+
                                             <td><?= $data['visit_type'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
@@ -349,7 +363,7 @@ if ($user->isLoggedIn()) {
 
 
 
-                                                <div class="modal"  id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal" id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <form method="post">

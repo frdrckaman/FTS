@@ -354,7 +354,13 @@ if ($user->isLoggedIn()) {
                 </li>
                 <li class="">
                     <!--<a href="#add_visit" data-toggle="modal" data-backdrop="static" data-keyboard="false" ><span class="icon-bookmark"></span> Add Visit</a>-->
-                    <a href="add.php"><span class="icon-bookmark"></span> Add Visit</a>
+                    <a href="add.php"><span class="icon-bookmark"></span> Add Scheduled Visits</a>
+                   
+                </li>
+                <li class="">
+                    <!--<a href="#add_visit" data-toggle="modal" data-backdrop="static" data-keyboard="false" ><span class="icon-bookmark"></span> Add Visit</a>-->
+                    
+                    <a href="add_unschedule.php"><span class="icon-bookmark"></span> Add Un - Scheduled Visit</a>
                 </li>
 
             <?php } ?>
@@ -507,6 +513,8 @@ if ($user->isLoggedIn()) {
         </div>
     </div>
 </div>
+
+
 <div class="modal" id="add_visit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -568,6 +576,8 @@ if ($user->isLoggedIn()) {
         </div>
     </div>
 </div>
+
+
 <div class="modal" id="add_staff" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

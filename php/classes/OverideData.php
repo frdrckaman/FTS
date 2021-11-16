@@ -279,6 +279,13 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function get2($table,$where,$id,$where2,$date){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id' AND $where2 = '$date'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     public function getAsc($table,$where,$id,$order){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id' ORDER BY $order ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
