@@ -99,6 +99,38 @@ if ($user->isLoggedIn()) {
             $link = 'info.php?id=7&cid=' . Input::get('study_id');
             Redirect::to($link);
         }
+
+
+    elseif (Input::get('reschedule_visit')) {
+        $validate = new validate();
+        $validate = $validate->check($_POST, array(
+            'reschedule_id' => array(
+                'required' => true,
+            ),
+            'reschedule_date' => array(
+                'required' => true,
+            ),
+        ));
+        if ($validate->passed()) {
+            try {
+                $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
+                $user->updateRecord('visit', array(
+                    'visit_date' => $date
+                ), Input::get('reschedule_id'));
+
+                $successMessage = 'Visit Re - Scheduled Successful';
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        } else {
+            $pageError = $validate->errors();
+        }
+    }
+
+
+
+
+
     }
 } else {
     Redirect::to('index.php');
@@ -312,8 +344,73 @@ if ($user->isLoggedIn()) {
 
                                                 <td>
 
-                                                    <div><a href="info.php?id=1#re_schedule_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Re - Schedule Visit"><span class="icon-edit"></span></a></div>
+                                                    <div><a href="#re_schedule_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Re - Schedule Visit"><span class="icon-edit"></span></a></div>
                                                 </td>
+
+
+
+                                                <div class="modal"  id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <form method="post">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                    <h4 class="modal-title">Re - Schedule VISIT</h4>
+                                                                </div>
+                                                                <div class="modal-body clearfix">
+                                                                    <div class="controls">
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Study Name :</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="study_name" class="datepicker form-control" value="<?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?>" disabled />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Client ID:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="client_id" class="form-control" value="<?= $client['study_id'] ?>" disabled />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">VISIT CODE:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Study Group:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="initials" class="form-control" value="<?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>" disabled />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Visit Date:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="pull-right col-md-3">
+                                                                        <input type="hidden" name="reschedule_id" class="form-control" value="<?= $data['id'] ?>" required="" />
+                                                                        <input type="submit" name="reschedule_visit" value="SUBMIT" class="btn btn-success btn-clean">
+                                                                    </div>
+                                                                    <div class="pull-right col-md-2">
+                                                                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
 
                                                 <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
