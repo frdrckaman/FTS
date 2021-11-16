@@ -751,7 +751,7 @@ if ($user->isLoggedIn()) {
 
                                             <th width="10%">PHONE NUMBER</th>
                                             <th width="5%">ACTION</th>
-                                            <th width="5%">ACTION</th>
+                                            <th width="5%">RE-SCHEDULE</th>
 
                                         <?php } ?>
                                     </tr>
@@ -2792,6 +2792,7 @@ if ($user->isLoggedIn()) {
 
                                             <th width="10%">PHONE NUMBER</th>
                                             <th width="20%">ACTION</th>
+                                            <th width="20%">RE-SCHEDULE</th>
 
                                         <?php } ?>
                                     </tr>

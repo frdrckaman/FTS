@@ -231,7 +231,8 @@ if ($user->isLoggedIn()) {
                                     if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                     ?>
                                         <th width="10%">PHONE NUMBER</th>
-                                        <th width="20%"></th>
+                                        <th width="20%">ACTION</th>
+                                        <th width="20%">RE-SCHEDULE</th>
 
                                     <?php } ?>
                                 </tr>
