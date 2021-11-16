@@ -251,7 +251,7 @@ if ($user->isLoggedIn()) {
                                     <th width="10%">VISIT STATUS</th>
                                     <th width="10%">CLINICIAN STATUS</th>
                                     <th width="10%">DATACLERK STATUS</th>
-                                    <th width="13%">DATAMANAGER STATUS</th>
+                                    <th width="10%">DATAMANAGER STATUS</th>
                                     <?php
                                     if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                     ?>
