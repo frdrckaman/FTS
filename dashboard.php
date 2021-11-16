@@ -228,10 +228,10 @@ if ($user->isLoggedIn()) {
                                     <th width="10%">DATACLERK STATUS</th>
                                     <th width="13%">DATAMANAGER STATUS</th>
                                     <?php
-                                    if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12 ) {
-                                                ?>
-                                    <th width="10%">PHONE NUMBER</th>
-                                    <th width="20%"></th>
+                                    if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                    ?>
+                                        <th width="10%">PHONE NUMBER</th>
+                                        <th width="20%"></th>
 
                                     <?php } ?>
                                 </tr>
@@ -300,60 +300,67 @@ if ($user->isLoggedIn()) {
 
                                             <?php
 
-                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12 ) {
-                                                ?>
-                                            
-                                            <td><?= $client['phone_number'] ?></td>
-                                            <td>
-                                                <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
-                                            </td>
-                                            <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <form method="post">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                <h4 class="modal-title">APPOINTMENT</h4>
-                                                            </div>
-                                                            <div class="modal-body clearfix">
-                                                                <div class="controls">
-                                                                    <div class="form-row">
-                                                                        <div class="col-md-2">VISIT CODE:</div>
-                                                                        <div class="col-md-10">
-                                                                            <input type="hidden" name="visit_code" value="<?= $client['visit_code'] + 1 ?>">
-                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] . ' ( ' . $data['visit_type'] . ' ) ' ?>" disabled />
+                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                            ?>
+
+                                                <td><?= $client['phone_number'] ?></td>
+                                                <td>
+                                                    <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <div><a href="info.php?id=1#re_schedule_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Re - Schedule Visit"><span class="icon-edit"></span></a></div>
+                                                </td>
+
+                                                <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <form method="post">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                    <h4 class="modal-title">APPOINTMENT</h4>
+                                                                </div>
+                                                                <div class="modal-body clearfix">
+                                                                    <div class="controls">
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">VISIT CODE:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="hidden" name="visit_code" value="<?= $client['visit_code'] + 1 ?>">
+                                                                                <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] . ' ( ' . $data['visit_type'] . ' ) ' ?>" disabled />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row" id="st">
+                                                                            <div class="col-md-2">Status</div>
+                                                                            <div class="col-md-10">
+                                                                                <select class="form-control" id="site" name="visit_status" required>
+                                                                                    <option value="">Select Status</option>
+                                                                                    <option value="1">Complete</option>
+                                                                                    <option value="2">Missing</option>
+                                                                                </select>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="form-row" id="st">
-                                                                        <div class="col-md-2">Status</div>
-                                                                        <div class="col-md-10">
-                                                                            <select class="form-control" id="site" name="visit_status" required>
-                                                                                <option value="">Select Status</option>
-                                                                                <option value="1">Complete</option>
-                                                                                <option value="2">Missing</option>
-                                                                            </select>
-                                                                        </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="pull-right col-md-3">
+                                                                        <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
+                                                                        <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
+                                                                        <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
+                                                                        <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
+                                                                        <input type="hidden" name="sn" value="<?= $data['sn_cl_status'] ?>">
+                                                                        <input type="hidden" name="sn3" value="<?= $data['dc_status'] ?>">
+                                                                        <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
+                                                                    </div>
+                                                                    <div class="pull-right col-md-2">
+                                                                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <div class="pull-right col-md-3">
-                                                                    <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
-                                                                    <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
-                                                                    <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
-                                                                    <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
-                                                                    <input type="hidden" name="sn" value="<?= $data['sn_cl_status'] ?>">
-                                                                    <input type="hidden" name="sn3" value="<?= $data['dc_status'] ?>">
-                                                                    <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
-                                                                </div>
-                                                                <div class="pull-right col-md-2">
-                                                                    <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
                                             <?php } ?>
                                         </tr>
