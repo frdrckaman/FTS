@@ -734,24 +734,24 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="8%">STUDY ID</th>
-                                        <th width="10%">STUDY NAME</th>
-                                        <th width="10%">GROUP NAME</th>
-                                        <th width="8%">VISIT CODE</th>
-                                        <th width="8%">SCHEDLUE TYPE</th>
-                                        <th width="8%">VISIT TYPE</th>
-                                        <th width="10%">VISIT STATUS</th>
-                                        <th width="10%">CLINICIAN STATUS</th>
-                                        <th width="10%">DATACLERK STATUS</th>
-                                        <th width="10%">DATAMANAGER STATUS</th>
+                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">STUDY NAME</th>
+                                        <th width="5%">GROUP NAME</th>
+                                        <th width="5%">VISIT CODE</th>
+                                        <th width="5%">SCHEDLUE TYPE</th>
+                                        <th width="3%">VISIT TYPE</th>
+                                        <th width="5%">VISIT STATUS</th>
+                                        <th width="5%">CLINICIAN STATUS</th>
+                                        <th width="5%">DATACLERK STATUS</th>
+                                        <th width="5%">DATAMANAGER STATUS</th>
 
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                         ?>
 
-                                            <th width="10%">PHONE NUMBER</th>
+                                            <th width="5%">PHONE NUMBER</th>
                                             <th width="5%">ACTION</th>
-                                            <th width="5%">RE-SCHEDULE</th>
+                                            <th width="8%">RE-SCHEDULE</th>
 
                                         <?php } ?>
                                     </tr>
@@ -789,7 +789,7 @@ if ($user->isLoggedIn()) {
 
 
                                                 <td><?= $data['visit_type'] ?></td>
-                                                
+
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
@@ -2801,24 +2801,24 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="8%">STUDY ID</th>
-                                        <th width="10%">STUDY NAME</th>
-                                        <th width="10%">GROUP NAME</th>
-                                        <th width="8%">VISIT CODE</th>
-                                        <th width="8%">SCHEDLUE TYPE</th>
-                                        <th width="8%">VISIT TYPE</th>
-                                        <th width="10%">VISIT STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'status', 0) ?></span></th>
-                                        <th width="10%">CLINICIAN STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'sn_cl_status', 0) ?></span></th>
-                                        <th width="10%">DATACLERK STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'dc_status', 0) ?></span></th>
-                                        <th width="10%">DATAMANAGER STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'dm_status', 0) ?></span></th>
+                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">STUDY NAME</th>
+                                        <th width="5%">GROUP NAME</th>
+                                        <th width="5%">VISIT CODE</th>
+                                        <th width="5%">SCHEDLUE TYPE</th>
+                                        <th width="3%">VISIT TYPE</th>
+                                        <th width="5%">VISIT STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'status', 0) ?></span></th>
+                                        <th width="5%">CLINICIAN STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'sn_cl_status', 0) ?></span></th>
+                                        <th width="5%">DATACLERK STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'dc_status', 0) ?></span></th>
+                                        <th width="5%">DATAMANAGER STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'dm_status', 0) ?></span></th>
 
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                         ?>
 
-                                            <th width="10%">PHONE NUMBER</th>
-                                            <th width="20%">ACTION</th>
-                                            <th width="20%">RE-SCHEDULE</th>
+                                            <th width="5%">PHONE NUMBER</th>
+                                            <th width="5%">ACTION</th>
+                                            <th width="5%">RE-SCHEDULE</th>
 
                                         <?php } ?>
                                     </tr>

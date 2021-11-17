@@ -55,20 +55,20 @@ if ($user->isLoggedIn()) {
                         if ($visitCode) {
                             $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
                         }
-                        $successMessage = 'Visit Added Successful';}
-                    elseif ($user->data()->position == 6) {
-                            $user->updateRecord('visit', array(
-                                $a_status => Input::get('visit_status'),
-                                // 'status' => Input::get('visit_status'),
-                                'staff_id' => $user->data()->id
-                            ), Input::get('v_id'));
-                            $date = null;
-                            $visitCode = $getVisit[0]['visit_code'] + 1;
-                            if ($visitCode) {
-                                $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                            }
-                            $successMessage = 'Visit Added Successful';}
-                    elseif ($user->data()->position == 12) {
+                        $successMessage = 'Visit Added Successful';
+                    } elseif ($user->data()->position == 6) {
+                        $user->updateRecord('visit', array(
+                            $a_status => Input::get('visit_status'),
+                            // 'status' => Input::get('visit_status'),
+                            'staff_id' => $user->data()->id
+                        ), Input::get('v_id'));
+                        $date = null;
+                        $visitCode = $getVisit[0]['visit_code'] + 1;
+                        if ($visitCode) {
+                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        }
+                        $successMessage = 'Visit Added Successful';
+                    } elseif ($user->data()->position == 12) {
                         $user->updateRecord('visit', array(
                             // $a_status => Input::get('visit_status'),
                             'status' => Input::get('visit_status'),
@@ -99,6 +99,30 @@ if ($user->isLoggedIn()) {
         } elseif (Input::get('search')) {
             $link = 'info.php?id=7&cid=' . Input::get('study_id');
             Redirect::to($link);
+        } elseif (Input::get('reschedule_visit')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'reschedule_id' => array(
+                    'required' => true,
+                ),
+                'reschedule_date' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
+                    $user->updateRecord('visit', array(
+                        'visit_date' => $date
+                    ), Input::get('reschedule_id'));
+
+                    $successMessage = 'Visit Re - Scheduled Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
         }
     }
 } else {
@@ -221,13 +245,22 @@ if ($user->isLoggedIn()) {
                                     <th width="10%">STUDY NAME</th>
                                     <th width="10%">GROUP NAME</th>
                                     <th width="8%">VISIT CODE</th>
+                                    <th width="5%">SCHEDLUE TYPE</th>
                                     <th width="8%">VISIT TYPE</th>
                                     <th width="10%">VISIT STATUS</th>
                                     <th width="10%">CLINICIAN STATUS</th>
                                     <th width="10%">DATACLERK STATUS</th>
                                     <th width="13%">DATAMANAGER STATUS</th>
-                                    <th width="10%">PHONE NUMBER</th>
-                                    <th width="20%"></th>
+
+                                    <?php
+                                    if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                    ?>
+                                        <th width="5%">PHONE NUMBER</th>
+                                        <th width="5%">ACTION</th>
+                                        <th width="5%">RE-SCHEDULE</th>
+
+                                    <?php } ?>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -246,6 +279,26 @@ if ($user->isLoggedIn()) {
                                             <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
                                             <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
                                             <td><?= $data['visit_code'] ?></td>
+
+                                            <td>
+
+                                                <?php if ($data['schedule'] == 'Scheduled') { ?>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <button class="btn btn-info">
+                                                            <?= $data['schedule'] ?>
+                                                        </button>
+                                                    </div>
+
+                                                <?php } else { ?>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <button class="btn btn-danger">
+                                                            <?= $data['schedule'] ?>
+                                                        </button>
+                                                    </div>
+                                                <?php }  ?>
+                                            </td>
+
+
                                             <td><?= $data['visit_type'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
@@ -291,10 +344,86 @@ if ($user->isLoggedIn()) {
                                                 <?php } ?>
                                                 </div>
                                             </td>
-                                            <td><?= $client['phone_number'] ?></td>
-                                            <td>
-                                                <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
-                                            </td>
+
+
+                                            <?php
+
+                                            if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
+                                            ?>
+
+                                                <td><?= $client['phone_number'] ?></td>
+                                                <td>
+                                                    <a href="#appnt<?= $x ?>" data-toggle="modal" class="widget-icon" title="Add Visit"><span class="icon-share"></span></a>
+                                                </td>
+
+                                                <td>
+
+                                                    <div><a href="#re_schedule_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Re - Schedule Visit"><span class="icon-edit"></span></a></div>
+                                                </td>
+
+                                            <?php } ?>
+
+
+                                            <div class="modal" id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form method="post">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4 class="modal-title">Re - Schedule VISIT</h4>
+                                                            </div>
+                                                            <div class="modal-body clearfix">
+                                                                <div class="controls">
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Study Name :</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="study_name" class="datepicker form-control" value="<?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Client ID:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="client_id" class="form-control" value="<?= $client['study_id'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">VISIT CODE:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Study Group:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="initials" class="form-control" value="<?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Visit Date:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="pull-right col-md-3">
+                                                                    <input type="hidden" name="reschedule_id" class="form-control" value="<?= $data['id'] ?>" required="" />
+                                                                    <input type="submit" name="reschedule_visit" value="SUBMIT" class="btn btn-success btn-clean">
+                                                                </div>
+                                                                <div class="pull-right col-md-2">
+                                                                    <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
                                             <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -326,7 +455,7 @@ if ($user->isLoggedIn()) {
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <div class="pull-right col-md-3">
-                                                                <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
+                                                                    <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
                                                                     <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
                                                                     <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
                                                                     <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
