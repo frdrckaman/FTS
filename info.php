@@ -789,6 +789,7 @@ if ($user->isLoggedIn()) {
 
 
                                                 <td><?= $data['visit_type'] ?></td>
+                                                
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
@@ -800,6 +801,7 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
+
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['sn_cl_status'] == 0) { ?>&nbsp;
@@ -811,6 +813,7 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
+
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dc_status'] == 0) { ?>&nbsp;
@@ -822,6 +825,7 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
+
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
                                                         <?php if ($data['dm_status'] == 0) { ?>&nbsp;

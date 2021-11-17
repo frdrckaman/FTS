@@ -219,8 +219,7 @@ if ($user->isLoggedIn()) {
                                             <div class="col-md-10">
                                                 <select class="form-control" id="visit_type" name="visit_type">
                                                     <option value="">Select Schedule</option>
-                                                    <option value="Clinic">Clinic Visit</option>
-                                                    <option value="Home">Home Visit</option>
+                                                    <option value="Clinic">Clinic Visit</option>                                                    
                                                 </select>
                                             </div>
                                         </div>
