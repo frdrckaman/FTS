@@ -181,17 +181,6 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-2">CLIENT ID:</div>
-                                            <div class="col-md-10">
-                                                <select name="study_id" id="study" class="select2" style="width: 100%;" tabindex="-1">
-                                                    <option value="">Select client ID</option>
-                                                    <?php foreach ($override->getData('clients') as $client) { ?>
-                                                        <option value="<?= $client['id'] ?>"><?= $client['study_id'] ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div class="form-row" id="st">
                                             <div class="col-md-2">Group:</div>
                                             <div class="col-md-10">
@@ -203,6 +192,16 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="form-row">
+                                            <div class="col-md-2">CLIENT ID</div>
+                                            <div class="col-md-10">
+                                                <select name="study_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
+                                                <option value="">SELECT CLIENT ID</option>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <div class="form-row" id="st">
                                             <div class="col-md-2">SCHEDULE TYPE</div>
                                             <div class="col-md-10">
@@ -287,6 +286,21 @@ if ($user->isLoggedIn()) {
                     $('#waitS1').hide();
                 }
             });
+        });
+
+        $('#study_name').change(function(){
+            var getUid = $(this).val();
+            // $('#fl_wait').show();
+            $.ajax({
+                url:"process.php?cnt=study",
+                method:"GET",
+                data:{getUid:getUid},
+                success:function(data){
+                    $('#client_id').html(data);
+                    // $('#fl_wait').hide();
+                }
+            });
+
         });
 
         if (window.history.replaceState) {

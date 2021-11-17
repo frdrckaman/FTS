@@ -42,8 +42,7 @@ if ($user->isLoggedIn()) {
                             $user->generateScheduleNotDelayedVac080(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif (Input::get('study_name') == 'VAC080' && Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 1C' || Input::get('group') == 'Group 2D') {
                             $user->generateScheduleDelayedVac080(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
-                        }
-                        elseif (Input::get('study_name') == 'VAC082' && Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2A' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 3A' || Input::get('group') == 'Group 3B') {
+                        } elseif (Input::get('study_name') == 'VAC082' && Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2A' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 3A' || Input::get('group') == 'Group 3B') {
                             $user->generateScheduleNotDelayedVac082(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif (Input::get('study_name') == 'VAC082' && Input::get('group') == 'Group 3C' || Input::get('group') == 'Group 4A' || Input::get('group') == 'Group 4B' || Input::get('group') == 'Group 4C') {
                             $user->generateScheduleDelayedVac082(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
@@ -159,24 +158,15 @@ if ($user->isLoggedIn()) {
                                             <div class="col-md-2">STUDY NAME:</div>
                                             <div class="col-md-10">
                                                 <select name="study_name" id="study_name" class="select2" style="width: 100%;" tabindex="-1">
-                                                    <option value="">Select study Name</option>
+                                                    <option value="">SELECT STUDY</option>
                                                     <?php foreach ($override->getData('study') as $study) { ?>
                                                         <option value="<?= $study['name'] ?>"><?= $study['name'] ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-2">CLIENT ID:</div>
-                                            <div class="col-md-10">
-                                                <select name="study_id" id="study" class="select2" style="width: 100%;" tabindex="-1">
-                                                    <option value="">Select client ID</option>
-                                                    <?php foreach ($override->getData('clients') as $client) { ?>
-                                                        <option value="<?= $client['id'] ?>"><?= $client['study_id'] ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
+
+
                                         <div class="form-row" id="st">
                                             <div class="col-md-2">Group:</div>
                                             <div class="col-md-10">
@@ -188,6 +178,18 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
+                                        
+                                        <div class="form-row">
+                                            <div class="col-md-2">CLIENT ID</div>
+                                            <div class="col-md-10">
+                                                <select name="study_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
+                                                <option value="">SELECT CLIENT ID</option>                                                
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+
                                         <div id="waitS1" style="display:none;" class="col-md-offset-5 col-md-1"><img src='img/owl/spinner-mini.gif' width="12" height="12" /><br>Loading..</div>
                                         <div class="form-row" id="s1">
                                             <div class="col-md-2">VISIT CODE:</div>
@@ -241,6 +243,22 @@ if ($user->isLoggedIn()) {
                     $('#waitS1').hide();
                 }
             });
+        });
+
+        $('#study_name').change(function(){
+            var getUid = $(this).val();
+            // $('#fl_wait').show();
+            $.ajax({
+                url:"process.php?cnt=study",
+                method:"GET",
+                data:{getUid:getUid},
+                success:function(data){
+                    $('#client_id').html(data);
+                    // $('#fl_wait').hide();
+                    console.log(data);
+                }
+            });
+
         });
 
         if (window.history.replaceState) {
