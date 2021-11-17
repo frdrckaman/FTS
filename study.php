@@ -241,23 +241,23 @@ if ($user->isLoggedIn()) {
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                             <thead>
                                 <tr>
-                                    <th width="8%">STUDY ID</th>
-                                    <th width="10%">STUDY NAME</th>
-                                    <th width="10%">GROUP NAME</th>
-                                    <th width="8%">VISIT CODE</th>
-                                    <th width="5%">SCHEDLUE TYPE</th>
-                                    <th width="8%">VISIT TYPE</th>
-                                    <th width="10%">VISIT STATUS</th>
-                                    <th width="10%">CLINICIAN STATUS</th>
-                                    <th width="10%">DATACLERK STATUS</th>
-                                    <th width="13%">DATAMANAGER STATUS</th>
+                                    <th width="5%">STUDY ID</th>
+                                    <th width="5%">STUDY NAME</th>
+                                    <th width="3%">GROUP NAME</th>
+                                    <th width="3%">VISIT CODE</th>
+                                    <th width="3%">SCHEDLUE TYPE</th>
+                                    <th width="3%">VISIT TYPE</th>
+                                    <th width="5%">VISIT STATUS</th>
+                                    <th width="5%">CLINICIAN STATUS</th>
+                                    <th width="5%">DATACLERK STATUS</th>
+                                    <th width="5%">DATAMANAGER STATUS</th>
 
                                     <?php
                                     if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                     ?>
-                                        <th width="5%">PHONE NUMBER</th>
-                                        <th width="5%">ACTION</th>
-                                        <th width="5%">RE-SCHEDULE</th>
+                                        <th width="3%">PHONE NUMBER</th>
+                                        <th width="3%">ACTION</th>
+                                        <th width="3%">RE-SCHEDULE</th>
 
                                     <?php } ?>
 
@@ -303,44 +303,44 @@ if ($user->isLoggedIn()) {
                                             <td>
                                                 <div class="btn-group btn-group-xs">
                                                     <?php if ($data['status'] == 3) { ?>&nbsp;
-                                                    <button class="btn btn-warning">Visit Pending</button>
+                                                    <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['status'] == 1) { ?>
-                                                    <button class="btn btn-success">Visit Completed</button>
+                                                    <button class="btn btn-success">Completed</button>
                                                 <?php } elseif ($data['status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Visit Missed</button>
+                                                    <button class="btn btn-danger">Missed</button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
                                                     <?php if ($data['sn_cl_status'] == 0) { ?>&nbsp;
-                                                    <button class="btn btn-warning">Clinician Pending</button>
+                                                    <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['sn_cl_status'] == 1) { ?>
-                                                    <button class="btn btn-success">Clinician Completed</button>
+                                                    <button class="btn btn-success">Reviewed</button>
                                                 <?php } elseif ($data['sn_cl_status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Clinician Missed</button>
+                                                    <button class="btn btn-danger">Missed</button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
                                                     <?php if ($data['dc_status'] == 0) { ?>&nbsp;
-                                                    <button class="btn btn-warning">Data Pending</button>
+                                                    <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['dc_status'] == 1) { ?>
-                                                    <button class="btn btn-success">Data Completed</button>
+                                                    <button class="btn btn-success">Entered</button>
                                                 <?php } elseif ($data['dc_status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Data Missed</button>
+                                                    <button class="btn btn-danger">Missed</button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
                                                     <?php if ($data['dm_status'] == 0) { ?>&nbsp;
-                                                    <button class="btn btn-warning">Review Pending</button>
+                                                    <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['dm_status'] == 1) { ?>
-                                                    <button class="btn btn-success">Review Completed</button>
+                                                    <button class="btn btn-success">Reviewed</button>
                                                 <?php } elseif ($data['dm_status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Review Missed</button>
+                                                    <button class="btn btn-danger">Missed</button>
                                                 <?php } ?>
                                                 </div>
                                             </td>

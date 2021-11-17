@@ -736,9 +736,9 @@ if ($user->isLoggedIn()) {
                                     <tr>
                                         <th width="5%">STUDY ID</th>
                                         <th width="5%">STUDY NAME</th>
-                                        <th width="5%">GROUP NAME</th>
-                                        <th width="5%">VISIT CODE</th>
-                                        <th width="5%">SCHEDLUE TYPE</th>
+                                        <th width="3%">GROUP NAME</th>
+                                        <th width="3%">VISIT CODE</th>
+                                        <th width="3%">SCHEDLUE TYPE</th>
                                         <th width="3%">VISIT TYPE</th>
                                         <th width="5%">VISIT STATUS</th>
                                         <th width="5%">CLINICIAN STATUS</th>
@@ -749,9 +749,9 @@ if ($user->isLoggedIn()) {
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                         ?>
 
-                                            <th width="5%">PHONE NUMBER</th>
-                                            <th width="5%">ACTION</th>
-                                            <th width="8%">RE-SCHEDULE</th>
+                                            <th width="3%">PHONE NUMBER</th>
+                                            <th width="3%">ACTION</th>
+                                            <th width="3%">RE-SCHEDULE</th>
 
                                         <?php } ?>
                                     </tr>
@@ -2803,9 +2803,9 @@ if ($user->isLoggedIn()) {
                                     <tr>
                                         <th width="5%">STUDY ID</th>
                                         <th width="5%">STUDY NAME</th>
-                                        <th width="5%">GROUP NAME</th>
-                                        <th width="5%">VISIT CODE</th>
-                                        <th width="5%">SCHEDLUE TYPE</th>
+                                        <th width="3%">GROUP NAME</th>
+                                        <th width="3%">VISIT CODE</th>
+                                        <th width="3%">SCHEDLUE TYPE</th>
                                         <th width="3%">VISIT TYPE</th>
                                         <th width="5%">VISIT STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'status', 0) ?></span></th>
                                         <th width="5%">CLINICIAN STATUS<i></i>&nbsp;<span class="label label-danger"><?= $override->countDataNot('visit', 'status', 0, 'sn_cl_status', 0) ?></span></th>
@@ -2816,9 +2816,9 @@ if ($user->isLoggedIn()) {
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
                                         ?>
 
-                                            <th width="5%">PHONE NUMBER</th>
-                                            <th width="5%">ACTION</th>
-                                            <th width="5%">RE-SCHEDULE</th>
+                                            <th width="3%">PHONE NUMBER</th>
+                                            <th width="3%">ACTION</th>
+                                            <th width="3%">RE-SCHEDULE</th>
 
                                         <?php } ?>
                                     </tr>
