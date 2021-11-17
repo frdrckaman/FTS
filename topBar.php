@@ -1047,6 +1047,23 @@ if ($user->isLoggedIn()) {
                 }
             });
         });
+
+        $('#project_id').change(function(){
+            var getUid = $(this).val();
+            // $('#fl_wait').show();
+            $.ajax({
+                url:"process.php?cnt=study",
+                method:"GET",
+                data:{getUid:getUid},
+                success:function(data){
+                    // $('#client_id').html(data);
+                    // $('#fl_wait').hide();
+                    // console.log(data);
+                }
+            });
+
+        });
+
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
