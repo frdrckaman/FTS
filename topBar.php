@@ -818,7 +818,7 @@ if ($user->isLoggedIn()) {
                                 <select class="form-control" id="project_id" name="project_id" required>
                                     <option value="0">ALL STUDIES</option>
                                     <?php foreach ($override->getData('study') as $group) { ?>
-                                        <option value="<?= $group['id'] ?>"><?= $group['name'] ?></option>
+                                        <option value="<?= $group['name'] ?>"><?= $group['name'] ?></option>
                                     <?php } ?>
                                 </select>
                             </div>

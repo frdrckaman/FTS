@@ -502,7 +502,7 @@ if ($user->isLoggedIn()) {
             }
         } elseif (Input::get('download')) {
             $project_id = $_GET['project_id'];
-            $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id);
+            $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id);
             $y = 0;
             $list = array();
             $data1 = null;
@@ -519,8 +519,8 @@ if ($user->isLoggedIn()) {
                 }
             }
             $data1[0] = $list;
-            
-            foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id) as $dt) {
+
+            foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id) as $dt) {
                 $f = 0;
                 if ($dt['status'] != 4) {
                     $client = $override->get('clients', 'id', $dt['client_id'])[0];
@@ -2730,9 +2730,9 @@ if ($user->isLoggedIn()) {
                             </tr>
                         </tbody>
                     </table>
-                <?php } elseif ($_GET['id'] == 12) {                    
+                <?php } elseif ($_GET['id'] == 12) {
                     $project_id = $_GET['project_id'];
-                    $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id);
+                    $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id);
 
                     $y = 0;
                     $list = array();
@@ -2746,21 +2746,29 @@ if ($user->isLoggedIn()) {
                     <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th width="3%">Study ID (Group Name)</th>
+                                <th width="2%">CLIENT ID</th>
+                                <th width="2%">STUDY NAME</th>
+                                <th width="2%">GROUP NAME</th>
                                 <?php $x = 1;
                                 foreach ($list as $data) { ?>
-                                    <th width="3%"><?= $data ?></th>
+                                    <th width="2%"><?= $data ?></th>
                                 <?php $x++;
                                 } ?>
                             </tr>
 
                         </thead>
                         <tbody>
-                            <?php foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id) as $dt) {
+                            <?php foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id) as $dt) {
                                 if ($dt['status'] != 4) {
-                                    $client = $override->get('clients', 'id', $dt['client_id'])[0]; ?>
+                                    $client = $override->get('clients', 'id', $dt['client_id'])[0]; 
+                                    
+                                    ?>
+                                    
+                                    
                                     <tr>
-                                        <td><?= $client['study_id'] . ' ( ' . $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] . ' ) ' ?>
+                                        <td><?= $client['study_id'] ?>
+                                        <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
+                                        <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>
                                             <?php if ($client['status'] == 0) { ?>
                                                 <div class="btn-group btn-group-xs">
                                                     <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
