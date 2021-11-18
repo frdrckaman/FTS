@@ -501,7 +501,8 @@ if ($user->isLoggedIn()) {
                 $pageError = $validate->errors();
             }
         } elseif (Input::get('download')) {
-            $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to']);
+            $project_id = $_GET['project_id'];
+            $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id);
             $y = 0;
             $list = array();
             $data1 = null;
@@ -518,8 +519,8 @@ if ($user->isLoggedIn()) {
                 }
             }
             $data1[0] = $list;
-
-            foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to']) as $dt) {
+            
+            foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id) as $dt) {
                 $f = 0;
                 if ($dt['status'] != 4) {
                     $client = $override->get('clients', 'id', $dt['client_id'])[0];
@@ -542,7 +543,7 @@ if ($user->isLoggedIn()) {
                                     $f++;
                                 }
                             } else {
-                                $mqz[$f] = '-';
+                                $mqz[$f] = 'NO VISIT ';
                                 $f++;
                             }
                         }
@@ -2729,8 +2730,10 @@ if ($user->isLoggedIn()) {
                             </tr>
                         </tbody>
                     </table>
-                <?php } elseif ($_GET['id'] == 12) {
-                    $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to']);
+                <?php } elseif ($_GET['id'] == 12) {                    
+                    $project_id = $_GET['project_id'];
+                    $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id);
+
                     $y = 0;
                     $list = array();
                     while ($y <= $user->dateDiff($_GET['to'], $_GET['from'])) {
@@ -2753,7 +2756,7 @@ if ($user->isLoggedIn()) {
 
                         </thead>
                         <tbody>
-                            <?php foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to']) as $dt) {
+                            <?php foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'],'project_id',$project_id) as $dt) {
                                 if ($dt['status'] != 4) {
                                     $client = $override->get('clients', 'id', $dt['client_id'])[0]; ?>
                                     <tr>
@@ -2781,7 +2784,7 @@ if ($user->isLoggedIn()) {
                                                     <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
                                                 <?php }
                                                                                     } else { ?>
-                                                -
+                                                NO VISIT
                                             <?php } ?>
                                                 </div>
                                             </td>

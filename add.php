@@ -255,7 +255,7 @@ if ($user->isLoggedIn()) {
                 success:function(data){
                     $('#client_id').html(data);
                     // $('#fl_wait').hide();
-                    console.log(data);
+                    // console.log(data);
                 }
             });
 

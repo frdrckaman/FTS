@@ -255,10 +255,13 @@ if ($user->isLoggedIn()) {
                 'to_date' => array(
                     'required' => true,
                 ),
+                'project_id' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 try {
-                    $link = 'info.php?id=12&from=' . $date = date('Y-m-d', strtotime(Input::get('from_date'))) . '&to=' . $date = date('Y-m-d', strtotime(Input::get('to_date')));
+                    $link = 'info.php?id=12&from=' . $date = date('Y-m-d', strtotime(Input::get('from_date'))) . '&to=' . $date = date('Y-m-d', strtotime(Input::get('to_date')))  . '&project_id=' . Input::get('project_id');
                     Redirect::to($link);
                 } catch (Exception $e) {
                     die($e->getMessage());
@@ -355,11 +358,11 @@ if ($user->isLoggedIn()) {
                 <li class="">
                     <!--<a href="#add_visit" data-toggle="modal" data-backdrop="static" data-keyboard="false" ><span class="icon-bookmark"></span> Add Visit</a>-->
                     <a href="add.php"><span class="icon-bookmark"></span> Add Scheduled Visits</a>
-                   
+
                 </li>
                 <li class="">
                     <!--<a href="#add_visit" data-toggle="modal" data-backdrop="static" data-keyboard="false" ><span class="icon-bookmark"></span> Add Visit</a>-->
-                    
+
                     <a href="add_unschedule.php"><span class="icon-bookmark"></span> Add Un - Scheduled Visit</a>
                 </li>
 
@@ -838,7 +841,7 @@ if ($user->isLoggedIn()) {
                 </div>
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
-                        <input type="submit" name="search_schedule" value="Search" class="btn btn-success btn-clean">
+                        <input type="submit" name="search_schedule" id="search_schedule" value="Search" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
@@ -1048,21 +1051,25 @@ if ($user->isLoggedIn()) {
             });
         });
 
-        $('#project_id').change(function(){
-            var getUid = $(this).val();
-            // $('#fl_wait').show();
-            $.ajax({
-                url:"process.php?cnt=study",
-                method:"GET",
-                data:{getUid:getUid},
-                success:function(data){
-                    // $('#client_id').html(data);
-                    // $('#fl_wait').hide();
-                    // console.log(data);
-                }
-            });
+        // $("#search_schedule").on("submit", function() {
+        //     $('#project_id').change(function() {
+        //         var getUid = $(this).val();
+        //         // $('#fl_wait').show();
+        //         $.ajax({
+        //             url: "process.php?cnt=study",
+        //             method: "GET",
+        //             data: {
+        //                 getUid: getUid
+        //             },
+        //             success: function(data) {
+        //                 // $('#client_id').html(data);
+        //                 // $('#fl_wait').hide();
+        //                 // console.log(data);
+        //             }
+        //         });
 
-        });
+        //     });
+        // });
 
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
