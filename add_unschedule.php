@@ -28,7 +28,7 @@ if ($user->isLoggedIn()) {
                 'study_name' => array(
                     'required' => true,
                 ),
-                'study_id' => array(
+                'client_id' => array(
                     'required' => true,
                 ),
                 'group' => array(
@@ -52,7 +52,7 @@ if ($user->isLoggedIn()) {
             ));
             if ($validate->passed()) {
                 try {
-                    if (!$override->get2('visit', 'client_id', Input::get('study_id'),'visit_date', Input::get('visit_date'))) {
+                    if (!$override->get2('visit', 'client_id', Input::get('client_id'),'visit_date', Input::get('visit_date'))) {
 
                         if(Input::get('post_vac') == '1'){
                             $v_point = 1;
@@ -62,7 +62,7 @@ if ($user->isLoggedIn()) {
                             $v_point = 3;
                         }
 
-                        $user->generateUnSchedule(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), $v_point,Input::get('visit_day'), Input::get('schedule_type'), Input::get('visit_type'));
+                        $user->generateUnSchedule(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), $v_point,Input::get('visit_day'), Input::get('schedule_type'), Input::get('visit_type'));
                         $successMessage = 'Un - Schedules  Date Added Successful';
                     } else {
                         $errorMessage = 'Patient Un - Schedules Date already exist';
@@ -195,8 +195,12 @@ if ($user->isLoggedIn()) {
                                         <div class="form-row">
                                             <div class="col-md-2">CLIENT ID</div>
                                             <div class="col-md-10">
-                                                <select name="study_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
+                                                <select name="client_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
                                                 <option value="">SELECT CLIENT ID</option>
+                                                <!-- <option value="">Select study ID</option> -->
+                                                <?php foreach ($override->getData('clients') as $client){?>
+                                                    <option value="<?=$client['id']?>"><?=$client['study_id']?></option>
+                                                <?php }?>
                                                     
                                                 </select>
                                             </div>
@@ -213,6 +217,7 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="form-row" id="st">
                                             <div class="col-md-2">VISIT TYPE</div>
                                             <div class="col-md-10">
@@ -222,6 +227,7 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="form-row" id="st">
                                             <div class="col-md-2">POST VACCINATION</div>
                                             <div class="col-md-10">
@@ -233,6 +239,7 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
+                                        
                                         <div id="waitS1" style="display:none;" class="col-md-offset-5 col-md-1"><img src='img/owl/spinner-mini.gif' width="12" height="12" /><br>Loading..</div>
                                         <div class="form-row" id="s1">
                                             <div class="col-md-2">VISIT DAY:</div>
@@ -288,20 +295,20 @@ if ($user->isLoggedIn()) {
             });
         });
 
-        $('#study_name').change(function(){
-            var getUid = $(this).val();
-            // $('#fl_wait').show();
-            $.ajax({
-                url:"process.php?cnt=study",
-                method:"GET",
-                data:{getUid:getUid},
-                success:function(data){
-                    $('#client_id').html(data);
-                    // $('#fl_wait').hide();
-                }
-            });
+        // $('#study_name').change(function(){
+        //     var getUid = $(this).val();
+        //     // $('#fl_wait').show();
+        //     $.ajax({
+        //         url:"process.php?cnt=study",
+        //         method:"GET",
+        //         data:{getUid:getUid},
+        //         success:function(data){
+        //             $('#client_id').html(data);
+        //             // $('#fl_wait').hide();
+        //         }
+        //     });
 
-        });
+        // });
 
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);

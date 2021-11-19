@@ -28,7 +28,7 @@ if ($user->isLoggedIn()) {
                 'study_name' => array(
                     'required' => true,
                 ),
-                'study_id' => array(
+                'client_id' => array(
                     'required' => true,
                 ),
                 'visit_date' => array(
@@ -37,15 +37,15 @@ if ($user->isLoggedIn()) {
             ));
             if ($validate->passed()) {
                 try {
-                    if (!$override->get('visit', 'client_id', Input::get('study_id'))) {
+                    if (!$override->get('visit', 'client_id', Input::get('client_id'))) {
                         if (Input::get('study_name') == 'VAC080' && Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 2A') {
-                            $user->generateScheduleNotDelayedVac080(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                            $user->generateScheduleNotDelayedVac080(Input::get('study_name'), Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif (Input::get('study_name') == 'VAC080' && Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 1C' || Input::get('group') == 'Group 2D') {
-                            $user->generateScheduleDelayedVac080(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                            $user->generateScheduleDelayedVac080(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif (Input::get('study_name') == 'VAC082' && Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2A' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 3A' || Input::get('group') == 'Group 3B') {
-                            $user->generateScheduleNotDelayedVac082(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                            $user->generateScheduleNotDelayedVac082(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif (Input::get('study_name') == 'VAC082' && Input::get('group') == 'Group 3C' || Input::get('group') == 'Group 4A' || Input::get('group') == 'Group 4B' || Input::get('group') == 'Group 4C') {
-                            $user->generateScheduleDelayedVac082(Input::get('study_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                            $user->generateScheduleDelayedVac082(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         }
                         $successMessage = 'Schedules Added Successful';
                     } else {
@@ -182,8 +182,12 @@ if ($user->isLoggedIn()) {
                                         <div class="form-row">
                                             <div class="col-md-2">CLIENT ID</div>
                                             <div class="col-md-10">
-                                                <select name="study_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
-                                                <option value="">SELECT CLIENT ID</option>                                                
+                                                <select name="client_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
+                                                <option value="">SELECT CLIENT ID</option>
+                                                <!-- <option value="">Select study ID</option> -->
+                                                <?php foreach ($override->getData('clients') as $client){?>
+                                                    <option value="<?=$client['id']?>"><?=$client['study_id']?></option>
+                                                <?php }?>                                              
                                                     
                                                 </select>
                                             </div>
@@ -245,21 +249,21 @@ if ($user->isLoggedIn()) {
             });
         });
 
-        $('#study_name').change(function(){
-            var getUid = $(this).val();
-            // $('#fl_wait').show();
-            $.ajax({
-                url:"process.php?cnt=study",
-                method:"GET",
-                data:{getUid:getUid},
-                success:function(data){
-                    $('#client_id').html(data);
-                    // $('#fl_wait').hide();
-                    // console.log(data);
-                }
-            });
+        // $('#study_name').change(function(){
+        //     var getUid = $(this).val();
+        //     // $('#fl_wait').show();
+        //     $.ajax({
+        //         url:"process.php?cnt=study",
+        //         method:"GET",
+        //         data:{getUid:getUid},
+        //         success:function(data){
+        //             $('#client_id').html(data);
+        //             // $('#fl_wait').hide();
+        //             // console.log(data);
+        //         }
+        //     });
 
-        });
+        // });
 
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
