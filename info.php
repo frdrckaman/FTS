@@ -406,13 +406,13 @@ if ($user->isLoggedIn()) {
             if ($validate->passed()) {
                 try {
                     if (Input::get('project_name') == 'VAC080' && Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 2A') {
-                        $user->updateScheduleNotDelayedVac080(Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleNotDelayedVac080(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif (Input::get('project_name') == 'VAC080' && Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 1C' || Input::get('group_name') == 'Group 2D') {
-                        $user->updateScheduleDelayedVac080(Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleDelayedVac080(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif (Input::get('project_name') == 'VAC082' && Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2A' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 3A' || Input::get('group_name') == 'Group 3B') {
-                        $user->updateScheduleNotDelayedVac082(Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleNotDelayedVac082(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif (Input::get('project_name') == 'VAC082' && Input::get('group_name') == 'Group 3C' || Input::get('group_name') == 'Group 4A' || Input::get('group_name') == 'Group 4B' || Input::get('group_name') == 'Group 4C') {
-                        $user->updateScheduleDelayedVac082(Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleDelayedVac082(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     }
                     $successMessage = 'Visit Edited Successful';
                 } catch (Exception $e) {
