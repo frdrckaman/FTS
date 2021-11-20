@@ -3105,6 +3105,15 @@ if ($user->isLoggedIn()) {
         //     });
 
         // });
+
+        $('#allVisit').DataTable({
+            paging: false,
+            scrollY: 10,
+            searchBuilder: {
+
+            },
+            dom: 'Qfrtip'
+        })
     </script>
 
 </body>
