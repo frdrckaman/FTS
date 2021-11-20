@@ -236,7 +236,7 @@ if ($user->isLoggedIn()) {
                 </div>
                 <div class="block">
                     <div class="header">
-                        <h2>TODAY SCHEDULE VISITS </h2>
+                        <h2>TODAY VISITS </h2>
                     </div>
                     <div class="content">
                         <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">

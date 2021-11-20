@@ -406,13 +406,13 @@ if ($user->isLoggedIn()) {
             if ($validate->passed()) {
                 try {
                     if (Input::get('project_name') == 'VAC080' && Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 2A') {
-                        $user->updateScheduleNotDelayedVac080(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleNotDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif (Input::get('project_name') == 'VAC080' && Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 1C' || Input::get('group_name') == 'Group 2D') {
-                        $user->updateScheduleDelayedVac080(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif (Input::get('project_name') == 'VAC082' && Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2A' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 3A' || Input::get('group_name') == 'Group 3B') {
-                        $user->updateScheduleNotDelayedVac082(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleNotDelayedVac082(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif (Input::get('project_name') == 'VAC082' && Input::get('group_name') == 'Group 3C' || Input::get('group_name') == 'Group 4A' || Input::get('group_name') == 'Group 4B' || Input::get('group_name') == 'Group 4C') {
-                        $user->updateScheduleDelayedVac082(Input::get('project_name'),Input::get('id'), Input::get('visit_date'), Input::get('visit'));
+                        $user->updateScheduleDelayedVac082(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     }
                     $successMessage = 'Visit Edited Successful';
                 } catch (Exception $e) {
@@ -1116,8 +1116,11 @@ if ($user->isLoggedIn()) {
                                 </thead>
                                 <tbody>
                                     <?php $x = 1;
+                                    if (isset($_GET['study'])) {
+                                        $study =  $_GET['study'];
+                                    }
                                     // foreach ($override->getDataOrderByAsc('schedule', 'visit_date') as $data) {
-                                    foreach ($override->getDataOrderByAsc('visit', 'client_id') as $data) {
+                                    foreach ($override->getDataOrderByAsc('visit', 'client_id', 'project_id', $study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id']);
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ?>
                                         <tr>
@@ -1236,9 +1239,14 @@ if ($user->isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $x = 1;
+                                    <?php
+                                    if (isset($_GET['study'])) {
+                                        $study =  $_GET['study'];
+                                    }
+
+                                    $x = 1;
                                     $no = 0;
-                                    $data = $override->getRepeatAll('visit', 'client_id', 'id');
+                                    $data = $override->getRepeatAll('visit', 'client_id', 'id','project_id',$study);
 
                                     foreach ($data as $value) {
                                         $client = $override->get('clients', 'id', $value['client_id']);
@@ -2760,11 +2768,11 @@ if ($user->isLoggedIn()) {
                         <tbody>
                             <?php foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id) as $dt) {
                                 if ($dt['status'] != 4) {
-                                    $client = $override->get('clients', 'id', $dt['client_id'])[0]; 
-                                    
-                                    ?>
-                                    
-                                    
+                                    $client = $override->get('clients', 'id', $dt['client_id'])[0];
+
+                            ?>
+
+
                                     <tr>
                                         <td><?= $client['study_id'] ?>
                                         <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
@@ -2845,8 +2853,13 @@ if ($user->isLoggedIn()) {
                                     } elseif ($user->data()->position == 5) {
                                         $a_status = 'sn_cl_status';
                                     }
+
+                                    if(isset($_GET['study'])){
+
+                                        $study = $_GET['study'];
+                                    }
                                     $x = 1;
-                                    foreach ($override->getDataNot('visit', 'status', 0, $a_status, 0) as $data) {
+                                    foreach ($override->getDataNot2('visit', 'status', 0, $a_status, 0,'project_id',$study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id'])[0];
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'visit_date');
                                         if ($client['status'] == 1) { ?>
