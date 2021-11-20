@@ -155,7 +155,7 @@ if ($clntNo) {
                     <ul class="dropdown-menu">
                         <?php foreach ($override->getData('study') as $study) { ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center active">
-                                <a href="study.php?sid=<?= $study['id'] ?>"><?= $study['name'] ?></a>
+                                <a href="info.php?id=5&study=<?= $study['id']; ?>"><?= $study['name'] ?></a>
                                 <span class="badge badge-primary badge-pill"><?= $override->getNo2('clients', 'project_id', $study['id']); ?></span>
                             </li>
                         <?php } ?>

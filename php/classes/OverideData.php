@@ -128,18 +128,18 @@ class OverideData{
     }
 
     public function getDataOrderByAsc($table,$id,$where,$value){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC ");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
     public function getDataOrderBy1($table,$where,$value,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  DESC ");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  DESC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
     public function getDataOrderByA($table,$where,$value,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC ");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }

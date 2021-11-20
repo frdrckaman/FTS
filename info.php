@@ -1093,10 +1093,6 @@ if ($user->isLoggedIn()) {
                     <div class="block">
                         <div class="header">
                             <h2>All SCHEDULED VISIT</h2>
-
-                            <div class="md-form mt-0">
-                            <input class="form-control" type="text" placeholder="Search Visit" aria-label="Search">
-                        </div>
                         </div>
 
                         <div class="content">
@@ -1326,8 +1322,13 @@ if ($user->isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $y = 1;
-                                    foreach ($override->getDataOrderByAsc('clients', 'study_id') as $client) {
+                                    <?php
+                                    if (isset($_GET['study'])) {
+                                        $study =  $_GET['study'];
+                                    }
+
+                                    $y = 1;
+                                    foreach ($override->getDataOrderByAsc('clients', 'study_id', 'project_id', $study) as $client) {
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $client['id'], 'id') ?>
                                         <tr>
                                             <td><?= $client['study_id'] ?></td>
@@ -1613,7 +1614,8 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">INITIALS</th>
                                         <th width="10%">VISIT CODE</th>
                                         <th width="25%">VISIT DATE</th>
-                                        <th width="30%"></th>
+                                        <th width="25%">STATUS</th>
+                                        <th width="30%">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1628,6 +1630,21 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $client[0]['initials'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
                                                 <td><?= $data['visit_date'] ?></td>
+
+                                                <td>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <?php if ($data['status'] == 0) { ?>&nbsp;
+                                                        <button class="btn btn-warning">NOT DONE</button>
+                                                    <?php } elseif ($data['status'] == 3) { ?>
+                                                        <button class="btn btn-success">Pending</button>
+                                                    <?php } elseif ($data['status'] == 1) { ?>
+                                                        <button class="btn btn-success">Completed</button>
+                                                    <?php } elseif ($data['status'] == 2) { ?>
+                                                        <button class="btn btn-danger">Missed</button>
+                                                    <?php } ?>
+                                                    </div>
+                                                </td>
+
 
                                                 <?php
                                                 if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
@@ -3080,6 +3097,14 @@ if ($user->isLoggedIn()) {
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
+
+        // $(document).ready(function() {
+        //     $('#example').DataTable({
+        //         paging: false,
+        //         scrollY: 10
+        //     });
+
+        // });
     </script>
 
 </body>
