@@ -1093,7 +1093,12 @@ if ($user->isLoggedIn()) {
                     <div class="block">
                         <div class="header">
                             <h2>All SCHEDULED VISIT</h2>
+
+                            <div class="md-form mt-0">
+                            <input class="form-control" type="text" placeholder="Search Visit" aria-label="Search">
                         </div>
+                        </div>
+
                         <div class="content">
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
@@ -2858,7 +2863,7 @@ if ($user->isLoggedIn()) {
 
                                         $study = $_GET['study'];
                                     }
-                                    
+
                                     $x = 1;
                                     foreach ($override->getDataNot2('visit', 'status', 0, $a_status, 0, 'project_id', $study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id'])[0];

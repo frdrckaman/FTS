@@ -15,6 +15,15 @@ if ($user->isLoggedIn()) {
         if (Input::get('add_client')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
+                'fname' => array(
+                    'required' => true,
+                ),
+                'mname' => array(
+                    'required' => true,
+                ),
+                'lname' => array(
+                    'required' => true,
+                ),
                 'study_id' => array(
                     'required' => true,
                     'unique' => 'clients',
@@ -42,7 +51,9 @@ if ($user->isLoggedIn()) {
                 try {
                     $user->createRecord('clients', array(
                         'study_id' => Input::get('study_id'),
-                        'visit_code' => Input::get('visit_code'),
+                        'fname' => Input::get('fname'),
+                        'mname' => Input::get('mname'),
+                        'lname' => Input::get('lname'),
                         'status' => 1,
                         'initials' => Input::get('initials'),
                         'phone_number' => Input::get('phone_number'),
@@ -446,15 +457,27 @@ if ($user->isLoggedIn()) {
                 <div class="modal-body clearfix">
                     <div class="controls">
                         <div class="form-row">
-                            <div class="col-md-2">STUDY ID:</div>
+                            <div class="col-md-2">CLIENT ID:</div>
                             <div class="col-md-10">
                                 <input type="text" name="study_id" class="form-control" value="" required="" />
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-2">VISIT CODE:</div>
+                            <div class="col-md-2">First Name:</div>
                             <div class="col-md-10">
-                                <input type="number" name="visit_code" class="form-control" value="0" required="" />
+                                <input type="text" name="fname" class="form-control" value="" required="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Midle Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="mname" class="form-control" value="" required="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Last name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="lname" class="form-control" value="" required="" />
                             </div>
                         </div>
                         <div class="form-row">
@@ -466,7 +489,7 @@ if ($user->isLoggedIn()) {
                         <div class="form-row">
                             <div class="col-md-2">Phone:</div>
                             <div class="col-md-10">
-                                <input type="text" name="phone_number" class="form-control" value="" />
+                                <input type="text" name="phone_number" class="form-control" value="" required=""/>
                             </div>
                         </div>
                         <div class="form-row">
@@ -476,7 +499,7 @@ if ($user->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-md-2">Screening Date:</div>
+                            <div class="col-md-2">SCREENING DATE:</div>
                             <div class="col-md-10">
                                 <div class="input-group">
                                     <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
@@ -485,10 +508,10 @@ if ($user->isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-row" id="st">
-                            <div class="col-md-2">Project:</div>
+                            <div class="col-md-2">STUDY NAME:</div>
                             <div class="col-md-10">
                                 <select class="form-control" id="project_id" name="project_id" required>
-                                    <option value="">Select Project</option>
+                                    <option value="">SELECT STUDY</option>
                                     <?php foreach ($override->getData('study') as $group) { ?>
                                         <option value="<?= $group['id'] ?>"><?= $group['name'] ?></option>
                                     <?php } ?>
