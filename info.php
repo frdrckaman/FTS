@@ -1246,7 +1246,7 @@ if ($user->isLoggedIn()) {
 
                                     $x = 1;
                                     $no = 0;
-                                    $data = $override->getRepeatAll('visit', 'client_id', 'id','project_id',$study);
+                                    $data = $override->getRepeatAll('visit', 'client_id', 'id', 'project_id', $study);
 
                                     foreach ($data as $value) {
                                         $client = $override->get('clients', 'id', $value['client_id']);
@@ -2854,12 +2854,13 @@ if ($user->isLoggedIn()) {
                                         $a_status = 'sn_cl_status';
                                     }
 
-                                    if(isset($_GET['study'])){
+                                    if (isset($_GET['study'])) {
 
                                         $study = $_GET['study'];
                                     }
+                                    
                                     $x = 1;
-                                    foreach ($override->getDataNot2('visit', 'status', 0, $a_status, 0,'project_id',$study) as $data) {
+                                    foreach ($override->getDataNot2('visit', 'status', 0, $a_status, 0, 'project_id', $study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id'])[0];
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'visit_date');
                                         if ($client['status'] == 1) { ?>

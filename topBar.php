@@ -371,7 +371,11 @@ if ($user->isLoggedIn()) {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon-file-alt"></span> STUDY </a>
                 <ul class="dropdown-menu">
                     <?php foreach ($override->getData('study') as $study) { ?>
-                        <li><a href="study.php?sid=<?= $study['id'] ?>"><?= $study['name'] ?></a></li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center active">
+                            <a href="study.php?sid=<?= $study['id'] ?>"><?= $study['name'] ?></a>
+                            <span class="badge badge-secondary badge-pill"><?= $override->getCount('visit', 'visit_date', date('Y-m-d')); ?></span>
+                        </li>
                     <?php } ?>
                 </ul>
             </li>
