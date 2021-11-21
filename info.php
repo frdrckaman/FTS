@@ -1015,6 +1015,8 @@ if ($user->isLoggedIn()) {
                                     <tr>
                                         <th width="5%">CLIENT ID</th>
                                         <th width="5%">VISIT CODE</th>
+                                        <th width="5%">VISIT DATE</th>
+                                        <th width="5%">DAY</th>
                                         <th width="5%">STUDY</th>
                                         <th width="5%">GROUP</th>
                                         <th width="5%">DAYS MISSING</th>
@@ -1055,6 +1057,8 @@ if ($user->isLoggedIn()) {
                                                 <tr>
                                                     <td><?= $client[0]['study_id'] ?></td>
                                                     <td><?= $data['visit_code'] ?></td>
+                                                    <td><?= $data['visit_date'] ?></td>
+                                                    <td><?= date('l', strtotime($data['visit_date']))?></td> 
 
                                                     <td><?= $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
                                                     <td><?= $group ?></td>
@@ -1149,6 +1153,7 @@ if ($user->isLoggedIn()) {
                                         <th width="5%">VISIT CODE</th>
                                         <th width="5%">STATUS</th>
                                         <th width="5%">VISIT DATE</th>
+                                        <th width="5%">DAY</th>
                                         <th width="5%">DETAILS</th>
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
@@ -1188,7 +1193,8 @@ if ($user->isLoggedIn()) {
                                                 <?php } ?>
                                                 </div>
                                             </td>
-                                            <td><?= $data['visit_date'] ?></td>
+                                            <td><?= $data['visit_date'] ?></td> 
+                                            <td><?= date('l', strtotime($data['visit_date']))?></td> 
 
                                             <td><?= $data['details'] ?></td>
 
@@ -1670,6 +1676,7 @@ if ($user->isLoggedIn()) {
                                         <th width="10%">INITIALS</th>
                                         <th width="10%">VISIT CODE</th>
                                         <th width="25%">VISIT DATE</th>
+                                        <th width="25%">DAY</th>
                                         <th width="25%">STATUS</th>
                                         <th width="30%">ACTION</th>
                                     </tr>
@@ -1688,6 +1695,7 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $client[0]['initials'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
                                                 <td><?= $data['visit_date'] ?></td>
+                                                <td><?= date('l', strtotime($data['visit_date']))?></td> 
 
                                                 <td>
                                                     <div class="btn-group btn-group-xs">

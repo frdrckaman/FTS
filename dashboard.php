@@ -525,6 +525,7 @@ if ($user->isLoggedIn()) {
 
     $(document).ready(function() {
         $('#example').DataTable();
+        $(".dataTables_empty").text("There is No Any Visit Today.");
     });
 </script>
 

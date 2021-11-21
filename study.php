@@ -238,7 +238,7 @@ if ($user->isLoggedIn()) {
                         <h2>TODAY VISITS FOR <?= $stdy['study_code'] ?></h2>
                     </div>
                     <div class="content">
-                        <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                        <table id="studyVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                             <thead>
                                 <tr>
                                     <th width="5%">STUDY ID</th>
@@ -483,10 +483,21 @@ if ($user->isLoggedIn()) {
         </div>
     </div>
 </body>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
+
+
+    $(document).ready(function() {
+        $('#studyVisit').DataTable({
+            // paging: true,
+            // scrollY: 10
+        });
+    });
 </script>
 
 </html>
