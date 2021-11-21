@@ -239,7 +239,7 @@ if ($user->isLoggedIn()) {
                         <h2>TODAY VISITS </h2>
                     </div>
                     <div class="content">
-                        <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                        <table id="example" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                             <thead>
                                 <tr>
                                     <th width="5%">STUDY ID</th>
@@ -274,7 +274,7 @@ if ($user->isLoggedIn()) {
                                         }
                                 ?>
                                         <tr>
-                                            <td><?= $client['study_id']; ?></td>                                            
+                                            <td><?= $client['study_id']; ?></td>
                                             <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code'] ?></td>
                                             <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?></td>
                                             <td><?= $data['visit_code'] ?></td>
@@ -282,20 +282,20 @@ if ($user->isLoggedIn()) {
 
                                             <td>
 
-                                            <?php if ($data['schedule'] == 'Scheduled') { ?>
-                                                <div class="btn-group btn-group-xs">
-                                                    <button class="btn btn-info">
-                                                        <?= $data['schedule'] ?>
-                                                    </button>
-                                                </div>
+                                                <?php if ($data['schedule'] == 'Scheduled') { ?>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <button class="btn btn-info">
+                                                            <?= $data['schedule'] ?>
+                                                        </button>
+                                                    </div>
 
-                                            <?php } else { ?>
-                                                <div class="btn-group btn-group-xs">
-                                                    <button class="btn btn-danger">
-                                                        <?= $data['schedule'] ?>
-                                                    </button>
-                                                </div>
-                                            <?php }  ?>
+                                                <?php } else { ?>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <button class="btn btn-danger">
+                                                            <?= $data['schedule'] ?>
+                                                        </button>
+                                                    </div>
+                                                <?php }  ?>
                                             </td>
 
 
@@ -491,6 +491,12 @@ if ($user->isLoggedIn()) {
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
+
+    $(document).ready(function() {
+        var table = $('#example').DataTable();
+
+        $(".dataTables_empty").text("There is No Any Visit Today.");
+    });
 </script>
 
 </html>

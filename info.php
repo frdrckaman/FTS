@@ -362,6 +362,26 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
+        } elseif (Input::get('add_reason')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'details' => array(
+                    'required' => true,
+                ),
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->updateRecord('visit', array(                        
+                        'details' => Input::get('details')                     
+                    ), Input::get('id'));
+
+                    $successMessage = 'Reaon Edited Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
         } elseif (Input::get('edit_visit')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -759,15 +779,15 @@ if ($user->isLoggedIn()) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
-                                    
+
+
                                     if (isset($_GET['study'])) {
                                         $study =  $_GET['study'];
                                     }
-                                    
-                                    
+
+
                                     $x = 1;
-                                    foreach ($override->get2('visit', 'visit_date', date('Y-m-d'),'project_id',$study) as $data) {
+                                    foreach ($override->get2('visit', 'visit_date', date('Y-m-d'), 'project_id', $study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id'])[0];
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'visit_date');
                                         if ($client['status'] == 1) { ?>
@@ -987,7 +1007,8 @@ if ($user->isLoggedIn()) {
                             <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">CLIENT ID</th>
+                                        <th width="5%">VISIT CODE</th>
                                         <th width="5%">STUDY</th>
                                         <th width="5%">GROUP</th>
                                         <th width="5%">DAYS MISSING</th>
@@ -1009,15 +1030,15 @@ if ($user->isLoggedIn()) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
+
                                     if (isset($_GET['study'])) {
                                         $study =  $_GET['study'];
                                     }
-                                    
-                                    
-                                    
+
+
+
                                     $x = 1;
-                                    foreach ($override->getDataOrderBy1('visit', 'status', 2, 'visit_date','project_id',$study) as $data) {
+                                    foreach ($override->getDataOrderBy1('visit', 'status', 2, 'visit_date', 'project_id', $study) as $data) {
                                         $cl = $override->get('clients', 'id', $data['client_id']);
                                         if ($cl[0]['status'] == 1) {
                                             if ($data['visit_date'] <= date('Y-m-d')) {
@@ -1027,7 +1048,7 @@ if ($user->isLoggedIn()) {
                                                 $mcDays = (strtotime(date('Y-m-d')) - strtotime($data['visit_date'])) ?>
                                                 <tr>
                                                     <td><?= $client[0]['study_id'] ?></td>
-
+                                                    <td><?= $data['visit_code'] ?></td>
 
                                                     <td><?= $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
                                                     <td><?= $group ?></td>
@@ -1039,7 +1060,7 @@ if ($user->isLoggedIn()) {
                                                                                                                                                                                                                                                     echo ' ' ?></div>
                                                     </td>
                                                     <td>
-
+                                                    <?= $data['details'] ?>
                                                     </td>
 
                                                     <?php
@@ -1048,35 +1069,36 @@ if ($user->isLoggedIn()) {
 
 
                                                         <td>
-                                                            <a href="#reason<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Information"><span class="glyphicon-log-out"></span></a>
+                                                            <a href="#detail<?= $x ?>" data-toggle="modal" class="widget-icon" title="Update Information"><span class="glyphicon-log-out"></span></a>
                                                         </td>
                                                         <td><?= $client[0]['phone_number']  ?></td>
 
                                                     <?php } ?>
                                                 </tr>
-                                                <div class="modal" id="reason<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal" id="detail<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <form method="post">
                                                                 <div class="modal-header">
                                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                    <h4 class="modal-title">END OF STUDY</h4>
+                                                                    <h4 class="modal-title">EDIT REASON</h4>
                                                                 </div>
                                                                 <div class="modal-body clearfix">
                                                                     <div class="controls">
                                                                         <div class="form-row">
-                                                                            <div class="col-md-2">Reason:</div>
+                                                                            <div class="col-md-2">CLIENT ID:</div>
                                                                             <div class="col-md-10">
-                                                                                <select class="form-control" id="c" name="reason" required="">
-                                                                                    <option value="">Select reason for study termination</option>
-                                                                                    <?php foreach ($override->getData('end_study_reason') as $end_study) { ?>
-                                                                                        <option value="<?= $end_study['reason'] ?>"><?= $end_study['reason'] ?></option>
-                                                                                    <?php } ?>
-                                                                                </select>
+                                                                                <input type="text" name="client_id" value="<?= $client[0]['study_id'] ?>" class="form-control" disabled></inputtext>
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
-                                                                            <div class="col-md-2">Details:</div>
+                                                                        <div class="col-md-2">VISIT CODE:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="visit_code" value="<?= $data['visit_code'] ?>" class="form-control" disabled></inputtext>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">DETAILS:</div>
                                                                             <div class="col-md-10">
                                                                                 <textarea name="details" class="form-control" rows="4"></textarea>
                                                                             </div>
@@ -1085,7 +1107,7 @@ if ($user->isLoggedIn()) {
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <div class="pull-right col-md-3">
-                                                                        <input type="hidden" name="id" value="<?= $data['client_id'] ?>">
+                                                                        <input type="hidden" name="id" value="<?= $data['id'] ?>">
                                                                         <input type="submit" name="add_reason" value="Submit" class="btn btn-success btn-clean">
                                                                     </div>
                                                                     <div class="pull-right col-md-2">
@@ -1637,8 +1659,10 @@ if ($user->isLoggedIn()) {
                                 <tbody>
                                     <?php $y = 1;
                                     if (isset($_GET['cid'])) {
+
+
                                         $x = 1;
-                                        foreach ($override->getDataOrderByA('visit', 'client_id', $_GET['cid'], 'visit_date') as $data) {
+                                        foreach ($override->getDataOrderByA1('visit', 'client_id', $_GET['cid'], 'visit_date') as $data) {
                                             $client = $override->get('clients', 'id', $data['client_id']);
                                             $nextVisit = $override->get('schedule', 'client_id', $data['client_id']) ?>
                                             <tr>
@@ -2711,16 +2735,16 @@ if ($user->isLoggedIn()) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
+
                                     if (isset($_GET['study'])) {
                                         $study =  $_GET['study'];
                                     }
-                                    
-                                    
-                                    
-                                    
+
+
+
+
                                     $x = 1;
-                                    foreach ($override->getDataOrderByA('clients', 'status', 0, 'study_id','project_id',$study) as $data) {
+                                    foreach ($override->getDataOrderByA('clients', 'status', 0, 'study_id', 'project_id', $study) as $data) {
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['id'], 'id');
                                         if ($lastVisit) {
                                             $lVisit = $lastVisit[0]['visit_date'];

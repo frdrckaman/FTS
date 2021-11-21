@@ -150,6 +150,11 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    public function getDataOrderByA1($table,$where,$value,$id){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     public function record($table,$orderBy){
         $query = $this->_pdo->query("SELECT * FROM $table ORDER BY $orderBy DESC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
