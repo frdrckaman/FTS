@@ -371,8 +371,8 @@ if ($user->isLoggedIn()) {
             ));
             if ($validate->passed()) {
                 try {
-                    $user->updateRecord('visit', array(                        
-                        'details' => Input::get('details')                     
+                    $user->updateRecord('visit', array(
+                        'details' => Input::get('details')
                     ), Input::get('id'));
 
                     $successMessage = 'Reaon Edited Successful';
@@ -702,6 +702,8 @@ if ($user->isLoggedIn()) {
     <script type='text/javascript' src='js/actions.js'></script>
     <script type='text/javascript' src='js/settings.js'></script>
 
+    <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" /> -->
+
 
 </head>
 
@@ -752,7 +754,7 @@ if ($user->isLoggedIn()) {
                             <h2>TODAY SCHEDULE VISITS FOR ALL STUDIES</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -1060,7 +1062,7 @@ if ($user->isLoggedIn()) {
                                                                                                                                                                                                                                                     echo ' ' ?></div>
                                                     </td>
                                                     <td>
-                                                    <?= $data['details'] ?>
+                                                        <?= $data['details'] ?>
                                                     </td>
 
                                                     <?php
@@ -1092,7 +1094,7 @@ if ($user->isLoggedIn()) {
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-row">
-                                                                        <div class="col-md-2">VISIT CODE:</div>
+                                                                            <div class="col-md-2">VISIT CODE:</div>
                                                                             <div class="col-md-10">
                                                                                 <input type="text" name="visit_code" value="<?= $data['visit_code'] ?>" class="form-control" disabled></inputtext>
                                                                             </div>
@@ -1134,7 +1136,7 @@ if ($user->isLoggedIn()) {
                         </div>
 
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -1261,7 +1263,7 @@ if ($user->isLoggedIn()) {
                             <h2>TOTAL VACCINATED PATIENTS</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">#</th>
@@ -1338,7 +1340,7 @@ if ($user->isLoggedIn()) {
                             <h2>LIST OF ALL SCREENED PATIENTS</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -1645,7 +1647,7 @@ if ($user->isLoggedIn()) {
                             <h2>VISITS</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="20%">STUDY ID</th>
@@ -1780,7 +1782,7 @@ if ($user->isLoggedIn()) {
                             <h2>PATIENT VISIT</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
 
@@ -1865,7 +1867,7 @@ if ($user->isLoggedIn()) {
                             <h2>STAFF</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -2081,7 +2083,7 @@ if ($user->isLoggedIn()) {
                                     <h2>COUNTRIES</h2>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-bordered">
+                                    <table id="allVisit" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -2173,7 +2175,7 @@ if ($user->isLoggedIn()) {
                                     <h2>SITES</h2>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-bordered">
+                                    <table id="allVisit" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -2279,7 +2281,7 @@ if ($user->isLoggedIn()) {
                                     <h2>END OF STUDY REASON</h2>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-bordered">
+                                    <table id="allVisit" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -2363,7 +2365,7 @@ if ($user->isLoggedIn()) {
                                     <h2>PATIENT GROUP</h2>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-bordered">
+                                    <table id="allVisit" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -2449,7 +2451,7 @@ if ($user->isLoggedIn()) {
                                     <h2>STUDY</h2>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-bordered">
+                                    <table id="allVisit" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -2589,7 +2591,7 @@ if ($user->isLoggedIn()) {
                                     <h2>IMAGES</h2>
                                 </div>
                                 <div class="content">
-                                    <table class="table table-bordered">
+                                    <table id="allVisit" class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -2714,7 +2716,7 @@ if ($user->isLoggedIn()) {
                         </div>
                         <div class="content">
 
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">#</th>
@@ -2778,12 +2780,18 @@ if ($user->isLoggedIn()) {
                         </div>
                     </div>
                 <?php } elseif ($_GET['id'] == 11) { ?>
-                    <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
+                    <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th width="3%">Study ID</th>
-                                <?php $x = 1;
-                                foreach ($override->getDataOrderByA('visit', 'client_id', $_GET['pid'], 'visit_date') as $data) { ?>
+                                <?php
+
+                                if (isset($_GET['study'])) {
+                                    $study =  $_GET['study'];
+                                }
+
+                                $x = 1;
+                                foreach ($override->getDataOrderByA('visit', 'client_id', $_GET['pid'], 'visit_date', 'project_id', $study) as $data) { ?>
                                     <th width="3%"><?= $data['visit_date'] ?></th>
                                 <?php $x++;
                                 } ?>
@@ -2794,7 +2802,7 @@ if ($user->isLoggedIn()) {
                             <tr>
                                 <td style="font-weight: bold"><?= $override->get('clients', 'id', $_GET['pid'])[0]['study_id'] ?></td>
                                 <?php $x = 1;
-                                foreach ($override->getDataOrderByA('visit', 'client_id', $_GET['pid'], 'visit_date') as $data) { ?>
+                                foreach ($override->getDataOrderByA('visit', 'client_id', $_GET['pid'], 'visit_date', 'project_id', $study) as $data) { ?>
                                     <td>
                                         <div class="btn-group btn-group-xs"><?php if ($data['status'] == 1) { ?>&nbsp;
                                             <button class="btn btn-success"><span class="icon-ok-sign"></span> Done</button>
@@ -2822,7 +2830,7 @@ if ($user->isLoggedIn()) {
                     <form method="post">
                         <input type="submit" name="download" value="Download Data" class="btn btn-info">
                     </form>
-                    <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
+                    <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th width="2%">CLIENT ID</th>
@@ -2888,7 +2896,7 @@ if ($user->isLoggedIn()) {
                             <h2>TODAY PENDING VISITS</h2>
                         </div>
                         <div class="content">
-                            <table cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -3142,6 +3150,9 @@ if ($user->isLoggedIn()) {
             </div>
         </div>
     </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
@@ -3155,15 +3166,25 @@ if ($user->isLoggedIn()) {
 
         // });
 
-        $('#allVisit').DataTable({
-            paging: false,
-            scrollY: 10,
-            searchBuilder: {
+        // $('#allVisit').DataTable({
+        //     paging: false,
+        //     scrollY: 10,
+        //     searchBuilder: {
 
-            },
-            dom: 'Qfrtip'
-        })
+        //     },
+        //     dom: 'Qfrtip'
+        // })
+
+
+
+        $(document).ready(function() {
+            $('#allVisit').DataTable({
+                // paging: true,
+                // scrollY: 10
+            });
+        });
     </script>
+
 
 </body>
 

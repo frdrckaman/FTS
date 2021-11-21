@@ -171,6 +171,15 @@ if ($user->isLoggedIn()) {
     <script type='text/javascript' src='js/actions.js'></script>
     <script type='text/javascript' src='js/settings.js'></script>
 
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+
+    <style>
+        body {
+            font-family: calibri;
+            color: #4e7480;
+        }
+    </style>
+
 
 </head>
 
@@ -492,10 +501,30 @@ if ($user->isLoggedIn()) {
         window.history.replaceState(null, null, window.location.href);
     }
 
-    $(document).ready(function() {
-        var table = $('#example').DataTable();
+    // $(document).ready(function() {
+    //     $('#contact-detail').dataTable({
+    //         "scrollX": true,
+    //         "pagingType": "numbers",
+    //         "processing": true,
+    //         "serverSide": true,
+    //         "ajax": "server.php"
+    //     });
+    // });
 
-        $(".dataTables_empty").text("There is No Any Visit Today.");
+    // $(document).ready(function() {
+    //     var table = $('#example').DataTable({
+    //         "scrollX": true,
+    //         "pagingType": "numbers",
+    //         "processing": true,
+    //         "serverSide": true,
+    //         "ajax": "server.php"
+    //     });
+
+    //     $(".dataTables_empty").text("There is No Any Visit Today.");
+    // });
+
+    $(document).ready(function() {
+        $('#example').DataTable();
     });
 </script>
 
