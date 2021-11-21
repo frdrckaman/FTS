@@ -451,10 +451,13 @@ if ($user->isLoggedIn()) {
             } catch (Exception $e) {
                 die($e->getMessage());
             }
-        } elseif (Input::get('nxt_visit')) {
+        } elseif (Input::get('edit_visit_detail')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
-                'next_visit' => array(
+                'visit_date' => array(
+                    'required' => true,
+                ),
+                'details' => array(
                     'required' => true,
                 ),
             ));
@@ -462,10 +465,11 @@ if ($user->isLoggedIn()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('next_visit')));
                     $user->updateRecord('schedule', array(
-                        'visit_date' => $date
+                        'visit_date' => $date,
+                        'details' => Input::get('details')
                     ), Input::get('id'));
 
-                    $successMessage = 'Next Visit Edited Successful';
+                    $successMessage = 'Visit Details Edited Successful';
                 } catch (Exception $e) {
                     die($e->getMessage());
                 }
@@ -1139,12 +1143,13 @@ if ($user->isLoggedIn()) {
                             <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="5%">STUDY ID</th>
+                                        <th width="5%">CLIENT ID</th>
                                         <th width="5%">INITIAL</th>
-
+                                        <th width="5%">STUDY</th>
                                         <th width="5%">VISIT CODE</th>
                                         <th width="5%">STATUS</th>
-                                        <th width="5%">END DATE</th>
+                                        <th width="5%">VISIT DATE</th>
+                                        <th width="5%">DETAILS</th>
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
 
@@ -1167,6 +1172,7 @@ if ($user->isLoggedIn()) {
                                         <tr>
                                             <td><?= $client[0]['study_id'] ?></td>
                                             <td><?= $client[0]['initials'] ?></td>
+                                            <td><?= $data['project_id'] ?></td>
 
                                             <td><?= $data['visit_code'] ?></td>
                                             <td>
@@ -1182,7 +1188,9 @@ if ($user->isLoggedIn()) {
                                                 <?php } ?>
                                                 </div>
                                             </td>
-                                            <td><?= $lastVisit[0]['visit_date'] ?></td>
+                                            <td><?= $data['visit_date'] ?></td>
+
+                                            <td><?= $data['details'] ?></td>
 
                                             <?php
                                             if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
@@ -1190,24 +1198,25 @@ if ($user->isLoggedIn()) {
                                             ?>
 
                                                 <td><?= $client[0]['phone_number'] ?></td>
+
                                                 <td>
-                                                    <a href="#next_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
+                                                    <a href="#edit_visit_details<?= $x ?>" data-toggle="modal" class="widget-icon" title="Edit Visit Details"><span class="icon-pencil"></span></a>
                                                 </td>
 
                                             <?php } ?>
                                         </tr>
-                                        <div class="modal" id="next_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal" id="edit_visit_details<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <form method="post">
                                                         <div class="modal-header">
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                            <h4 class="modal-title">EDIT VISIT</h4>
+                                                            <h4 class="modal-title">EDIT VISIT DETAILS</h4>
                                                         </div>
                                                         <div class="modal-body clearfix">
                                                             <div class="controls">
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">STUDY ID:</div>
+                                                                    <div class="col-md-2">CLIENT ID:</div>
                                                                     <div class="col-md-10">
                                                                         <input type="text" name="study_id" class="form-control" value="<?= $client[0]['study_id'] ?>" disabled />
                                                                     </div>
@@ -1219,21 +1228,28 @@ if ($user->isLoggedIn()) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
+                                                                    <div class="col-md-2">STUDY NAME</div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" name="study" class="datepicker form-control" value="<?= $data['project_id'] ?>" disabled />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
                                                                     <div class="col-md-2">INITIALS:</div>
                                                                     <div class="col-md-10">
                                                                         <input type="text" name="initials" class="form-control" value="<?= $client[0]['initials'] ?>" disabled />
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">Last Visit:</div>
+                                                                    <div class="col-md-2">VISIT DATE:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="text" name="visit_date" class="datepicker form-control" value="<?= $lastVisit[0]['visit_date'] ?>" disabled />
+                                                                        <input type="text" name="visit_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">Next Visit:</div>
+                                                                    <div class="col-md-2">DETAILS:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="text" name="next_visit" class="datepicker form-control" value="<?= $data['visit_date'] ?>" disabled />
+                                                                        <input type="text" name="details" class="datepicker form-control" value="<?= $data['details'] ?>" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1241,7 +1257,7 @@ if ($user->isLoggedIn()) {
                                                         <div class="modal-footer">
                                                             <div class="pull-right col-md-3">
                                                                 <input type="hidden" name="id" class="form-control" value="<?= $data['id'] ?>" required="" />
-                                                                <input type="submit" name="nxt_visit" value="SUBMIT" class="btn btn-success btn-clean">
+                                                                <input type="submit" name="edit_visit_detail" value="SUBMIT" class="btn btn-success btn-clean">
                                                             </div>
                                                             <div class="pull-right col-md-2">
                                                                 <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
