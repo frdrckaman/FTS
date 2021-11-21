@@ -88,9 +88,20 @@ if ($clntNo) {
 
 
 
-
             <li class="list-group-item">
-                <a href="info.php?id=1" class="list-group-item"><span class="icon-text-height"></span>Today Visits<i class="icon-angle-right pull-right"></i><span class="label label-success pull-right"><?= $tv ?></span></a>
+                <div class="dropdown">
+                <a href="info.php?id=1" class="list-group-item dropdown-toggle" data-toggle="dropdown"><span class="icon-text-height"></span>Today Visits<i class="icon-angle-right pull-right"></i><span class="label label-success pull-right"><?= $tv ?></span></a>
+
+                <ul class="dropdown-menu">
+                        <?php foreach ($override->getData('study') as $study) { ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center active">
+                                <a href="info.php?id=1&study=<?= $study['name']; ?>"><?= $study['name'] ?></a>
+                                <span class="badge badge-primary badge-pill"><?= $override->getCount2('visit', 'visit_date', date('Y-m-d'),'project_id',$study['name']); ?></span>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </li>
             </li>
 
 
@@ -111,11 +122,36 @@ if ($clntNo) {
 
 
             <li class="list-group-item">
+                <div class="dropdown">
                 <a href="info.php?id=2" class="list-group-item dropdown-toggle" data-toggle="dropdown"><span class="icon-calendar-empty"></span>Missed Visit<i class="icon-angle-right pull-right"></i><span class="label label-warning pull-right"><?= $msa ?></span></a>
+
+
+                <ul class="dropdown-menu">
+                        <?php foreach ($override->getData('study') as $study) { ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center active">
+                                <a href="info.php?id=2&study=<?= $study['name']; ?>"><?= $study['name'] ?></a>
+                                <span class="badge badge-primary badge-pill"><?= $override->get3('visit','client_id', 'status', 2,'project_id', $study['name']); ?></span>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </li>
             </li>
 
             <li class="list-group-item">
-                <a href="info.php?id=10" class="list-group-item"><span class="icon-warning-sign"></span>End of Study<i class="icon-angle-right pull-right"></i><span class="label label-danger pull-right"><?= $end ?></span></a>
+                <div class="dropdown">
+                <a href="info.php?id=10" class="list-group-item dropdown-toggle" data-toggle="dropdown"><span class="icon-warning-sign"></span>End of Study<i class="icon-angle-right pull-right"></i><span class="label label-danger pull-right"><?= $end ?></span></a>
+
+                <ul class="dropdown-menu">
+                        <?php foreach ($override->getData('study') as $study) { ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center active">
+                                <a href="info.php?id=10&study=<?= $study['id']; ?>"><?= $study['name'] ?></a>
+                                <span class="badge badge-primary badge-pill"><?= $override->getCount2('clients', 'status', 0,'project_id',$study['id']); ?></span>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </li>
             </li>
 
             <li class="list-group-item">

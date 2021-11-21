@@ -30,6 +30,13 @@ class OverideData{
         $num = $query->rowCount();
         return $num;
     }
+
+    public function getCount2($table,$field,$value,$field2,$value2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field2 = '$value2'");
+        $num = $query->rowCount();
+        return $num;
+    }
+
     public function countData($table,$field,$value,$field1,$value1){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field1 = '$value1'");
         $num = $query->rowCount();
@@ -133,13 +140,13 @@ class OverideData{
         return $result;
     }
 
-    public function getDataOrderBy1($table,$where,$value,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  DESC");
+    public function getDataOrderBy1($table,$where,$value,$id,$where2,$study){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' AND $where2 = '$study' ORDER BY $id  DESC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function getDataOrderByA($table,$where,$value,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC");
+    public function getDataOrderByA($table,$where,$value,$id,$where2,$value2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' AND $where2 = '$value2' ORDER BY $id  ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -309,6 +316,12 @@ class OverideData{
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id' AND $where2 = '$date'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    public function get3($table,$param,$where,$id,$where2,$study){
+        $query = $this->_pdo->query("SELECT DISTINCT $param FROM $table WHERE $where = '$id' AND $where2 = '$study'");
+        $num = $query->rowCount();
+        return $num;
     }
 
     public function getAsc($table,$where,$id,$order){

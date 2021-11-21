@@ -758,8 +758,16 @@ if ($user->isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $x = 1;
-                                    foreach ($override->get('visit', 'visit_date', date('Y-m-d')) as $data) {
+                                    <?php
+                                    
+                                    
+                                    if (isset($_GET['study'])) {
+                                        $study =  $_GET['study'];
+                                    }
+                                    
+                                    
+                                    $x = 1;
+                                    foreach ($override->get2('visit', 'visit_date', date('Y-m-d'),'project_id',$study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id'])[0];
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'visit_date');
                                         if ($client['status'] == 1) { ?>
@@ -1000,8 +1008,16 @@ if ($user->isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $x = 1;
-                                    foreach ($override->getDataOrderBy1('visit', 'status', 2, 'visit_date') as $data) {
+                                    <?php
+                                    
+                                    if (isset($_GET['study'])) {
+                                        $study =  $_GET['study'];
+                                    }
+                                    
+                                    
+                                    
+                                    $x = 1;
+                                    foreach ($override->getDataOrderBy1('visit', 'status', 2, 'visit_date','project_id',$study) as $data) {
                                         $cl = $override->get('clients', 'id', $data['client_id']);
                                         if ($cl[0]['status'] == 1) {
                                             if ($data['visit_date'] <= date('Y-m-d')) {
@@ -2694,8 +2710,17 @@ if ($user->isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $x = 1;
-                                    foreach ($override->getDataOrderByA('clients', 'status', 0, 'study_id') as $data) {
+                                    <?php
+                                    
+                                    if (isset($_GET['study'])) {
+                                        $study =  $_GET['study'];
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                    $x = 1;
+                                    foreach ($override->getDataOrderByA('clients', 'status', 0, 'study_id','project_id',$study) as $data) {
                                         $lastVisit = $override->getlastRow('visit', 'client_id', $data['id'], 'id');
                                         if ($lastVisit) {
                                             $lVisit = $lastVisit[0]['visit_date'];
