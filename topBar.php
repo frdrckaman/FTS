@@ -45,6 +45,12 @@ if ($user->isLoggedIn()) {
                 'project_id' => array(
                     'required' => true,
                 ),
+                // 'dob' => array(
+                //     'required' => true,
+                // ),
+                'gender' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 $s_date = date('Y-m-d', strtotime(Input::get('screening_date')));
@@ -54,6 +60,8 @@ if ($user->isLoggedIn()) {
                         'fname' => Input::get('fname'),
                         'mname' => Input::get('mname'),
                         'lname' => Input::get('lname'),
+                        'gender' => Input::get('gender'),
+                        'dob' => Input::get('dob'),
                         'status' => 1,
                         'initials' => Input::get('initials'),
                         'phone_number' => Input::get('phone_number'),
@@ -486,10 +494,29 @@ if ($user->isLoggedIn()) {
                                 <input type="text" name="initials" class="form-control" value="" required="" />
                             </div>
                         </div>
+                        <!-- <div class="form-row">
+                            <div class="col-md-2">DATE OF BIRTH:</div>
+                            <div class="col-md-10">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><span class="icon-calendar-empty"></span></div>
+                                    <input type="text" name="dob" class="datepicker form-control" value="" />
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="form-row">
+                            <div class="col-md-2">GENDER:</div>
+                            <div class="col-md-10">
+                                <select class="form-control" id="gender" name="gender" required>
+                                    <option value="">SELECT GENDER</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="col-md-2">Phone:</div>
                             <div class="col-md-10">
-                                <input type="text" name="phone_number" class="form-control" value="" required=""/>
+                                <input type="text" name="phone_number" class="form-control" value="" required="" />
                             </div>
                         </div>
                         <div class="form-row">
