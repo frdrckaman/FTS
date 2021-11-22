@@ -425,13 +425,13 @@ if ($user->isLoggedIn()) {
             ));
             if ($validate->passed()) {
                 try {
-                    if (Input::get('project_name') == 'VAC080' && Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 2A') {
+                    if ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 2A')) {
                         $user->updateScheduleNotDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
-                    } elseif (Input::get('project_name') == 'VAC080' && Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 1C' || Input::get('group_name') == 'Group 2D') {
+                    } elseif ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 1C' || Input::get('group_name') == 'Group 2D')) {
                         $user->updateScheduleDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
-                    } elseif (Input::get('project_name') == 'VAC082' && Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2A' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 3A' || Input::get('group_name') == 'Group 3B') {
+                    } elseif ((Input::get('project_name') == 'VAC082') and (Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2A' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 3A' || Input::get('group_name') == 'Group 3B')) {
                         $user->updateScheduleNotDelayedVac082(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
-                    } elseif (Input::get('project_name') == 'VAC082' && Input::get('group_name') == 'Group 3C' || Input::get('group_name') == 'Group 4A' || Input::get('group_name') == 'Group 4B' || Input::get('group_name') == 'Group 4C') {
+                    } elseif ((Input::get('project_name') == 'VAC082') and (Input::get('group_name') == 'Group 3C' || Input::get('group_name') == 'Group 4A' || Input::get('group_name') == 'Group 4B' || Input::get('group_name') == 'Group 4C')) {
                         $user->updateScheduleDelayedVac082(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     }
                     $successMessage = 'Visit Edited Successful';
@@ -1672,13 +1672,15 @@ if ($user->isLoggedIn()) {
                             <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
-                                        <th width="20%">STUDY ID</th>
-                                        <th width="10%">INITIALS</th>
-                                        <th width="10%">VISIT CODE</th>
-                                        <th width="25%">VISIT DATE</th>
-                                        <th width="25%">DAY</th>
-                                        <th width="25%">STATUS</th>
-                                        <th width="30%">ACTION</th>
+                                        <th width="3%">STUDY ID</th>
+                                        <th width="3%">INITIALS</th>
+                                        <th width="3%">STUDY</th>
+                                        <th width="3%">GROUP</th>
+                                        <th width="3%">VISIT CODE</th>
+                                        <th width="3%">VISIT DATE</th>
+                                        <th width="3%">DAY</th>
+                                        <th width="3%">STATUS</th>
+                                        <th width="3%">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1693,6 +1695,8 @@ if ($user->isLoggedIn()) {
                                             <tr>
                                                 <td><?= $client[0]['study_id'] ?></td>
                                                 <td><?= $client[0]['initials'] ?></td>
+                                                <td><?= $data['project_id'] ?></td>
+                                                <td><?= $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
                                                 <td><?= $data['visit_date'] ?></td>
                                                 <td><?= date('l', strtotime($data['visit_date']))?></td> 
