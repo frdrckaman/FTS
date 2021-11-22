@@ -18,25 +18,50 @@ class OverideData{
         $num = $query->rowCount();
         return $num;
     }
+
+    public function getNo2($table,$study,$study2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $study = '$study2'");
+        $num = $query->rowCount();
+        return $num;
+    }
+
     public function getCount($table,$field,$value){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value'");
         $num = $query->rowCount();
         return $num;
     }
+
+    public function getCount2($table,$field,$value,$field2,$value2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field2 = '$value2'");
+        $num = $query->rowCount();
+        return $num;
+    }
+
     public function countData($table,$field,$value,$field1,$value1){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field1 = '$value1'");
         $num = $query->rowCount();
         return $num;
     }
     public function countDataNot($table,$field,$value,$field1,$value1){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != '$value' AND $field1 = '$value1'");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != '$value' AND $field1 = '$value1' OR $field1 = '3'");
         $num = $query->rowCount();
         return $num;
     }
     public function getDataNot($table,$field,$value,$field1,$value1){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $field1 = '$value1'");
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $field1 = '$value1' OR $field1 = '3'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+    public function getDataNot2($table,$field,$value,$field1,$value1,$where2,$value2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $where2 = '$value2' AND $field1 = '$value1' OR $field1 = '3'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getDataNot3($table,$field,$value,$field1,$value1,$where2,$value2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $field != $value AND $where2 = '$value2' AND $field1 = '$value1' OR $field1 = '3'");
+        $num = $query->rowCount();
+        return $num;
     }
     public function getCounted($table,$field,$value,$field1,$value1,$field2,$value2){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $field = '$value' AND $field1 = '$value1' AND $field2 = '$value2'");
@@ -53,8 +78,13 @@ class OverideData{
         $num = $query->rowCount();
         return $num;
     }
-    public function getRepeatAll($table,$param,$id){
-        $query = $this->_pdo->query("SELECT DISTINCT $param FROM $table ORDER BY '$id' ASC ");
+    public function countNoRepeatAll2($table,$param,$where,$id){
+        $query = $this->_pdo->query("SELECT DISTINCT $param FROM $table WHERE $where = '$id'");
+        $num = $query->rowCount();
+        return $num;
+    }
+    public function getRepeatAll($table,$param,$id,$where,$study){
+        $query = $this->_pdo->query("SELECT DISTINCT $param FROM $table WHERE $where = '$study' ORDER BY '$id' ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -103,18 +133,25 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function getDataOrderByAsc($table,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table ORDER BY $id  ASC ");
+
+    public function getDataOrderByAsc($table,$id,$where,$value){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function getDataOrderBy1($table,$where,$value,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  DESC ");
+
+    public function getDataOrderBy1($table,$where,$value,$id,$where2,$study){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' AND $where2 = '$study' ORDER BY $id  DESC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function getDataOrderByA($table,$where,$value,$id){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC ");
+    public function getDataOrderByA($table,$where,$value,$id,$where2,$value2){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' AND $where2 = '$value2' ORDER BY $id  ASC");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public function getDataOrderByA1($table,$where,$value,$id){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$value' ORDER BY $id  ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -128,8 +165,8 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function dateRange($table,$value,$start,$end){
-        $query = $this->_pdo->query("SELECT * FROM $table WHERE $value BETWEEN '$start' AND '$end'");
+    public function dateRange($table,$value,$start,$end,$project_id1,$project_id){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $value BETWEEN '$start' AND '$end' AND $project_id1 = '$project_id'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -138,8 +175,8 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    public function dateRangeD($table,$vl,$value,$start,$end){
-        $query = $this->_pdo->query("SELECT DISTINCT $vl FROM $table WHERE $value BETWEEN '$start' AND '$end'");
+    public function dateRangeD($table,$vl,$value,$start,$end,$project_id1,$project_id){
+        $query = $this->_pdo->query("SELECT DISTINCT $vl FROM $table WHERE $value BETWEEN '$start' AND '$end' AND $project_id1 = '$project_id'");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -279,6 +316,19 @@ class OverideData{
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function get2($table,$where,$id,$where2,$date){
+        $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id' AND $where2 = '$date'");
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function get3($table,$param,$where,$id,$where2,$study){
+        $query = $this->_pdo->query("SELECT DISTINCT $param FROM $table WHERE $where = '$id' AND $where2 = '$study'");
+        $num = $query->rowCount();
+        return $num;
+    }
+
     public function getAsc($table,$where,$id,$order){
         $query = $this->_pdo->query("SELECT * FROM $table WHERE $where = '$id' ORDER BY $order ASC");
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
