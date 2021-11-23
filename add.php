@@ -40,7 +40,7 @@ if ($user->isLoggedIn()) {
                     if (!$override->get('visit', 'client_id', Input::get('client_id'))) {
                         if ((Input::get('study_name') == 'VAC080') and (Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 2A')) {
                             $user->generateScheduleNotDelayedVac080(Input::get('study_name'), Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
-                        } elseif ((Input::get('study_name') == 'VAC080') and (Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 1C' || Input::get('group') == 'Group 2D')){
+                        } elseif ((Input::get('study_name') == 'VAC080') and (Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 2C' || Input::get('group') == 'Group 2D')){
                             $user->generateScheduleDelayedVac080(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif ((Input::get('study_name') == 'VAC082') and (Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2A' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 3A' || Input::get('group') == 'Group 3B')) {
                             $user->generateScheduleNotDelayedVac082(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');

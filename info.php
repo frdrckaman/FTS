@@ -427,7 +427,7 @@ if ($user->isLoggedIn()) {
                 try {
                     if ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 2A')) {
                         $user->updateScheduleNotDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
-                    } elseif ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 1C' || Input::get('group_name') == 'Group 2D')) {
+                    } elseif ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 2C' || Input::get('group_name') == 'Group 2D')) {
                         $user->updateScheduleDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif ((Input::get('project_name') == 'VAC082') and (Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2A' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 3A' || Input::get('group_name') == 'Group 3B')) {
                         $user->updateScheduleNotDelayedVac082(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
@@ -1423,7 +1423,7 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $client['phone_number'] ?></td>
                                                 <td><?= $client['phone_number2'] ?></td>
                                                 <td>
-                                                    <a href="#edit_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
+                                                    <a href="#edit_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Client Information"><span class="icon-pencil"></span></a>
                                                     <a href="#reasons<?= $y ?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
                                                     <a href="#edit_schedule<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Schedule"><span class="icon-refresh"></span></a>
                                                     <a href="#delete_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
@@ -1444,15 +1444,15 @@ if ($user->isLoggedIn()) {
                                                         <div class="modal-body clearfix">
                                                             <div class="controls">
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">STUDY ID:</div>
+                                                                    <div class="col-md-2">CLIENT ID:</div>
                                                                     <div class="col-md-10">
                                                                         <input type="text" name="study_id" class="form-control" value="<?= $client['study_id'] ?>" required="" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">VISIT CODE:</div>
+                                                                    <div class="col-md-2">STUDY NAME:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="number" name="visit_code" class="form-control" value="<?= $client['visit_code'] ?>" required="" />
+                                                                        <input type="number" name="project_id" class="form-control" value="<?= $override->get('study', 'id', $client['project_id']) ?>" required="" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
