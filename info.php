@@ -391,13 +391,21 @@ if ($user->isLoggedIn()) {
                 'visit_code' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reason' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('visit_date')));
                     $user->updateRecord('visit', array(
                         'visit_date' => $date,
-                        'visit_code' => Input::get('visit_code')
+                        'visit_code' => Input::get('visit_code'),
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason')
                     ), Input::get('id'));
 
                     $successMessage = 'Visit Edited Successful';
@@ -1058,7 +1066,7 @@ if ($user->isLoggedIn()) {
                                                     <td><?= $client[0]['study_id'] ?></td>
                                                     <td><?= $data['visit_code'] ?></td>
                                                     <td><?= $data['visit_date'] ?></td>
-                                                    <td><?= date('l', strtotime($data['visit_date']))?></td> 
+                                                    <td><?= date('l', strtotime($data['visit_date'])) ?></td>
 
                                                     <td><?= $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
                                                     <td><?= $group ?></td>
@@ -1193,8 +1201,8 @@ if ($user->isLoggedIn()) {
                                                 <?php } ?>
                                                 </div>
                                             </td>
-                                            <td><?= $data['visit_date'] ?></td> 
-                                            <td><?= date('l', strtotime($data['visit_date']))?></td> 
+                                            <td><?= $data['visit_date'] ?></td>
+                                            <td><?= date('l', strtotime($data['visit_date'])) ?></td>
 
                                             <td><?= $data['details'] ?></td>
 
@@ -1680,6 +1688,8 @@ if ($user->isLoggedIn()) {
                                         <th width="3%">VISIT DATE</th>
                                         <th width="3%">DAY</th>
                                         <th width="3%">STATUS</th>
+                                        <th width="3%">DETAILS</th>
+                                        <th width="3%">REASON</th>
                                         <th width="3%">ACTION</th>
                                     </tr>
                                 </thead>
@@ -1699,7 +1709,9 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
                                                 <td><?= $data['visit_date'] ?></td>
-                                                <td><?= date('l', strtotime($data['visit_date']))?></td> 
+                                                <td><?= date('l', strtotime($data['visit_date'])) ?></td>
+                                                <td><?= $data['details'] ?></td>
+                                                <td><?= $data['reason'] ?></td>
 
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
@@ -1758,6 +1770,18 @@ if ($user->isLoggedIn()) {
                                                                         <div class="col-md-2">Date:</div>
                                                                         <div class="col-md-10">
                                                                             <input type="text" name="visit_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Details:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' '.$data['visit_date'] . ' to '. ' ' . $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Reason:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
