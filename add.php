@@ -40,12 +40,12 @@ if ($user->isLoggedIn()) {
                     if (!$override->get('visit', 'client_id', Input::get('client_id'))) {
                         if ((Input::get('study_name') == 'VAC080') and (Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 2A')) {
                             $user->generateScheduleNotDelayedVac080(Input::get('study_name'), Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
-                        } elseif ((Input::get('study_name') == 'VAC080') and (Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 2C' || Input::get('group') == 'Group 2D')){
-                            $user->generateScheduleDelayedVac080(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                        } elseif ((Input::get('study_name') == 'VAC080') and (Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 2C' || Input::get('group') == 'Group 2D')) {
+                            $user->generateScheduleDelayedVac080(Input::get('study_name'), Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif ((Input::get('study_name') == 'VAC082') and (Input::get('group') == 'Group 1A' || Input::get('group') == 'Group 1B' || Input::get('group') == 'Group 2A' || Input::get('group') == 'Group 2B' || Input::get('group') == 'Group 3A' || Input::get('group') == 'Group 3B')) {
-                            $user->generateScheduleNotDelayedVac082(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                            $user->generateScheduleNotDelayedVac082(Input::get('study_name'), Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         } elseif ((Input::get('study_name') == 'VAC082') and (Input::get('group') == 'Group 3C' || Input::get('group') == 'Group 4A' || Input::get('group') == 'Group 4B' || Input::get('group') == 'Group 4C')) {
-                            $user->generateScheduleDelayedVac082(Input::get('study_name'),Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
+                            $user->generateScheduleDelayedVac082(Input::get('study_name'), Input::get('client_id'), $date = date('Y-m-d', strtotime(Input::get('visit_date'))), 1, 'c');
                         }
                         $successMessage = 'Schedules Added Successful';
                     } else {
@@ -178,28 +178,30 @@ if ($user->isLoggedIn()) {
                                                 </select>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-row">
                                             <div class="col-md-2">CLIENT ID</div>
                                             <div class="col-md-10">
                                                 <select name="client_id" id="client_id" class="select2" style="width: 100%;" tabindex="-1">
-                                                <option value="">SELECT CLIENT ID</option>
-                                                <!-- <option value="">Select study ID</option> -->
-                                                <?php foreach ($override->getData('clients') as $client){?>
-                                                    <option value="<?=$client['id']?>"><?=$client['study_id']?></option>
-                                                <?php }?>                                              
-                                                    
+                                                    <option value="">SELECT CLIENT ID</option>
+                                                    <!-- <option value="">Select study ID</option> -->
+                                                    <?php foreach ($override->getData('clients') as $client) { ?>
+                                                        <option value="<?= $client['id'] ?>"><?= $client['study_id'] ?></option>
+                                                    <?php } ?>
+
                                                 </select>
                                             </div>
                                         </div>
-                                        
+
 
                                         <div id="waitS1" style="display:none;" class="col-md-offset-5 col-md-1"><img src='img/owl/spinner-mini.gif' width="12" height="12" /><br>Loading..</div>
                                         <div class="form-row" id="s1">
                                             <div class="col-md-2">VISIT CODE:</div>
                                             <div class="col-md-10" id="v_code">
-                                                <input type="hidden" name="visit_code" class="form-control" value="0" required="" />
-                                                <input type="number" name="visit_code" class="form-control" value="0" disabled />
+                                                <select name="visit_code" id="visit_code" class="select2" style="width: 100%;" tabindex="-1" required="">
+                                                    <option value="">SELECT VISIT TYPE</option>
+                                                    <option value="Clinic">Clinic</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-row">
