@@ -493,12 +493,20 @@ if ($user->isLoggedIn()) {
                 'reschedule_date' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reasone' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
                     $user->updateRecord('visit', array(
-                        'visit_date' => $date
+                        'visit_date' => $date,
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason')
                     ), Input::get('reschedule_id'));
 
                     $successMessage = 'Visit Re - Scheduled Successful';
@@ -517,12 +525,20 @@ if ($user->isLoggedIn()) {
                 'reschedule_date' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reasone' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
                     $user->updateRecord('visit', array(
-                        'visit_date' => $date
+                        'visit_date' => $date,
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason')
                     ), Input::get('reschedule_id'));
 
                     $successMessage = 'Visit Re - Scheduled Successful';
@@ -937,6 +953,18 @@ if ($user->isLoggedIn()) {
                                                                             <div class="col-md-2">Visit Date:</div>
                                                                             <div class="col-md-10">
                                                                                 <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Details:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Reason:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1775,7 +1803,7 @@ if ($user->isLoggedIn()) {
                                                                     <div class="form-row">
                                                                         <div class="col-md-2">Details:</div>
                                                                         <div class="col-md-10">
-                                                                            <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' '.$data['visit_date'] . ' to '. ' ' . $data['visit_date'] ?>" />
+                                                                            <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-row">
@@ -3123,6 +3151,18 @@ if ($user->isLoggedIn()) {
                                                                             <div class="col-md-2">Visit Date:</div>
                                                                             <div class="col-md-10">
                                                                                 <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Details:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Reason:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                             </div>
                                                                         </div>
                                                                     </div>

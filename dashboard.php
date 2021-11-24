@@ -107,12 +107,20 @@ if ($user->isLoggedIn()) {
                 'reschedule_date' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reasone' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
                     $user->updateRecord('visit', array(
-                        'visit_date' => $date
+                        'visit_date' => $date,
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason')
                     ), Input::get('reschedule_id'));
 
                     $successMessage = 'Visit Re - Scheduled Successful';
@@ -171,14 +179,14 @@ if ($user->isLoggedIn()) {
     <script type='text/javascript' src='js/actions.js'></script>
     <script type='text/javascript' src='js/settings.js'></script>
 
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/> -->
 
-    <style>
+    <!-- <style>
         body {
             font-family: calibri;
             color: #4e7480;
         }
-    </style>
+    </style> -->
 
 
 </head>
@@ -412,6 +420,18 @@ if ($user->isLoggedIn()) {
                                                                                 <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
                                                                             </div>
                                                                         </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Details:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Reason:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -496,6 +516,9 @@ if ($user->isLoggedIn()) {
         </div>
     </div>
 </body>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
@@ -523,10 +546,17 @@ if ($user->isLoggedIn()) {
     //     $(".dataTables_empty").text("There is No Any Visit Today.");
     // });
 
+    // $(document).ready(function() {
+    //     $('#example').DataTable();
+    //     $(".dataTables_empty").text("There is No Any Visit Today.");
+    // });
+
     $(document).ready(function() {
-        $('#example').DataTable();
-        $(".dataTables_empty").text("There is No Any Visit Today.");
-    });
+            $('#example').DataTable({
+                // paging: true,
+                // scrollY: 10
+            });
+        });
 </script>
 
 </html>
