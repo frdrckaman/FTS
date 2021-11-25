@@ -187,6 +187,110 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
+        }
+        elseif (Input::get('add_region')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'region_name' => array(
+                    'required' => true,
+                ),
+                'short_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('region', array(
+                        'name' => Input::get('region_name'),
+                        'short_code' => Input::get('short_code'),
+                        'status' => 1
+                    ));
+                    $successMessage = 'Region Registered Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('add_district')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'district_name' => array(
+                    'required' => true,
+                ),
+                'short_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('district', array(
+                        'name' => Input::get('district_name'),
+                        'short_code' => Input::get('short_code'),
+                        'status' => 1
+                    ));
+                    $successMessage = 'District Registered Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('add_ward')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'ward_name' => array(
+                    'required' => true,
+                ),
+                'short_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('ward', array(
+                        'name' => Input::get('ward_name'),
+                        'short_code' => Input::get('short_code'),
+                        'status' => 1
+                    ));
+                    $successMessage = 'Ward Registered Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
+        }
+        elseif (Input::get('add_village')) {
+            $validate = new validate();
+            $validate = $validate->check($_POST, array(
+                'village_name' => array(
+                    'required' => true,
+                ),
+                'short_code' => array(
+                    'required' => true,
+                    'min' => 2,
+                )
+            ));
+            if ($validate->passed()) {
+                try {
+                    $user->createRecord('village', array(
+                        'name' => Input::get('village_name'),
+                        'short_code' => Input::get('short_code'),
+                        'status' => 1
+                    ));
+                    $successMessage = 'Village Registered Successful';
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+            } else {
+                $pageError = $validate->errors();
+            }
         } elseif (Input::get('add_study')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
@@ -274,9 +378,9 @@ if ($user->isLoggedIn()) {
                 'to_date' => array(
                     'required' => true,
                 ),
-                'project_id' => array(
-                    'required' => true,
-                ),
+                // 'project_id' => array(
+                //     'required' => true,
+                // ),
             ));
             if ($validate->passed()) {
                 try {
@@ -424,6 +528,11 @@ if ($user->isLoggedIn()) {
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon-gear"></span> MANAGEMENT</a>
                         <ul class="dropdown-menu">
                             <li><a href="#add_country" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD COUNTRY</a></li>
+                            <li><a href="#add_region" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD REGION</a></li>
+                            <li><a href="#add_district" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD DISTRICT</a></li>
+                            <li><a href="#add_ward" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD WARD</a></li>
+                            <li><a href="#add_village" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD VILLAGE</a></li>
+                            <li><a href="#add_hamlet" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD HAMLET</a></li>
                             <li><a href="#add_site" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD SITE</a></li>
                             <li><a href="#add_images" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD LOGO</a></li>
                             <li><a href="#add_project" data-toggle="modal" data-backdrop="static" data-keyboard="false">ADD STUDY</a></li>
@@ -870,7 +979,7 @@ if ($user->isLoggedIn()) {
                             <div class="input-group">
                                 <div class="input-group-addon"></div>
                                 <select class="form-control" id="project_id" name="project_id" required>
-                                    <option value="0">ALL STUDIES</option>
+                                    <option value="ALL">ALL STUDIES</option>
                                     <?php foreach ($override->getData('study') as $group) { ?>
                                         <option value="<?= $group['name'] ?>"><?= $group['name'] ?></option>
                                     <?php } ?>
@@ -1057,6 +1166,186 @@ if ($user->isLoggedIn()) {
                 <div class="modal-footer">
                     <div class="pull-right col-md-3">
                         <input type="submit" name="add_image" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_region" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD REGION</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="region_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Short Code:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="short_code" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_region" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_district" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD DISTRICT</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="district_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Short Code:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="short_code" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_district" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_ward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD WARD</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="ward_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Short Code:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="short_code" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_ward" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_village" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD VILLAGE</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="village_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Short Code:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="short_code" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_village" value="ADD" class="btn btn-success btn-clean">
+                    </div>
+                    <div class="pull-right col-md-2">
+                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal" id="add_hamlet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ADD HAMLET</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="controls">
+                        <div class="form-row">
+                            <div class="col-md-2">Name:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="hamlet_name" class="form-control" value="" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-2">Short Code:</div>
+                            <div class="col-md-10">
+                                <input type="text" name="short_code" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-3">
+                        <input type="submit" name="add_hamlet" value="ADD" class="btn btn-success btn-clean">
                     </div>
                     <div class="pull-right col-md-2">
                         <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
