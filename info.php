@@ -1187,6 +1187,7 @@ if ($user->isLoggedIn()) {
                                         <th width="5%">INITIAL</th>
                                         <th width="5%">STUDY</th>
                                         <th width="5%">VISIT CODE</th>
+                                        <th width="5%">SCHEDULE TYPE</th>
                                         <th width="5%">STATUS</th>
                                         <th width="5%">VISIT DATE</th>
                                         <th width="5%">DAY</th>
@@ -1216,6 +1217,15 @@ if ($user->isLoggedIn()) {
                                             <td><?= $data['project_id'] ?></td>
 
                                             <td><?= $data['visit_code'] ?></td>
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
+                                                    <?php if ($data['schedule'] == 'Scheduled') { ?>&nbsp;
+                                                    <button class="btn btn-info">Scheduled</button>
+                                                <?php } elseif ($data['schedule'] == 'UnScheduled') { ?>
+                                                    <button class="btn btn-danger">UnScheduled</button>
+                                                <?php } ?>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
                                                     <?php if ($data['status'] == 0) { ?>&nbsp;
@@ -1713,6 +1723,7 @@ if ($user->isLoggedIn()) {
                                         <th width="3%">STUDY</th>
                                         <th width="3%">GROUP</th>
                                         <th width="3%">VISIT CODE</th>
+                                        <th width="3%">SCHEDLUE TYPE</th>
                                         <th width="3%">VISIT DATE</th>
                                         <th width="3%">DAY</th>
                                         <th width="3%">STATUS</th>
@@ -1736,6 +1747,17 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $data['project_id'] ?></td>
                                                 <td><?= $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
+
+                                                <td>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <?php if ($data['schedule'] == 'Scheduled') { ?>&nbsp;
+                                                        <button class="btn btn-info">Scheduled</button>
+                                                    <?php } elseif ($data['schedule'] == 'UnScheduled') { ?>
+                                                        <button class="btn btn-danger">UnScheduled</button>
+                                                    <?php } ?>
+                                                    </div>
+                                                </td>
+
                                                 <td><?= $data['visit_date'] ?></td>
                                                 <td><?= date('l', strtotime($data['visit_date'])) ?></td>
                                                 <td><?= $data['details'] ?></td>
