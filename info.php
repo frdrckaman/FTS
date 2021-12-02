@@ -111,10 +111,10 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 5) {
                         $user->updateRecord('visit', array(
@@ -123,10 +123,10 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 12) {
                         $user->updateRecord('visit', array(
@@ -135,10 +135,10 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } else {
                         if ((Input::get('sn') == 1 || Input::get('sn') == 2) && (Input::get('sn2') == 1 || Input::get('sn2') == 2) && (Input::get('sn3') == 1 || Input::get('sn3') == 2)) {
@@ -1760,8 +1760,6 @@ if ($user->isLoggedIn()) {
 
                                                 <td><?= $data['visit_date'] ?></td>
                                                 <td><?= date('l', strtotime($data['visit_date'])) ?></td>
-                                                <td><?= $data['details'] ?></td>
-                                                <td><?= $data['reason'] ?></td>
 
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
@@ -1776,6 +1774,11 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
+
+                                                <td><?= $data['details'] ?></td>
+                                                <td><?= $data['reason'] ?></td>
+
+
 
 
                                                 <?php

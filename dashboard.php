@@ -50,10 +50,10 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 6) {
                         $user->updateRecord('visit', array(
@@ -62,10 +62,10 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 12) {
                         $user->updateRecord('visit', array(
@@ -74,10 +74,10 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } else {
                         if ((Input::get('sn') == 1 || Input::get('sn') == 2) && (Input::get('sn2') == 1 || Input::get('sn2') == 2) && (Input::get('sn3') == 1 || Input::get('sn3') == 2)) {
@@ -178,6 +178,15 @@ if ($user->isLoggedIn()) {
     <script type='text/javascript' src='js/plugins.js'></script>
     <script type='text/javascript' src='js/actions.js'></script>
     <script type='text/javascript' src='js/settings.js'></script>
+
+
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.css" /> -->
+
+    <script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.js"></script>
+
+    <!-- https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.css"/> -->
+
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.js"></script> -->
 
     <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/> -->
 
@@ -378,132 +387,132 @@ if ($user->isLoggedIn()) {
                                                     <div><a href="#re_schedule_visit<?= $x ?>" data-toggle="modal" class="widget-icon" title="Re - Schedule Visit"><span class="icon-edit"></span></a></div>
                                                 </td>
 
-
-
-                                                <div class="modal" id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <form method="post">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                    <h4 class="modal-title">Re - Schedule VISIT</h4>
-                                                                </div>
-                                                                <div class="modal-body clearfix">
-                                                                    <div class="controls">
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">Study Name :</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="study_name" class="datepicker form-control" value="<?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?>" disabled />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">Client ID:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="client_id" class="form-control" value="<?= $client['study_id'] ?>" disabled />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">VISIT CODE:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">Study Group:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="initials" class="form-control" value="<?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>" disabled />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">Visit Date:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">Details:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">Reason:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <div class="pull-right col-md-3">
-                                                                        <input type="hidden" name="reschedule_id" class="form-control" value="<?= $data['id'] ?>" required="" />
-                                                                        <input type="submit" name="reschedule_visit" value="SUBMIT" class="btn btn-success btn-clean">
-                                                                    </div>
-                                                                    <div class="pull-right col-md-2">
-                                                                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-
-
-
-
-
-
-                                                <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <form method="post">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                    <h4 class="modal-title">APPOINTMENT</h4>
-                                                                </div>
-                                                                <div class="modal-body clearfix">
-                                                                    <div class="controls">
-                                                                        <div class="form-row">
-                                                                            <div class="col-md-2">VISIT CODE:</div>
-                                                                            <div class="col-md-10">
-                                                                                <input type="hidden" name="visit_code" value="<?= $client['visit_code'] + 1 ?>">
-                                                                                <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] . ' ( ' . $data['visit_type'] . ' ) ' ?>" disabled />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row" id="st">
-                                                                            <div class="col-md-2">Status</div>
-                                                                            <div class="col-md-10">
-                                                                                <select class="form-control" id="site" name="visit_status" required>
-                                                                                    <option value="">Select Status</option>
-                                                                                    <option value="1">Complete</option>
-                                                                                    <option value="2">Missing</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <div class="pull-right col-md-3">
-                                                                        <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
-                                                                        <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
-                                                                        <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
-                                                                        <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
-                                                                        <input type="hidden" name="sn" value="<?= $data['sn_cl_status'] ?>">
-                                                                        <input type="hidden" name="sn3" value="<?= $data['dc_status'] ?>">
-                                                                        <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
-                                                                    </div>
-                                                                    <div class="pull-right col-md-2">
-                                                                        <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
                                             <?php } ?>
+
+
+
+                                            <div class="modal" id="re_schedule_visit<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form method="post">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4 class="modal-title">Re - Schedule VISIT</h4>
+                                                            </div>
+                                                            <div class="modal-body clearfix">
+                                                                <div class="controls">
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Study Name :</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="study_name" class="datepicker form-control" value="<?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Client ID:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="client_id" class="form-control" value="<?= $client['study_id'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">VISIT CODE:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Study Group:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="initials" class="form-control" value="<?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Visit Date:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Details:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Reason:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="pull-right col-md-3">
+                                                                    <input type="hidden" name="reschedule_id" class="form-control" value="<?= $data['id'] ?>" required="" />
+                                                                    <input type="submit" name="reschedule_visit" value="SUBMIT" class="btn btn-success btn-clean">
+                                                                </div>
+                                                                <div class="pull-right col-md-2">
+                                                                    <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+
+                                            <div class="modal" id="appnt<?= $x ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form method="post">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4 class="modal-title">APPOINTMENT</h4>
+                                                            </div>
+                                                            <div class="modal-body clearfix">
+                                                                <div class="controls">
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">VISIT CODE:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="hidden" name="visit_code" value="<?= $client['visit_code'] + 1 ?>">
+                                                                            <input type="text" name="visit_code" class="form-control" value="<?= $data['visit_code'] . ' ( ' . $data['visit_type'] . ' ) ' ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row" id="st">
+                                                                        <div class="col-md-2">Status</div>
+                                                                        <div class="col-md-10">
+                                                                            <select class="form-control" id="site" name="visit_status" required>
+                                                                                <option value="">Select Status</option>
+                                                                                <option value="1">Complete</option>
+                                                                                <option value="2">Missing</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="pull-right col-md-3">
+                                                                    <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
+                                                                    <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
+                                                                    <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
+                                                                    <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
+                                                                    <input type="hidden" name="sn" value="<?= $data['sn_cl_status'] ?>">
+                                                                    <input type="hidden" name="sn3" value="<?= $data['dc_status'] ?>">
+                                                                    <input type="submit" name="appointment" value="Submit" class="btn btn-success btn-clean">
+                                                                </div>
+                                                                <div class="pull-right col-md-2">
+                                                                    <button type="button" class="btn btn-default btn-clean" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                 <?php }
                                     $x++;
@@ -551,12 +560,60 @@ if ($user->isLoggedIn()) {
     //     $(".dataTables_empty").text("There is No Any Visit Today.");
     // });
 
+    // $(document).ready(function() {
+    //     $('#example').DataTable({
+    //         // paging: true,
+    //         // scrollY: 10
+
+    //         "processing": true,
+    //         "sAjaxSource": "process.php&id=2",
+    //         "dom": 'lBfrtip',
+    //         "buttons": [{
+    //             extend: 'collection',
+    //             text: 'Export',
+    //             buttons: [
+    //                 'copy',
+    //                 'excel',
+    //                 'csv',
+    //                 'pdf',
+    //                 'print'
+    //             ]
+    //         }]
+    //     });
+    // });
+
     $(document).ready(function() {
-            $('#example').DataTable({
-                // paging: true,
-                // scrollY: 10
-            });
+        $('#example').dataTable({
+            // "processing": true,
+            // "serverSide": true,
+            // "ajax": {
+            //     "url": "procss.php&id=2",
+            //     "type": "GET"
+            // },
+            // "dom": 'lBfrtip',
+            // "buttons": [{
+            //     extend: 'collection',
+            //     text: 'Export',
+            //     buttons: [
+            //         'copy',
+            //         'excel',
+            //         'csv',
+            //         'pdf',
+            //         'print'
+            //     ]
+            // }]
+
+
+            // "columns": [
+            //     { "data": "first_name" },
+            //     { "data": "last_name" },
+            //     { "data": "position" },
+            //     { "data": "office" },
+            //     { "data": "start_date" },
+            //     { "data": "salary" }
+            // ]
         });
+    });
 </script>
 
 </html>
