@@ -498,10 +498,56 @@ if ($user->isLoggedIn()) {
 
 
     $(document).ready(function() {
+        
         $('#studyVisit').DataTable({
+
+            "language": {
+                    "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Visit Today</h1><div><span></span></div></div>"
+                },
+
+
+            dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        // displayFormat: 'dddd D MMMM YYYY',
+                        // wireFormat: 'YYYY-MM-DD',
+                        // columnDefs: [{
+                        // targets: [6],
+                        // render: $.fn.dataTable.render.moment('DD/MM/YYYY')
+                        // }],
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ],
+
             // paging: true,
             // scrollY: 10
         });
+        // $(".dataTables_empty").text("There is No Any Visit Today.");
     });
 </script>
 

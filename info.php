@@ -786,7 +786,7 @@ if ($user->isLoggedIn()) {
                             <h2>TODAY SCHEDULE VISITS FOR ALL STUDIES</h2>
                         </div>
                         <div class="content">
-                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="example2" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -3081,7 +3081,7 @@ if ($user->isLoggedIn()) {
                             <h2>TODAY PENDING VISITS</h2>
                         </div>
                         <div class="content">
-                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="example3" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -3387,7 +3387,13 @@ if ($user->isLoggedIn()) {
 
 
         $(document).ready(function() {
+
             $('#allVisit').DataTable({
+
+                // "columnDefs": [{
+                //     targets: 4,
+                //     render: $.fn.dataTable.render.moment('M-DD-YYYY,THH:mm', 'M/DD/YYYY')
+                // }],
 
 
                 dom: 'Bfrtip',
@@ -3399,8 +3405,8 @@ if ($user->isLoggedIn()) {
                         // displayFormat: 'dddd D MMMM YYYY',
                         // wireFormat: 'YYYY-MM-DD',
                         // columnDefs: [{
-                            // targets: [6],
-                            // render: $.fn.dataTable.render.moment('DD/MM/YYYY')
+                        // targets: [6],
+                        // render: $.fn.dataTable.render.moment('DD/MM/YYYY')
                         // }],
                     },
                     {
@@ -3439,6 +3445,101 @@ if ($user->isLoggedIn()) {
 
 
             });
+
+            // $(".dataTables_empty").text("There is No Any Visit Today.");
+
+
+
+            $('#example2').DataTable({
+
+                "language": {
+                    "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Visit Today</h1><div><span></span></div></div>"
+                },
+                // columns: columnDefs,
+
+                dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+
+
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ]
+            });
+
+            // $(".dataTables_empty").text("There is No Any Visit Today.").css('color', '#FF0000');
+
+
+            $('#example3').DataTable({
+
+                "language": {
+                    "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Pending Issue Today</h1><div><span></span></div></div>"
+                },
+                // columns: columnDefs,
+
+                dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+
+
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ]
+            });
+
+            // $(".dataTables_empty").text("There is No Any Visit Today.").css('color', '#FF0000');
         });
     </script>
 

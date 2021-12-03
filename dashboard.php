@@ -206,6 +206,10 @@ if ($user->isLoggedIn()) {
             /* color: #4e7480; */
             /* color: #000000; */
         }
+
+        td.dataTables_empty {
+            background-color: red;
+        }
     </style>
 
 
@@ -645,7 +649,14 @@ if ($user->isLoggedIn()) {
 
 
     $(document).ready(function() {
+
         $('#example').DataTable({
+
+            "language": {
+                "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Visit Today</h1><div><span></span></div></div>"
+            },
+            // columns: columnDefs,
+
             dom: 'Bfrtip',
             buttons: [{
 
@@ -681,6 +692,8 @@ if ($user->isLoggedIn()) {
                 //     }
             ]
         });
+
+        // $(".dataTables_empty").text("There is No Any Visit Today.").css('color', '#FF0000');
     });
 
 
