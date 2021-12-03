@@ -2918,7 +2918,11 @@ if ($user->isLoggedIn()) {
                                         <?php } elseif ($data['status'] == 2) { ?>
                                             <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed</span></button>
                                         <?php } elseif ($data['status'] == 0) { ?>
-                                            <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled</button>
+                                            <button class="btn btn-info"><span class="icon-dashboard"></span> <?php if ($d['schedule'] == 'Scheduled') {
+                                                                                                                    echo 'Scheduled ' . $data['visit_code'] . ' ' . $data['visit_type'];
+                                                                                                                } else {
+                                                                                                                    echo 'UnScheduled ' . $data['visit_code'] . ' ' . $data['visit_type'];
+                                                                                                                } ?></button>
                                         <?php } ?>
                                     </td>
                                 <?php $x++;
@@ -2998,10 +3002,15 @@ if ($user->isLoggedIn()) {
                                                     <?php } elseif ($d['status'] == 2) { ?>
                                                         <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></span></button>
                                                     <?php } elseif ($d['status'] == 0 || $d['status'] == 3) { ?>
-                                                        <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
+                                                        <button class="btn btn-info"><span class="icon-dashboard"></span> <?php if ($d['schedule'] == 'Scheduled') {
+                                                                                                                                echo 'Scheduled ' . $d['visit_code'] . ' ' . $d['visit_type'];
+                                                                                                                            } else {
+                                                                                                                                echo 'UnScheduled ' . $d['visit_code'] . ' ' . $d['visit_type'];
+                                                                                                                            } ?></button>
                                                     <?php }
                                                                                         } else { ?>
-                                                    NO VISIT
+                                                    <?php echo ' '; ?>
+                                                    <!-- NO VISIT -->
                                                 <?php } ?>
                                                     </div>
                                                 </td>
@@ -3051,7 +3060,8 @@ if ($user->isLoggedIn()) {
                                                             <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
                                                         <?php }
                                                                                             } else { ?>
-                                                        NO VISIT
+                                                        <?php echo ' '; ?>
+                                                        <!-- NO VISIT  -->
                                                     <?php } ?>
                                                         </div>
                                                     </td>
@@ -3339,8 +3349,19 @@ if ($user->isLoggedIn()) {
         </div>
     </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+
+
+
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
     <script>
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
@@ -3367,6 +3388,45 @@ if ($user->isLoggedIn()) {
 
         $(document).ready(function() {
             $('#allVisit').DataTable({
+
+
+                dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        // displayFormat: 'dddd D MMMM YYYY',
+                        // wireFormat: 'YYYY-MM-DD',
+                        // columnDefs: [{
+                            // targets: [6],
+                            // render: $.fn.dataTable.render.moment('DD/MM/YYYY')
+                        // }],
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ],
                 // paging: true,
                 // scrollY: 10
                 // select: true,
@@ -3374,6 +3434,10 @@ if ($user->isLoggedIn()) {
                 // buttons: [
                 //     'copy', 'excel', 'pdf'
                 // ]
+
+
+
+
             });
         });
     </script>

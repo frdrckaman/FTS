@@ -63,7 +63,7 @@ if ($user->isLoggedIn()) {
                             'staff_id' => $user->data()->id,
                             'initial1' => Input::get('s_id')
                         ), Input::get('v_id'));
-                        $date = null;                        
+                        $date = null;
                         // $visitCode = $getVisit[0]['visit_code'] + 1;
                         // if ($visitCode) {
                         //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
@@ -186,20 +186,27 @@ if ($user->isLoggedIn()) {
 
     <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.css" /> -->
 
-    <script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.js"></script> -->
 
-    <!-- https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.css"/> -->
+    <!-- <script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.css"></script>  -->
 
     <!-- <script type="text/javascript" src="https://cdn.datatables.net/r/dt/jq-2.1.4,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.9,af-2.0.0,b-1.0.3,b-colvis-1.0.3,b-html5-1.0.3,b-print-1.0.3,se-1.0.1/datatables.min.js"></script> -->
 
     <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/> -->
 
-    <!-- <style>
+    <style>
         body {
             font-family: calibri;
-            color: #4e7480;
+            /* color: #4e7480; */
+            /* color: #000000; */
         }
-    </style> -->
+
+        #example button {
+            font-family: calibri;
+            /* color: #4e7480; */
+            /* color: #000000; */
+        }
+    </style>
 
 
 </head>
@@ -531,8 +538,24 @@ if ($user->isLoggedIn()) {
     </div>
 </body>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+
+
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"></script> -->
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css"></script> -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+
+
+
+
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
@@ -587,38 +610,85 @@ if ($user->isLoggedIn()) {
     //     });
     // });
 
+    // $(document).ready(function() {
+    // $('#example').dataTable({
+    // "processing": true,
+    // "serverSide": true,
+    // "ajax": {
+    //     "url": "procss.php&id=2",
+    //     "type": "GET"
+    // },
+    // "dom": 'lBfrtip',
+    // "buttons": [{
+    //     extend: 'collection',
+    //     text: 'Export',
+    //     buttons: [
+    //         'copy',
+    //         'excel',
+    //         'csv',
+    //         'pdf',
+    //         'print'
+    //     ]
+    // }]
+
+
+    // "columns": [
+    //     { "data": "first_name" },
+    //     { "data": "last_name" },
+    //     { "data": "position" },
+    //     { "data": "office" },
+    //     { "data": "start_date" },
+    //     { "data": "salary" }
+    // ]
+    //     });
+    // });
+
+
     $(document).ready(function() {
-        $('#example').dataTable({
-            // "processing": true,
-            // "serverSide": true,
-            // "ajax": {
-            //     "url": "procss.php&id=2",
-            //     "type": "GET"
-            // },
-            // "dom": 'lBfrtip',
-            // "buttons": [{
-            //     extend: 'collection',
-            //     text: 'Export',
-            //     buttons: [
-            //         'copy',
-            //         'excel',
-            //         'csv',
-            //         'pdf',
-            //         'print'
-            //     ]
-            // }]
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+
+                    extend: 'excelHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+                },
+
+                {
+                    extend: 'pdfHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL'
+
+                },
 
 
-            // "columns": [
-            //     { "data": "first_name" },
-            //     { "data": "last_name" },
-            //     { "data": "position" },
-            //     { "data": "office" },
-            //     { "data": "start_date" },
-            //     { "data": "salary" }
-            // ]
+                {
+                    extend: 'csvHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+                },
+                {
+                    extend: 'copyHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+                },
+                //     {
+                //         extend: 'print',
+                //         // name: 'printButton'
+                //         title: 'VISITS'
+                //     }
+            ]
         });
     });
+
+
+    // buttons: [
+    //     'colvis',
+    //     'excel',
+    //     'print'
+    // ]
 </script>
 
 </html>

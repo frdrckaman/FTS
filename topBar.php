@@ -187,8 +187,7 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
-        }
-        elseif (Input::get('add_region')) {
+        } elseif (Input::get('add_region')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
                 'region_name' => array(
@@ -213,8 +212,7 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
-        }
-        elseif (Input::get('add_district')) {
+        } elseif (Input::get('add_district')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
                 'district_name' => array(
@@ -239,8 +237,7 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
-        }
-        elseif (Input::get('add_ward')) {
+        } elseif (Input::get('add_ward')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
                 'ward_name' => array(
@@ -265,8 +262,7 @@ if ($user->isLoggedIn()) {
             } else {
                 $pageError = $validate->errors();
             }
-        }
-        elseif (Input::get('add_village')) {
+        } elseif (Input::get('add_village')) {
             $validate = new validate();
             $validate = $validate->check($_POST, array(
                 'village_name' => array(
@@ -1393,6 +1389,40 @@ if ($user->isLoggedIn()) {
                 }
             });
         });
+
+
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+
+                    extend: 'excelHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+
+                },
+                {
+                    extend: 'csvHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+                },
+                {
+                    extend: 'copyHtml5',
+                    title: 'VISITS',
+                    className: 'btn-primary'
+                },
+                //     {
+                //         extend: 'print',
+                //         // name: 'printButton'
+                //         title: 'VISITS'
+                //     }
+            ]
+        });
+
 
         // $("#search_schedule").on("submit", function() {
         //     $('#project_id').change(function() {

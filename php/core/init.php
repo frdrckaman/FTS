@@ -7,8 +7,8 @@ $GLOBALS['config'] = array(
   'mysql' => array(
       'host' => 'localhost',
       'username' => 'root',
-      'password' => '',
-      'db' => 'vts'
+      'password' => 'Data@2020',
+      'db' => 'vac081'
   	),
   'remember' =>array(
       'cookie_name' => 'hash',
