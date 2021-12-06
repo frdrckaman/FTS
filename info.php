@@ -401,6 +401,9 @@ if ($user->isLoggedIn()) {
                 'reason' => array(
                     'required' => true,
                 ),
+                'status' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 try {
@@ -409,7 +412,8 @@ if ($user->isLoggedIn()) {
                         'visit_date' => $date,
                         'visit_code' => Input::get('visit_code'),
                         'details' => Input::get('details'),
-                        'reason' => Input::get('reason')
+                        'reason' => Input::get('reason'),
+                        'status' => Input::get('status')
                     ), Input::get('id'));
 
                     $successMessage = 'Visit Edited Successful';
@@ -1821,6 +1825,12 @@ if ($user->isLoggedIn()) {
                                                                         <div class="col-md-2">INITIALS:</div>
                                                                         <div class="col-md-10">
                                                                             <input type="text" name="initials" class="form-control" value="<?= $client[0]['initials'] ?>" disabled />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">STATUS:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="number" name="status" class="form-control" value="<?= $data['status'] ?>" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-row">
