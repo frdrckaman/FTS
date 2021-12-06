@@ -3390,6 +3390,13 @@ if ($user->isLoggedIn()) {
 
             $('#allVisit').DataTable({
 
+                // columnDefs: [{
+                //     // "targets": -1,
+                //     // "data": null,
+                //     // "orderable": false,
+                //     "defaultContent": ['<input type="text" class="form-control datePicker" placeholder="Date" />']
+                // }],
+
                 // "columnDefs": [{
                 //     targets: 4,
                 //     render: $.fn.dataTable.render.moment('M-DD-YYYY,THH:mm', 'M/DD/YYYY')
