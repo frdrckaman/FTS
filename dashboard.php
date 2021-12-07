@@ -650,6 +650,14 @@ if ($user->isLoggedIn()) {
 
     $(document).ready(function() {
 
+        var currentDate = new Date()
+        var day = currentDate.getDate()
+        var month = currentDate.getMonth() + 1
+        var year = currentDate.getFullYear()
+
+        var d = day + "-" + month + "-" + year;
+
+
         $('#example').DataTable({
 
             "language": {
@@ -661,13 +669,13 @@ if ($user->isLoggedIn()) {
             buttons: [{
 
                     extend: 'excelHtml5',
-                    title: 'VISITS',
+                    title: d + ' ' + 'VISITS',
                     className: 'btn-primary'
                 },
 
                 {
                     extend: 'pdfHtml5',
-                    title: 'VISITS',
+                    title: d + ' ' + 'VISITS',
                     className: 'btn-primary',
                     orientation: 'landscape',
                     pageSize: 'LEGAL'
@@ -677,12 +685,12 @@ if ($user->isLoggedIn()) {
 
                 {
                     extend: 'csvHtml5',
-                    title: 'VISITS',
+                    title: d + ' ' + 'VISITS', 
                     className: 'btn-primary'
                 },
                 {
                     extend: 'copyHtml5',
-                    title: 'VISITS',
+                    title: d + ' ' + 'VISITS', 
                     className: 'btn-primary'
                 },
                 //     {

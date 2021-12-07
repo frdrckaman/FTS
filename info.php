@@ -536,7 +536,7 @@ if ($user->isLoggedIn()) {
                 'details' => array(
                     'required' => true,
                 ),
-                'reasone' => array(
+                'reason' => array(
                     'required' => true,
                 )
             ));
