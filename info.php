@@ -476,13 +476,21 @@ if ($user->isLoggedIn()) {
                 'details' => array(
                     'required' => true,
                 ),
+                'reason' => array(
+                    'required' => true,
+                ),
+                'status' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
-                    $date = date('Y-m-d', strtotime(Input::get('next_visit')));
-                    $user->updateRecord('schedule', array(
+                    $date = date('Y-m-d', strtotime(Input::get('visit_date')));
+                    $user->updateRecord('visit', array(
                         'visit_date' => $date,
-                        'details' => Input::get('details')
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason'),
+                        'status' => Input::get('status')
                     ), Input::get('id'));
 
                     $successMessage = 'Visit Details Edited Successful';
@@ -504,7 +512,7 @@ if ($user->isLoggedIn()) {
                 'details' => array(
                     'required' => true,
                 ),
-                'reasone' => array(
+                'reason' => array(
                     'required' => true,
                 )
             ));
@@ -1194,12 +1202,14 @@ if ($user->isLoggedIn()) {
                                         <th width="5%">CLIENT ID</th>
                                         <th width="5%">INITIAL</th>
                                         <th width="5%">STUDY</th>
+                                        <th width="5%">GROUP</th>
                                         <th width="5%">VISIT CODE</th>
                                         <th width="5%">SCHEDULE TYPE</th>
                                         <th width="5%">STATUS</th>
                                         <th width="5%">VISIT DATE</th>
                                         <th width="5%">DAY</th>
                                         <th width="5%">DETAILS</th>
+                                        <th width="5%">REASON</th>
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
 
@@ -1218,11 +1228,17 @@ if ($user->isLoggedIn()) {
                                     // foreach ($override->getDataOrderByAsc('schedule', 'visit_date') as $data) {
                                     foreach ($override->getDataOrderByAsc('visit', 'client_id', 'project_id', $study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id']);
-                                        $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ?>
+                                        $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ;
+                                        $group = $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'];
+
+                                        ?>                                       
+
+
                                         <tr>
                                             <td><?= $client[0]['study_id'] ?></td>
                                             <td><?= $client[0]['initials'] ?></td>
                                             <td><?= $data['project_id'] ?></td>
+                                            <td><?= $group ?></td>
 
                                             <td><?= $data['visit_code'] ?></td>
                                             <td>
@@ -1237,7 +1253,7 @@ if ($user->isLoggedIn()) {
                                             <td>
                                                 <div class="btn-group btn-group-xs">
                                                     <?php if ($data['status'] == 0) { ?>&nbsp;
-                                                    <button class="btn btn-warning">Pending</button>
+                                                    <button class="btn btn-warning">NOT DONE</button>
                                                 <?php } elseif ($data['status'] == 3) { ?>
                                                     <button class="btn btn-success">Pending</button>
                                                 <?php } elseif ($data['status'] == 1) { ?>
@@ -1251,6 +1267,7 @@ if ($user->isLoggedIn()) {
                                             <td><?= date('l', strtotime($data['visit_date'])) ?></td>
 
                                             <td><?= $data['details'] ?></td>
+                                            <td><?= $data['reason'] ?></td>
 
                                             <?php
                                             if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
@@ -1300,16 +1317,27 @@ if ($user->isLoggedIn()) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
+                                                                        <div class="col-md-2">STATUS:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="number" name="status" class="form-control" value="<?= $data['status'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                <div class="form-row">
                                                                     <div class="col-md-2">VISIT DATE:</div>
                                                                     <div class="col-md-10">
                                                                         <input type="text" name="visit_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
                                                                     </div>
                                                                 </div>
-
                                                                 <div class="form-row">
                                                                     <div class="col-md-2">DETAILS:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="text" name="details" class="datepicker form-control" value="<?= $data['details'] ?>" />
+                                                                        <input type="text" name="details" class="datepicker form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-2">REASON:</div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                     </div>
                                                                 </div>
                                                             </div>
