@@ -108,43 +108,47 @@ if ($user->isLoggedIn()) {
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             // 'status' => Input::get('visit_status'),
-                            'staff_id' => $user->data()->id
+                            'staff_id' => $user->data()->id,
+                            'initial2' => Input::get('s_id')
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 5) {
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             // 'status' => Input::get('visit_status'),
-                            'staff_id' => $user->data()->id
+                            'staff_id' => $user->data()->id,
+                            'initial1' => Input::get('s_id')
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 12) {
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             // 'status' => Input::get('visit_status'),
-                            'staff_id' => $user->data()->id
+                            'staff_id' => $user->data()->id,
+                            'initial3' => Input::get('s_id')
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } else {
                         if ((Input::get('sn') == 1 || Input::get('sn') == 2) && (Input::get('sn2') == 1 || Input::get('sn2') == 2) && (Input::get('sn3') == 1 || Input::get('sn3') == 2)) {
                             $user->updateRecord('visit', array(
                                 $a_status => Input::get('visit_status'),
-                                'staff_id' => $user->data()->id
+                                'staff_id' => $user->data()->id,
+                                'initial4' => Input::get('s_id')
                             ), Input::get('v_id'));
                         } else {
                             $errorMessage = 'Patient must be attended by study nurse, clinician and  Data Clerck First';
@@ -391,13 +395,25 @@ if ($user->isLoggedIn()) {
                 'visit_code' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reason' => array(
+                    'required' => true,
+                ),
+                'status' => array(
+                    'required' => true,
+                ),
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('visit_date')));
                     $user->updateRecord('visit', array(
                         'visit_date' => $date,
-                        'visit_code' => Input::get('visit_code')
+                        'visit_code' => Input::get('visit_code'),
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason'),
+                        'status' => Input::get('status')
                     ), Input::get('id'));
 
                     $successMessage = 'Visit Edited Successful';
@@ -427,7 +443,7 @@ if ($user->isLoggedIn()) {
                 try {
                     if ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 2A')) {
                         $user->updateScheduleNotDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
-                    } elseif ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 1C' || Input::get('group_name') == 'Group 2D')) {
+                    } elseif ((Input::get('project_name') == 'VAC080') and (Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 2C' || Input::get('group_name') == 'Group 2D')) {
                         $user->updateScheduleDelayedVac080(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
                     } elseif ((Input::get('project_name') == 'VAC082') and (Input::get('group_name') == 'Group 1A' || Input::get('group_name') == 'Group 1B' || Input::get('group_name') == 'Group 2A' || Input::get('group_name') == 'Group 2B' || Input::get('group_name') == 'Group 3A' || Input::get('group_name') == 'Group 3B')) {
                         $user->updateScheduleNotDelayedVac082(Input::get('project_name'), Input::get('id'), Input::get('visit_date'), Input::get('visit'));
@@ -460,13 +476,21 @@ if ($user->isLoggedIn()) {
                 'details' => array(
                     'required' => true,
                 ),
+                'reason' => array(
+                    'required' => true,
+                ),
+                'status' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
-                    $date = date('Y-m-d', strtotime(Input::get('next_visit')));
-                    $user->updateRecord('schedule', array(
+                    $date = date('Y-m-d', strtotime(Input::get('visit_date')));
+                    $user->updateRecord('visit', array(
                         'visit_date' => $date,
-                        'details' => Input::get('details')
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason'),
+                        'status' => Input::get('status')
                     ), Input::get('id'));
 
                     $successMessage = 'Visit Details Edited Successful';
@@ -485,12 +509,20 @@ if ($user->isLoggedIn()) {
                 'reschedule_date' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reason' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
                     $user->updateRecord('visit', array(
-                        'visit_date' => $date
+                        'visit_date' => $date,
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason')
                     ), Input::get('reschedule_id'));
 
                     $successMessage = 'Visit Re - Scheduled Successful';
@@ -509,12 +541,20 @@ if ($user->isLoggedIn()) {
                 'reschedule_date' => array(
                     'required' => true,
                 ),
+                'details' => array(
+                    'required' => true,
+                ),
+                'reason' => array(
+                    'required' => true,
+                )
             ));
             if ($validate->passed()) {
                 try {
                     $date = date('Y-m-d', strtotime(Input::get('reschedule_date')));
                     $user->updateRecord('visit', array(
-                        'visit_date' => $date
+                        'visit_date' => $date,
+                        'details' => Input::get('details'),
+                        'reason' => Input::get('reason')
                     ), Input::get('reschedule_id'));
 
                     $successMessage = 'Visit Re - Scheduled Successful';
@@ -758,7 +798,7 @@ if ($user->isLoggedIn()) {
                             <h2>TODAY SCHEDULE VISITS FOR ALL STUDIES</h2>
                         </div>
                         <div class="content">
-                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="example2" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -830,9 +870,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['status'] == 1) { ?>
-                                                        <button class="btn btn-success">Completed</button>
+                                                        <button class="btn btn-success">Completed</button><button class="btn btn-info"><?= $data['initial1'] ?></button>
                                                     <?php } elseif ($data['status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial1'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -842,9 +882,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['sn_cl_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['sn_cl_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Reviewed</button>
+                                                        <button class="btn btn-success">Reviewed</button><button class="btn btn-info"><?= $data['initial2'] ?></button>
                                                     <?php } elseif ($data['sn_cl_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial2'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -854,9 +894,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['dc_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['dc_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Entered</button>
+                                                        <button class="btn btn-success">Entered</button><button class="btn btn-info"><?= $data['initial3'] ?></button>
                                                     <?php } elseif ($data['dc_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial3'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -866,9 +906,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['dm_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['dm_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Reviewed</button>
+                                                        <button class="btn btn-success">Reviewed</button><button class="btn btn-info"><?= $data['initial4'] ?></button>
                                                     <?php } elseif ($data['dm_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial4'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -929,6 +969,18 @@ if ($user->isLoggedIn()) {
                                                                             <div class="col-md-2">Visit Date:</div>
                                                                             <div class="col-md-10">
                                                                                 <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Details:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Reason:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1058,7 +1110,7 @@ if ($user->isLoggedIn()) {
                                                     <td><?= $client[0]['study_id'] ?></td>
                                                     <td><?= $data['visit_code'] ?></td>
                                                     <td><?= $data['visit_date'] ?></td>
-                                                    <td><?= date('l', strtotime($data['visit_date']))?></td> 
+                                                    <td><?= date('l', strtotime($data['visit_date'])) ?></td>
 
                                                     <td><?= $override->get('study', 'id', $client[0]['project_id'])[0]['study_code'] ?></td>
                                                     <td><?= $group ?></td>
@@ -1150,11 +1202,14 @@ if ($user->isLoggedIn()) {
                                         <th width="5%">CLIENT ID</th>
                                         <th width="5%">INITIAL</th>
                                         <th width="5%">STUDY</th>
+                                        <th width="5%">GROUP</th>
                                         <th width="5%">VISIT CODE</th>
+                                        <th width="5%">SCHEDULE TYPE</th>
                                         <th width="5%">STATUS</th>
                                         <th width="5%">VISIT DATE</th>
                                         <th width="5%">DAY</th>
                                         <th width="5%">DETAILS</th>
+                                        <th width="5%">REASON</th>
                                         <?php
                                         if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
 
@@ -1173,17 +1228,32 @@ if ($user->isLoggedIn()) {
                                     // foreach ($override->getDataOrderByAsc('schedule', 'visit_date') as $data) {
                                     foreach ($override->getDataOrderByAsc('visit', 'client_id', 'project_id', $study) as $data) {
                                         $client = $override->get('clients', 'id', $data['client_id']);
-                                        $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ?>
+                                        $lastVisit = $override->getlastRow('visit', 'client_id', $data['client_id'], 'id') ;
+                                        $group = $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'];
+
+                                        ?>                                       
+
+
                                         <tr>
                                             <td><?= $client[0]['study_id'] ?></td>
                                             <td><?= $client[0]['initials'] ?></td>
                                             <td><?= $data['project_id'] ?></td>
+                                            <td><?= $group ?></td>
 
                                             <td><?= $data['visit_code'] ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-xs">
+                                                    <?php if ($data['schedule'] == 'Scheduled') { ?>&nbsp;
+                                                    <button class="btn btn-info">Scheduled</button>
+                                                <?php } elseif ($data['schedule'] == 'UnScheduled') { ?>
+                                                    <button class="btn btn-danger">UnScheduled</button>
+                                                <?php } ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-xs">
                                                     <?php if ($data['status'] == 0) { ?>&nbsp;
-                                                    <button class="btn btn-warning">Pending</button>
+                                                    <button class="btn btn-warning">NOT DONE</button>
                                                 <?php } elseif ($data['status'] == 3) { ?>
                                                     <button class="btn btn-success">Pending</button>
                                                 <?php } elseif ($data['status'] == 1) { ?>
@@ -1193,10 +1263,11 @@ if ($user->isLoggedIn()) {
                                                 <?php } ?>
                                                 </div>
                                             </td>
-                                            <td><?= $data['visit_date'] ?></td> 
-                                            <td><?= date('l', strtotime($data['visit_date']))?></td> 
+                                            <td><?= $data['visit_date'] ?></td>
+                                            <td><?= date('l', strtotime($data['visit_date'])) ?></td>
 
                                             <td><?= $data['details'] ?></td>
+                                            <td><?= $data['reason'] ?></td>
 
                                             <?php
                                             if ($user->data()->position == 1 || $user->data()->position == 5 || $user->data()->position == 6 || $user->data()->position == 12) {
@@ -1246,16 +1317,27 @@ if ($user->isLoggedIn()) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
+                                                                        <div class="col-md-2">STATUS:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="number" name="status" class="form-control" value="<?= $data['status'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                <div class="form-row">
                                                                     <div class="col-md-2">VISIT DATE:</div>
                                                                     <div class="col-md-10">
                                                                         <input type="text" name="visit_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
                                                                     </div>
                                                                 </div>
-
                                                                 <div class="form-row">
                                                                     <div class="col-md-2">DETAILS:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="text" name="details" class="datepicker form-control" value="<?= $data['details'] ?>" />
+                                                                        <input type="text" name="details" class="datepicker form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-md-2">REASON:</div>
+                                                                    <div class="col-md-10">
+                                                                        <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1423,7 +1505,7 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $client['phone_number'] ?></td>
                                                 <td><?= $client['phone_number2'] ?></td>
                                                 <td>
-                                                    <a href="#edit_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Staff Information"><span class="icon-pencil"></span></a>
+                                                    <a href="#edit_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Client Information"><span class="icon-pencil"></span></a>
                                                     <a href="#reasons<?= $y ?>" data-toggle="modal" class="widget-icon" title="End Study"><span class="icon-warning-sign"></span></a>
                                                     <a href="#edit_schedule<?= $y ?>" data-toggle="modal" class="widget-icon" title="Edit Schedule"><span class="icon-refresh"></span></a>
                                                     <a href="#delete_client<?= $y ?>" data-toggle="modal" class="widget-icon" title="Delete Staff"><span class="icon-trash"></span></a>
@@ -1444,15 +1526,15 @@ if ($user->isLoggedIn()) {
                                                         <div class="modal-body clearfix">
                                                             <div class="controls">
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">STUDY ID:</div>
+                                                                    <div class="col-md-2">CLIENT ID:</div>
                                                                     <div class="col-md-10">
                                                                         <input type="text" name="study_id" class="form-control" value="<?= $client['study_id'] ?>" required="" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
-                                                                    <div class="col-md-2">VISIT CODE:</div>
+                                                                    <div class="col-md-2">STUDY NAME:</div>
                                                                     <div class="col-md-10">
-                                                                        <input type="number" name="visit_code" class="form-control" value="<?= $client['visit_code'] ?>" required="" />
+                                                                        <input type="number" name="project_id" class="form-control" value="<?= $override->get('study', 'id', $client['project_id']) ?>" required="" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
@@ -1677,9 +1759,12 @@ if ($user->isLoggedIn()) {
                                         <th width="3%">STUDY</th>
                                         <th width="3%">GROUP</th>
                                         <th width="3%">VISIT CODE</th>
+                                        <th width="3%">SCHEDLUE TYPE</th>
                                         <th width="3%">VISIT DATE</th>
                                         <th width="3%">DAY</th>
                                         <th width="3%">STATUS</th>
+                                        <th width="3%">DETAILS</th>
+                                        <th width="3%">REASON</th>
                                         <th width="3%">ACTION</th>
                                     </tr>
                                 </thead>
@@ -1698,8 +1783,19 @@ if ($user->isLoggedIn()) {
                                                 <td><?= $data['project_id'] ?></td>
                                                 <td><?= $override->get('patient_group', 'id', $client[0]['pt_group'])[0]['name'] ?></td>
                                                 <td><?= $data['visit_code'] ?></td>
+
+                                                <td>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <?php if ($data['schedule'] == 'Scheduled') { ?>&nbsp;
+                                                        <button class="btn btn-info">Scheduled</button>
+                                                    <?php } elseif ($data['schedule'] == 'UnScheduled') { ?>
+                                                        <button class="btn btn-danger">UnScheduled</button>
+                                                    <?php } ?>
+                                                    </div>
+                                                </td>
+
                                                 <td><?= $data['visit_date'] ?></td>
-                                                <td><?= date('l', strtotime($data['visit_date']))?></td> 
+                                                <td><?= date('l', strtotime($data['visit_date'])) ?></td>
 
                                                 <td>
                                                     <div class="btn-group btn-group-xs">
@@ -1714,6 +1810,11 @@ if ($user->isLoggedIn()) {
                                                     <?php } ?>
                                                     </div>
                                                 </td>
+
+                                                <td><?= $data['details'] ?></td>
+                                                <td><?= $data['reason'] ?></td>
+
+
 
 
                                                 <?php
@@ -1755,9 +1856,27 @@ if ($user->isLoggedIn()) {
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-row">
+                                                                        <div class="col-md-2">STATUS:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="number" name="status" class="form-control" value="<?= $data['status'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
                                                                         <div class="col-md-2">Date:</div>
                                                                         <div class="col-md-10">
                                                                             <input type="text" name="visit_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Details:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-2">Reason:</div>
+                                                                        <div class="col-md-10">
+                                                                            <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -2837,7 +2956,11 @@ if ($user->isLoggedIn()) {
                                         <?php } elseif ($data['status'] == 2) { ?>
                                             <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed</span></button>
                                         <?php } elseif ($data['status'] == 0) { ?>
-                                            <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled</button>
+                                            <button class="btn btn-info"><span class="icon-dashboard"></span> <?php if ($d['schedule'] == 'Scheduled') {
+                                                                                                                    echo 'Scheduled ' . $data['visit_code'] . ' ' . $data['visit_type'];
+                                                                                                                } else {
+                                                                                                                    echo 'UnScheduled ' . $data['visit_code'] . ' ' . $data['visit_type'];
+                                                                                                                } ?></button>
                                         <?php } ?>
                                     </td>
                                 <?php $x++;
@@ -2846,8 +2969,15 @@ if ($user->isLoggedIn()) {
                         </tbody>
                     </table>
                 <?php } elseif ($_GET['id'] == 12) {
-                    $project_id = $_GET['project_id'];
-                    $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id);
+
+                    // $override->dateRange1('visit', 'visit_date', $_GET['from'], $_GET['to']);
+                    if ($_GET['project_id'] == 'ALL') {
+                        $override->dateRange1('visit', 'visit_date', $_GET['from'], $_GET['to']);
+                    } else {
+                        $project_id = $_GET['project_id'];
+                        $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id);
+                    }
+
 
                     $y = 0;
                     $list = array();
@@ -2873,49 +3003,114 @@ if ($user->isLoggedIn()) {
 
                         </thead>
                         <tbody>
-                            <?php foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id) as $dt) {
-                                if ($dt['status'] != 4) {
-                                    $client = $override->get('clients', 'id', $dt['client_id'])[0];
 
+
+                            <?php
+                            if ($_GET['project_id'] == 'ALL') {
+                                $override->dateRange1('visit', 'visit_date', $_GET['from'], $_GET['to']);
+
+
+
+                                foreach ($override->dateRangeD1('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to']) as $dt) {
+                                    if ($dt['status'] != 4) {
+                                        $client = $override->get('clients', 'id', $dt['client_id'])[0];
                             ?>
 
-
-                                    <tr>
-                                        <td><?= $client['study_id'] ?>
-                                        <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
-                                        <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>
-                                            <?php if ($client['status'] == 0) { ?>
-                                                <div class="btn-group btn-group-xs">
-                                                    <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
-                                                </div>
-                                        <?php }
-                                        } ?>
-                                        </td>
-                                        <?php $x = 1;
-                                        foreach ($list as $data) {
-                                            $d = $override->getNews('visit', 'client_id', $dt['client_id'], 'visit_date', $data)[0];
-                                            //                                echo ' => ';print_r($dt['client_id']);print_r($d['status']);echo ' : ';print_r($d['visit_date']);echo ' , '
-                                            //                                print_r($data['client_id']);echo ' : ';print_r($data['visit_date']);echo ' , '
-                                        ?>
-                                            <td>
-                                                <div class="btn-group btn-group-xs"><?php if ($d) {
-                                                                                        if ($d['status'] == 1) { ?>&nbsp;
-                                                    <button class="btn btn-success"><span class="icon-ok-sign"></span> Done <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
-                                                <?php } elseif ($d['status'] == 2) { ?>
-                                                    <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></span></button>
-                                                <?php } elseif ($d['status'] == 0 || $d['status'] == 3) { ?>
-                                                    <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
-                                                <?php }
-                                                                                    } else { ?>
-                                                NO VISIT
-                                            <?php } ?>
-                                                </div>
+                                        <tr>
+                                            <td><?= $client['study_id'] ?>
+                                            <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
+                                            <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>
+                                                <?php if ($client['status'] == 0) { ?>
+                                                    <div class="btn-group btn-group-xs">
+                                                        <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
+                                                    </div>
+                                            <?php }
+                                            } ?>
                                             </td>
-                                        <?php $x++;
-                                        } ?>
-                                    </tr>
+                                            <?php $x = 1;
+                                            foreach ($list as $data) {
+                                                $d = $override->getNews('visit', 'client_id', $dt['client_id'], 'visit_date', $data)[0];
+                                                //                                echo ' => ';print_r($dt['client_id']);print_r($d['status']);echo ' : ';print_r($d['visit_date']);echo ' , '
+                                                //                                print_r($data['client_id']);echo ' : ';print_r($data['visit_date']);echo ' , '
+                                            ?>
+                                                <td>
+                                                    <div class="btn-group btn-group-xs"><?php if ($d) {
+                                                                                            if ($d['status'] == 1) { ?>&nbsp;
+                                                        <button class="btn btn-success"><span class="icon-ok-sign"></span> Done <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
+                                                    <?php } elseif ($d['status'] == 2) { ?>
+                                                        <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></span></button>
+                                                    <?php } elseif ($d['status'] == 0 || $d['status'] == 3) { ?>
+                                                        <button class="btn btn-info"><span class="icon-dashboard"></span> <?php if ($d['schedule'] == 'Scheduled') {
+                                                                                                                                echo 'Scheduled ' . $d['visit_code'] . ' ' . $d['visit_type'];
+                                                                                                                            } else {
+                                                                                                                                echo 'UnScheduled ' . $d['visit_code'] . ' ' . $d['visit_type'];
+                                                                                                                            } ?></button>
+                                                    <?php }
+                                                                                        } else { ?>
+                                                    <?php echo ' '; ?>
+                                                    <!-- NO VISIT -->
+                                                <?php } ?>
+                                                    </div>
+                                                </td>
+                                            <?php $x++;
+                                            } ?>
+                                        </tr>
 
-                                <?php } ?>
+                                    <?php } ?>
+                                    <?php
+
+
+                                } else {
+                                    $project_id = $_GET['project_id'];
+                                    $override->dateRange('visit', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id);
+
+                                    foreach ($override->dateRangeD('visit', 'client_id', 'visit_date', $_GET['from'], $_GET['to'], 'project_id', $project_id) as $dt) {
+                                        if ($dt['status'] != 4) {
+                                            $client = $override->get('clients', 'id', $dt['client_id'])[0];
+
+                                    ?>
+
+
+                                            <tr>
+                                                <td><?= $client['study_id'] ?>
+                                                <td><?= $override->get('study', 'id', $client['project_id'])[0]['study_code']; ?></td>
+                                                <td><?= $override->get('patient_group', 'id', $client['pt_group'])[0]['name'] ?>
+                                                    <?php if ($client['status'] == 0) { ?>
+                                                        <div class="btn-group btn-group-xs">
+                                                            <button class="btn btn-danger"><span class="icon-ok-sign"></span> End Study </button>
+                                                        </div>
+                                                <?php }
+                                                } ?>
+                                                </td>
+                                                <?php $x = 1;
+                                                foreach ($list as $data) {
+                                                    $d = $override->getNews('visit', 'client_id', $dt['client_id'], 'visit_date', $data)[0];
+                                                    //                                echo ' => ';print_r($dt['client_id']);print_r($d['status']);echo ' : ';print_r($d['visit_date']);echo ' , '
+                                                    //                                print_r($data['client_id']);echo ' : ';print_r($data['visit_date']);echo ' , '
+                                                ?>
+                                                    <td>
+                                                        <div class="btn-group btn-group-xs"><?php if ($d) {
+                                                                                                if ($d['status'] == 1) { ?>&nbsp;
+                                                            <button class="btn btn-success"><span class="icon-ok-sign"></span> Done <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
+                                                        <?php } elseif ($d['status'] == 2) { ?>
+                                                            <button class="btn btn-danger"><span class="icon-remove-sign"></span> Missed <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></span></button>
+                                                        <?php } elseif ($d['status'] == 0 || $d['status'] == 3) { ?>
+                                                            <button class="btn btn-info"><span class="icon-dashboard"></span> Scheduled <?= $d['visit_code'] . ' ' . $d['visit_type'] ?></button>
+                                                        <?php }
+                                                                                            } else { ?>
+                                                        <?php echo ' '; ?>
+                                                        <!-- NO VISIT  -->
+                                                    <?php } ?>
+                                                        </div>
+                                                    </td>
+                                                <?php $x++;
+                                                } ?>
+                                            </tr>
+
+                                    <?php }
+                                } ?>
+
+
                         </tbody>
                     </table>
                 <?php } elseif ($_GET['id'] == 13) { ?>
@@ -2924,7 +3119,7 @@ if ($user->isLoggedIn()) {
                             <h2>TODAY PENDING VISITS</h2>
                         </div>
                         <div class="content">
-                            <table id="allVisit" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
+                            <table id="example3" cellpadding="0" cellspacing="0" width="100%" class="table table-bordered table-striped sortable">
                                 <thead>
                                     <tr>
                                         <th width="5%">STUDY ID</th>
@@ -3003,9 +3198,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['status'] == 3) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['status'] == 1) { ?>
-                                                        <button class="btn btn-success">Completed</button>
+                                                        <button class="btn btn-success">Completed</button><button class="btn btn-info"><?= $data['initial1'] ?></button>
                                                     <?php } elseif ($data['status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Visit Missed</button>
+                                                        <button class="btn btn-danger">Visit Missed</button><button class="btn btn-info"><?= $data['initial1'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -3014,9 +3209,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['sn_cl_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['sn_cl_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Reviewed</button>
+                                                        <button class="btn btn-success">Reviewed</button><button class="btn btn-info"><?= $data['initial2'] ?></button>
                                                     <?php } elseif ($data['sn_cl_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial2'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -3025,9 +3220,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['dc_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['dc_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Entered</button>
+                                                        <button class="btn btn-success">Entered</button><button class="btn btn-info"><?= $data['initial3'] ?></button>
                                                     <?php } elseif ($data['dc_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial3'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -3036,9 +3231,9 @@ if ($user->isLoggedIn()) {
                                                         <?php if ($data['dm_status'] == 0) { ?>&nbsp;
                                                         <button class="btn btn-warning">Pending</button>
                                                     <?php } elseif ($data['dm_status'] == 1) { ?>
-                                                        <button class="btn btn-success">Reviewed</button>
+                                                        <button class="btn btn-success">Reviewed</button><button class="btn btn-info"><?= $data['initial4'] ?></button>
                                                     <?php } elseif ($data['dm_status'] == 2) { ?>
-                                                        <button class="btn btn-danger">Missed</button>
+                                                        <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial4'] ?></button>
                                                     <?php } ?>
                                                     </div>
                                                 </td>
@@ -3101,6 +3296,18 @@ if ($user->isLoggedIn()) {
                                                                                 <input type="text" name="reschedule_date" class="datepicker form-control" value="<?= $data['visit_date'] ?>" />
                                                                             </div>
                                                                         </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Details:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="details" class="form-control" value="<?= 'Changed from ' .  ' ' . $data['visit_date'] . ' to ' . ' ' . $data['visit_date'] ?>" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-2">Reason:</div>
+                                                                            <div class="col-md-10">
+                                                                                <input type="text" name="reason" class="form-control" value="<?= $data['reason'] ?>" />
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -3152,6 +3359,7 @@ if ($user->isLoggedIn()) {
                                                                     <div class="pull-right col-md-3">
                                                                         <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
                                                                         <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
+                                                                        <input type="hidden" name="s_id" value="<?= $user->data()->initial ?>">
                                                                         <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
                                                                         <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
                                                                         <input type="hidden" name="sn" value="<?= $data['sn_cl_status'] ?>">
@@ -3179,8 +3387,19 @@ if ($user->isLoggedIn()) {
         </div>
     </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+
+
+
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> -->
     <script>
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
@@ -3206,10 +3425,166 @@ if ($user->isLoggedIn()) {
 
 
         $(document).ready(function() {
+
             $('#allVisit').DataTable({
+
+                // columnDefs: [{
+                //     // "targets": -1,
+                //     // "data": null,
+                //     // "orderable": false,
+                //     "defaultContent": ['<input type="text" class="form-control datePicker" placeholder="Date" />']
+                // }],
+
+                // "columnDefs": [{
+                //     targets: 4,
+                //     render: $.fn.dataTable.render.moment('M-DD-YYYY,THH:mm', 'M/DD/YYYY')
+                // }],
+
+
+                dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        // displayFormat: 'dddd D MMMM YYYY',
+                        // wireFormat: 'YYYY-MM-DD',
+                        // columnDefs: [{
+                        // targets: [6],
+                        // render: $.fn.dataTable.render.moment('DD/MM/YYYY')
+                        // }],
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ],
                 // paging: true,
                 // scrollY: 10
+                // select: true,
+                // dom: 'Bfrtip',
+                // buttons: [
+                //     'copy', 'excel', 'pdf'
+                // ]
+
+
+
+
             });
+
+            // $(".dataTables_empty").text("There is No Any Visit Today.");
+
+
+
+            $('#example2').DataTable({
+
+                "language": {
+                    "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Visit Today</h1><div><span></span></div></div>"
+                },
+                // columns: columnDefs,
+
+                dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+
+
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ]
+            });
+
+            // $(".dataTables_empty").text("There is No Any Visit Today.").css('color', '#FF0000');
+
+
+            $('#example3').DataTable({
+
+                "language": {
+                    "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Pending Issue Today</h1><div><span></span></div></div>"
+                },
+                // columns: columnDefs,
+
+                dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+
+
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ]
+            });
+
+            // $(".dataTables_empty").text("There is No Any Visit Today.").css('color', '#FF0000');
         });
     </script>
 

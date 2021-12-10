@@ -48,43 +48,47 @@ if ($user->isLoggedIn()) {
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             // 'status' => Input::get('visit_status'),
-                            'staff_id' => $user->data()->id
+                            'staff_id' => $user->data()->id,
+                            'initial2' => Input::get('s_id')
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 6) {
                         $user->updateRecord('visit', array(
                             $a_status => Input::get('visit_status'),
                             // 'status' => Input::get('visit_status'),
-                            'staff_id' => $user->data()->id
+                            'staff_id' => $user->data()->id,
+                            'initial1' => Input::get('s_id')
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } elseif ($user->data()->position == 12) {
                         $user->updateRecord('visit', array(
                             // $a_status => Input::get('visit_status'),
                             'status' => Input::get('visit_status'),
-                            'staff_id' => $user->data()->id
+                            'staff_id' => $user->data()->id,
+                            'initial3' => Input::get('s_id')
                         ), Input::get('v_id'));
                         $date = null;
-                        $visitCode = $getVisit[0]['visit_code'] + 1;
-                        if ($visitCode) {
-                            $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
-                        }
+                        // $visitCode = $getVisit[0]['visit_code'] + 1;
+                        // if ($visitCode) {
+                        //     $user->updateRecord('clients', array('visit_code' => $visitCode), Input::get('client_id'));
+                        // }
                         $successMessage = 'Visit Added Successful';
                     } else {
                         if ((Input::get('sn') == 1 || Input::get('sn') == 2) && (Input::get('sn2') == 1 || Input::get('sn2') == 2) && (Input::get('sn3') == 1 || Input::get('sn3') == 2)) {
                             $user->updateRecord('visit', array(
                                 $a_status => Input::get('visit_status'),
-                                'staff_id' => $user->data()->id
+                                'staff_id' => $user->data()->id,
+                                'initial4' => Input::get('s_id')
                             ), Input::get('v_id'));
                         } else {
                             $errorMessage = 'Patient must be attended by study nurse, clinician and Data Clerk first';
@@ -305,9 +309,9 @@ if ($user->isLoggedIn()) {
                                                     <?php if ($data['status'] == 3) { ?>&nbsp;
                                                     <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['status'] == 1) { ?>
-                                                    <button class="btn btn-success">Completed</button>
+                                                    <button class="btn btn-success">Completed</button><button class="btn btn-info"><?= $data['initial1'] ?></button>
                                                 <?php } elseif ($data['status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Missed</button>
+                                                    <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial1'] ?></button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
@@ -316,9 +320,9 @@ if ($user->isLoggedIn()) {
                                                     <?php if ($data['sn_cl_status'] == 0) { ?>&nbsp;
                                                     <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['sn_cl_status'] == 1) { ?>
-                                                    <button class="btn btn-success">Reviewed</button>
+                                                    <button class="btn btn-success">Reviewed</button><button class="btn btn-info"><?= $data['initial2'] ?></button>
                                                 <?php } elseif ($data['sn_cl_status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Missed</button>
+                                                    <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial2'] ?></button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
@@ -327,9 +331,9 @@ if ($user->isLoggedIn()) {
                                                     <?php if ($data['dc_status'] == 0) { ?>&nbsp;
                                                     <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['dc_status'] == 1) { ?>
-                                                    <button class="btn btn-success">Entered</button>
+                                                    <button class="btn btn-success">Entered</button><button class="btn btn-info"><?= $data['initial3'] ?></button>
                                                 <?php } elseif ($data['dc_status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Missed</button>
+                                                    <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial3'] ?></button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
@@ -338,9 +342,9 @@ if ($user->isLoggedIn()) {
                                                     <?php if ($data['dm_status'] == 0) { ?>&nbsp;
                                                     <button class="btn btn-warning">Pending</button>
                                                 <?php } elseif ($data['dm_status'] == 1) { ?>
-                                                    <button class="btn btn-success">Reviewed</button>
+                                                    <button class="btn btn-success">Reviewed</button><button class="btn btn-info"><?= $data['initial4'] ?></button>
                                                 <?php } elseif ($data['dm_status'] == 2) { ?>
-                                                    <button class="btn btn-danger">Missed</button>
+                                                    <button class="btn btn-danger">Missed</button><button class="btn btn-info"><?= $data['initial4'] ?></button>
                                                 <?php } ?>
                                                 </div>
                                             </td>
@@ -457,6 +461,7 @@ if ($user->isLoggedIn()) {
                                                                 <div class="pull-right col-md-3">
                                                                     <input type="hidden" name="id" value="<?= $lastVisit[0]['id'] ?>">
                                                                     <input type="hidden" name="v_id" value="<?= $data['id'] ?>">
+                                                                    <input type="hidden" name="s_id" value="<?= $user->data()->initial ?>">
                                                                     <input type="hidden" name="client_id" value="<?= $client['id'] ?>">
                                                                     <input type="hidden" name="sn2" value="<?= $data['status'] ?>">
                                                                     <input type="hidden" name="sn" value="<?= $data['sn_cl_status'] ?>">
@@ -493,10 +498,56 @@ if ($user->isLoggedIn()) {
 
 
     $(document).ready(function() {
+        
         $('#studyVisit').DataTable({
+
+            "language": {
+                    "emptyTable": "<div class='display-1 font-weight-bold'><h1 style='color: tomato;visibility: visible'>No Any Visit Today</h1><div><span></span></div></div>"
+                },
+
+
+            dom: 'Bfrtip',
+                buttons: [{
+
+                        extend: 'excelHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        // displayFormat: 'dddd D MMMM YYYY',
+                        // wireFormat: 'YYYY-MM-DD',
+                        // columnDefs: [{
+                        // targets: [6],
+                        // render: $.fn.dataTable.render.moment('DD/MM/YYYY')
+                        // }],
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    {
+                        extend: 'copyHtml5',
+                        title: 'VISITS',
+                        className: 'btn-primary'
+                    },
+                    //     {
+                    //         extend: 'print',
+                    //         // name: 'printButton'
+                    //         title: 'VISITS'
+                    //     }
+                ],
+
             // paging: true,
             // scrollY: 10
         });
+        // $(".dataTables_empty").text("There is No Any Visit Today.");
     });
 </script>
 

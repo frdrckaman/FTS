@@ -5,10 +5,10 @@ session_start();
 
 $GLOBALS['config'] = array(
   'mysql' => array(
-      'host' => '',
-      'username' => '',
+      'host' => 'localhost',
+      'username' => 'root',
       'password' => '',
-      'db' => ''
+      'db' => 'vts'
   	),
   'remember' =>array(
       'cookie_name' => 'hash',

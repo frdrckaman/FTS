@@ -211,9 +211,7 @@ if ($user->isLoggedIn()) {
                                             <div class="col-md-10">
                                                 <select class="form-control" id="schedule_type"  name="schedule_type" style="width: 100%;" tabindex="-1">
                                                     <option value="">Select Schedule</option>
-                                                    <?php foreach ($override->getData('schedule2') as $group) { ?>
-                                                        <option value="<?= $group['schedule'] ?>"><?= $group['schedule'] ?></option>
-                                                    <?php } ?>
+                                                    <option value="UnScheduled">UnScheduled</option>
                                                 </select>
                                             </div>
                                         </div>
